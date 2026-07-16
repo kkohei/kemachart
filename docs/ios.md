@@ -11,6 +11,73 @@
 
 ---
 
+## まずは iOS シミュレーターで試す（署名・課金 不要）
+
+**シミュレーターでの動作確認には Apple Developer Program（有料）も署名も不要です。** Mac と Xcode さえあれば無料で試せます。
+
+### 1. 事前準備（初回のみ）
+
+```bash
+# Xcode コマンドラインツール
+xcode-select --install
+
+# CocoaPods（未インストールの場合）
+sudo gem install cocoapods
+# ↑うまくいかない場合は Homebrew で: brew install cocoapods
+```
+
+- App Store から **Xcode** をインストールし、一度起動してライセンス同意・追加コンポーネントの導入を済ませます。
+
+### 2. コードを取得
+
+```bash
+git clone https://github.com/kkohei/kemachart.git   # 既にある場合は git pull
+cd kemachart
+npm install
+```
+
+### 3. ビルドして Xcode を開く
+
+```bash
+npm run ios
+```
+
+（内部で `npm run build` → `cap sync ios`〈pod install 含む〉→ `cap open ios` を実行します）
+
+> 万一 `cap open` で開いたプロジェクトが Pods 未解決の場合:
+> `cd ios/App && pod install && cd ../..` を実行してから、もう一度 `npm run ios:open`。
+> **開くのは `App.xcworkspace`（.xcodeproj ではない）** です。`npm run ios` は自動で workspace を開きます。
+
+### 4. シミュレーターで実行
+
+1. Xcode 上部のスキーム横で、実行先に **iPhone 15 / 16 などのシミュレーター** を選択
+2. ▶︎（Run）を押す → 数十秒でビルドされ、シミュレーターにアプリが起動します
+3. 署名は不要です（もし署名エラーが出ても、それは実機用。シミュレーターでは無視できます）
+
+### コマンドラインだけで起動したい場合
+
+```bash
+npm run build && npx cap sync ios
+npx cap run ios          # 起動するシミュレーターを一覧から選択
+```
+
+### シミュレーターで試すときの注意
+
+- **カメラはシミュレーターに存在しません**。写真の「カメラ撮影」は動きませんが、
+  シミュレーターの「写真」ライブラリからの選択は可能です（あらかじめ画像をドラッグ＆ドロップで追加できます）。
+- 共有シート（LINE等）はシミュレーターだと一部アプリが入っていないため、実機での確認が確実です。
+- Web のコードを変更したら `npm run sync` で再同期 → Xcode で再実行。
+
+### うまく動かないとき
+
+| 症状 | 対処 |
+| --- | --- |
+| 画面が真っ白 | `npm run build` で `dist/` が生成されているか確認 → `npx cap sync ios` |
+| `No such module 'Capacitor'` | `cd ios/App && pod install`。開くのは `.xcworkspace` |
+| ビルドは通るが起動しない | シミュレーターを一度リセット（Simulator メニュー → Erase All Content and Settings） |
+
+---
+
 ## Mac でビルドする（推奨）
 
 ### 1. 必要なもの
