@@ -385,6 +385,80 @@ button.strand__seg {
   margin-left: auto;
 }
 
+/* 追加部位 (フォーム) */
+.area-card__sub {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-dark);
+  margin: 10px 0 6px;
+}
+.area-card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 12px;
+  background: #fff;
+}
+.area-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.area-card__title {
+  font-size: 14px;
+  font-weight: 700;
+}
+.area-card__remove {
+  border: 1px solid #f2d2d2;
+  background: #fbeaea;
+  color: var(--danger);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+}
+.area-add {
+  margin-top: 14px;
+}
+.area-add__label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-bottom: 6px;
+}
+.area-add__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.area-add__btn {
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+/* 部位ごとのダメージ (詳細) */
+.area-damage__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-dark);
+  margin-bottom: 8px;
+}
+.area-damage--divided {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.record-card__areas {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-dark);
+  background: var(--accent-soft);
+  padding: 1px 7px;
+  border-radius: 999px;
+}
+
 /* Damage view (detail) */
 .dmg-view {
   display: grid;

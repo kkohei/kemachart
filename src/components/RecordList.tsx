@@ -91,6 +91,9 @@ export function RecordList({ records }: { records: TreatmentRecord[] }) {
                   <div className="record-card__name">{r.customerName || "お客様"}</div>
                   <div className="record-card__meta">
                     <span className="record-card__code">{damageCode(r.damageBefore)}</span>
+                    {r.extraAreas && r.extraAreas.length > 0 && (
+                      <span className="record-card__areas">＋{r.extraAreas.length}部位</span>
+                    )}
                     <span className="record-card__date">{formatJP(r.date)}</span>
                   </div>
                 </div>

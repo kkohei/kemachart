@@ -1,5 +1,5 @@
 import type { TreatmentRecord } from "../types";
-import { damageDef } from "../constants";
+import { areaDef, damageDef } from "../constants";
 import { formatJP } from "./date";
 import { damageCode, maxDamage } from "./damage";
 import { dataURLtoBlob } from "./image";
@@ -9,11 +9,17 @@ export function buildShareText(rec: TreatmentRecord): string {
   const lines: string[] = [];
   lines.push(`【KEMA施術記録】${rec.menu}`);
   lines.push(`来店日: ${formatJP(rec.date)}`);
+  const hasExtra = rec.extraAreas && rec.extraAreas.length > 0;
+  const backLabel = hasExtra ? "後ろ " : "";
   const beforeCode = `根元→毛先 ${damageCode(rec.damageBefore)} (最大${damageDef(maxDamage(rec.damageBefore)).short})`;
-  const afterCode = rec.damageAfter
-    ? ` ⇒ 施術後 ${damageCode(rec.damageAfter)}`
-    : "";
-  lines.push(`ダメージ: ${beforeCode}${afterCode}`);
+  const afterCode = rec.damageAfter ? ` ⇒ 施術後 ${damageCode(rec.damageAfter)}` : "";
+  lines.push(`ダメージ: ${backLabel}${beforeCode}${afterCode}`);
+  if (rec.extraAreas) {
+    for (const a of rec.extraAreas) {
+      const ac = a.after ? ` ⇒ 施術後 ${damageCode(a.after)}` : "";
+      lines.push(`　${areaDef(a.area).short}: ${damageCode(a.before)}${ac}`);
+    }
+  }
   if (rec.recipe.length) {
     lines.push("レシピ:");
     for (const s of rec.recipe) {

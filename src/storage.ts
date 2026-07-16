@@ -9,6 +9,11 @@ function migrate(rec: TreatmentRecord): TreatmentRecord {
     ...rec,
     damageBefore: normalizeProfile(rec.damageBefore),
     damageAfter: rec.damageAfter == null ? undefined : normalizeProfile(rec.damageAfter),
+    extraAreas: rec.extraAreas?.map((a) => ({
+      area: a.area,
+      before: normalizeProfile(a.before),
+      after: a.after == null ? undefined : normalizeProfile(a.after),
+    })),
   };
 }
 

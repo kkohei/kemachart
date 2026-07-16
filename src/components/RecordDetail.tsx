@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { DamageProfile, TreatmentRecord } from "../types";
-import { SECTIONS, damageDef } from "../constants";
+import { AREA_BACK, SECTIONS, areaDef, damageDef } from "../constants";
 import { formatJP } from "../utils/date";
 import { navigate } from "../hooks/useHashRoute";
 import { HairStrand, DamageSummary } from "./HairDamageChart";
@@ -34,10 +34,20 @@ export function RecordDetail({
 
       <section className="card">
         <h2 className="card__title">ダメージレベル (根元→毛先)</h2>
-        <div className={`dmg-view ${record.damageAfter ? "dmg-view--pair" : ""}`}>
-          <DamageProfileView label="施術前" profile={record.damageBefore} />
-          {record.damageAfter && <DamageProfileView label="施術後" profile={record.damageAfter} />}
-        </div>
+        <AreaDamage
+          title={AREA_BACK.label}
+          before={record.damageBefore}
+          after={record.damageAfter}
+        />
+        {record.extraAreas?.map((a) => (
+          <AreaDamage
+            key={a.area}
+            title={areaDef(a.area).label}
+            before={a.before}
+            after={a.after}
+            divided
+          />
+        ))}
         {record.damageNote && <p className="detail__note">{record.damageNote}</p>}
       </section>
 
@@ -103,6 +113,28 @@ export function RecordDetail({
           </button>
         </div>
       )}
+    </div>
+  );
+}
+
+function AreaDamage({
+  title,
+  before,
+  after,
+  divided,
+}: {
+  title: string;
+  before: DamageProfile;
+  after?: DamageProfile;
+  divided?: boolean;
+}) {
+  return (
+    <div className={`area-damage ${divided ? "area-damage--divided" : ""}`}>
+      <div className="area-damage__title">{title}</div>
+      <div className={`dmg-view ${after ? "dmg-view--pair" : ""}`}>
+        <DamageProfileView label="施術前" profile={before} />
+        {after && <DamageProfileView label="施術後" profile={after} />}
+      </div>
     </div>
   );
 }

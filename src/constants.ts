@@ -1,4 +1,4 @@
-import type { DamageLevel } from "./types";
+import type { DamageLevel, HeadAreaKey } from "./types";
 
 /**
  * ダメージレベルの定義 (KEMAダメージチャートに準拠)。
@@ -84,6 +84,29 @@ export const SECTIONS: SectionDef[] = [
   { index: 3, label: "中間〜毛先", short: "下部" },
   { index: 4, label: "毛先", short: "毛先" },
 ];
+
+/** 頭部の部位の定義 */
+export interface HeadAreaDef {
+  key: HeadAreaKey;
+  label: string;
+  short: string;
+}
+
+/** 後ろ(バック) — 原則こちらのみ測定 */
+export const AREA_BACK: HeadAreaDef = { key: "back", label: "後ろ (バック)", short: "後ろ" };
+
+/** 任意で追加できる部位 */
+export const EXTRA_AREAS: HeadAreaDef[] = [
+  { key: "leftSide", label: "左サイド", short: "左" },
+  { key: "rightSide", label: "右サイド", short: "右" },
+  { key: "frontTop", label: "前髪〜トップ", short: "前" },
+];
+
+const ALL_AREAS: HeadAreaDef[] = [AREA_BACK, ...EXTRA_AREAS];
+
+export function areaDef(key: HeadAreaKey): HeadAreaDef {
+  return ALL_AREAS.find((a) => a.key === key) ?? AREA_BACK;
+}
 
 /** メニュー候補 (自由入力も可) */
 export const MENU_PRESETS: string[] = [

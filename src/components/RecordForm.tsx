@@ -1,6 +1,6 @@
 import { useState } from "react";
-import type { DamageProfile, RecipeStep, TreatmentRecord } from "../types";
-import { MENU_PRESETS } from "../constants";
+import type { AreaMeasurement, DamageProfile, HeadAreaKey, RecipeStep, TreatmentRecord } from "../types";
+import { EXTRA_AREAS, MENU_PRESETS, areaDef } from "../constants";
 import { todayISO } from "../utils/date";
 import { uid } from "../utils/id";
 import { defaultProfile, uniformProfile } from "../utils/damage";
@@ -26,8 +26,23 @@ export function RecordForm({ initial, onSave }: Props) {
   const [damageAfter, setDamageAfter] = useState<DamageProfile>(
     initial?.damageAfter ?? uniformProfile(1),
   );
+  const [extraAreas, setExtraAreas] = useState<AreaMeasurement[]>(initial?.extraAreas ?? []);
   const [damageNote, setDamageNote] = useState(initial?.damageNote ?? "");
   const [recipe, setRecipe] = useState<RecipeStep[]>(initial?.recipe ?? []);
+
+  function addArea(area: HeadAreaKey) {
+    setExtraAreas((prev) => [...prev, { area, before: defaultProfile() }]);
+  }
+  function removeArea(area: HeadAreaKey) {
+    setExtraAreas((prev) => prev.filter((a) => a.area !== area));
+  }
+  function setAreaBefore(area: HeadAreaKey, before: DamageProfile) {
+    setExtraAreas((prev) => prev.map((a) => (a.area === area ? { ...a, before } : a)));
+  }
+  function setAreaAfter(area: HeadAreaKey, after: DamageProfile) {
+    setExtraAreas((prev) => prev.map((a) => (a.area === area ? { ...a, after } : a)));
+  }
+  const availableAreas = EXTRA_AREAS.filter((d) => !extraAreas.some((a) => a.area === d.key));
   const [beforePhotos, setBeforePhotos] = useState<string[]>(initial?.beforePhotos ?? []);
   const [afterPhotos, setAfterPhotos] = useState<string[]>(initial?.afterPhotos ?? []);
   const [memo, setMemo] = useState(initial?.memo ?? "");
@@ -42,6 +57,13 @@ export function RecordForm({ initial, onSave }: Props) {
       menu: menu.trim() || "KEMA施術",
       damageBefore,
       damageAfter: afterEnabled ? damageAfter : undefined,
+      extraAreas: extraAreas.length
+        ? extraAreas.map((a) => ({
+            area: a.area,
+            before: a.before,
+            after: afterEnabled ? (a.after ?? uniformProfile(1)) : undefined,
+          }))
+        : undefined,
       damageNote: damageNote.trim() || undefined,
       recipe: recipe
         .filter((s) => s.name.trim() || s.product.trim())
@@ -106,10 +128,11 @@ export function RecordForm({ initial, onSave }: Props) {
       <section className="card">
         <h2 className="card__title">ダメージレベル測定</h2>
         <p className="card__note">
-          根元から毛先まで5セクションに分け、各セクションを Lv.1〜5 で測定します。
+          根元から毛先まで5セクションに分け、各セクションを Lv.1〜5 で測定します。原則は「後ろ
+          (バック)」のみ。必要に応じて他の部位も追加できます。
         </p>
         <div className="field">
-          <label className="field__label">来店時 (施術前)</label>
+          <label className="field__label">後ろ (バック)・来店時 (施術前)</label>
           <DamageChartInput profile={damageBefore} onChange={setDamageBefore} />
         </div>
         <div className="field">
@@ -119,10 +142,60 @@ export function RecordForm({ initial, onSave }: Props) {
               checked={afterEnabled}
               onChange={(e) => setAfterEnabled(e.target.checked)}
             />
-            施術後も記録する
+            施術後も記録する (全部位に適用)
           </label>
-          {afterEnabled && <DamageChartInput profile={damageAfter} onChange={setDamageAfter} />}
+          {afterEnabled && (
+            <>
+              <div className="area-card__sub">後ろ (バック)・施術後</div>
+              <DamageChartInput profile={damageAfter} onChange={setDamageAfter} />
+            </>
+          )}
         </div>
+
+        {extraAreas.map((a) => (
+          <div className="area-card" key={a.area}>
+            <div className="area-card__head">
+              <span className="area-card__title">{areaDef(a.area).label}</span>
+              <button
+                type="button"
+                className="area-card__remove"
+                onClick={() => removeArea(a.area)}
+              >
+                削除
+              </button>
+            </div>
+            <div className="area-card__sub">施術前</div>
+            <DamageChartInput profile={a.before} onChange={(p) => setAreaBefore(a.area, p)} />
+            {afterEnabled && (
+              <>
+                <div className="area-card__sub">施術後</div>
+                <DamageChartInput
+                  profile={a.after ?? uniformProfile(1)}
+                  onChange={(p) => setAreaAfter(a.area, p)}
+                />
+              </>
+            )}
+          </div>
+        ))}
+
+        {availableAreas.length > 0 && (
+          <div className="area-add">
+            <span className="area-add__label">部位を追加 (任意)</span>
+            <div className="area-add__btns">
+              {availableAreas.map((d) => (
+                <button
+                  type="button"
+                  key={d.key}
+                  className="btn btn--ghost area-add__btn"
+                  onClick={() => addArea(d.key)}
+                >
+                  ＋ {d.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="field">
           <label className="field__label" htmlFor="f-dnote">
             測定所見メモ

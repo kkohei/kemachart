@@ -12,6 +12,16 @@ export type DamageLevel = 1 | 2 | 3 | 4 | 5;
  */
 export type DamageProfile = [DamageLevel, DamageLevel, DamageLevel, DamageLevel, DamageLevel];
 
+/** 頭部の部位 (原則は後ろ=back のみ。必要に応じて他部位を追加) */
+export type HeadAreaKey = "back" | "leftSide" | "rightSide" | "frontTop";
+
+/** 部位ごとのダメージ測定 (施術前/後) */
+export interface AreaMeasurement {
+  area: HeadAreaKey;
+  before: DamageProfile;
+  after?: DamageProfile;
+}
+
 /** レシピの1工程 (使用薬剤や塗布など) */
 export interface RecipeStep {
   id: string;
@@ -34,10 +44,12 @@ export interface TreatmentRecord {
   customerName: string;
   /** 施術メニュー 例: KEMAトリートメント / KEMAカラー */
   menu: string;
-  /** 来店時 (施術前) のダメージプロファイル (根元→毛先の5セクション) */
+  /** 後ろ(バック)の来店時 (施術前) ダメージプロファイル (根元→毛先の5セクション) */
   damageBefore: DamageProfile;
-  /** 施術後のダメージプロファイル (任意) */
+  /** 後ろ(バック)の施術後ダメージプロファイル (任意) */
   damageAfter?: DamageProfile;
+  /** 追加部位 (左サイド/右サイド/前髪〜トップ) の測定 (任意) */
+  extraAreas?: AreaMeasurement[];
   /** ダメージ測定の所見メモ */
   damageNote?: string;
   /** レシピ工程 */
