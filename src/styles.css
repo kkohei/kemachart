@@ -685,6 +685,92 @@ button.strand__seg {
   flex: 1;
 }
 
+/* ---------- Segmented control ---------- */
+.segmented {
+  display: flex;
+  gap: 4px;
+  background: var(--accent-soft);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 14px;
+}
+.segmented__btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  border-radius: 9px;
+  padding: 9px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+.segmented__btn.is-active {
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- Customer ---------- */
+.customer-visits {
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--accent);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+.record-cards--tight {
+  gap: 8px;
+}
+.detail__name--link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.detail__name-chev {
+  color: var(--accent);
+  font-size: 20px;
+}
+
+/* ---------- Progression chart ---------- */
+.prog__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.prog__ytick {
+  font-size: 9px;
+  fill: var(--ink-2);
+}
+.prog__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: 11px;
+  color: var(--ink-2);
+  margin-top: 6px;
+}
+.prog__legend-line {
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+.prog__axis-note {
+  font-size: 11px;
+  color: var(--ink-2);
+  margin-top: 4px;
+}
+.prog-empty {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin: 0;
+  padding: 8px 0;
+}
+
 /* ---------- List ---------- */
 .list__controls {
   margin-bottom: 14px;

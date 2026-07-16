@@ -13,7 +13,8 @@ export type Route =
   | { name: "list" }
   | { name: "new" }
   | { name: "detail"; id: string }
-  | { name: "edit"; id: string };
+  | { name: "edit"; id: string }
+  | { name: "customer"; customer: string };
 
 function parse(hash: string): Route {
   const path = hash.replace(/^#/, "");
@@ -21,6 +22,7 @@ function parse(hash: string): Route {
   if (parts[0] === "new") return { name: "new" };
   if (parts[0] === "record" && parts[1]) return { name: "detail", id: parts[1] };
   if (parts[0] === "edit" && parts[1]) return { name: "edit", id: parts[1] };
+  if (parts[0] === "customer" && parts[1]) return { name: "customer", customer: decodeURIComponent(parts[1]) };
   return { name: "list" };
 }
 

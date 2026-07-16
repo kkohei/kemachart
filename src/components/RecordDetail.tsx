@@ -27,7 +27,16 @@ export function RecordDetail({
       <div className="detail__head">
         <div>
           <div className="detail__menu">{record.menu}</div>
-          <div className="detail__name">{record.customerName || "お客様"}</div>
+          {record.customerName.trim() ? (
+            <button
+              className="detail__name detail__name--link"
+              onClick={() => navigate(`#/customer/${encodeURIComponent(record.customerName.trim())}`)}
+            >
+              {record.customerName} <span className="detail__name-chev">›</span>
+            </button>
+          ) : (
+            <div className="detail__name">お客様</div>
+          )}
           <div className="detail__date">{formatJP(record.date)}</div>
         </div>
       </div>

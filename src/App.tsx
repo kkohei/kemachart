@@ -3,6 +3,7 @@ import { navigate, useHashRoute } from "./hooks/useHashRoute";
 import { RecordList } from "./components/RecordList";
 import { RecordForm } from "./components/RecordForm";
 import { RecordDetail } from "./components/RecordDetail";
+import { CustomerDetail } from "./components/CustomerDetail";
 import { DataMenu } from "./components/DataMenu";
 
 export default function App() {
@@ -62,6 +63,8 @@ export default function App() {
             if (!rec) return <NotFound />;
             return <RecordDetail record={rec} onDelete={remove} />;
           })()}
+
+        {route.name === "customer" && <CustomerDetail name={route.customer} records={records} />}
       </main>
 
       {route.name === "list" && records.length > 0 && (

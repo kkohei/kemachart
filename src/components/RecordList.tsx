@@ -1,29 +1,17 @@
 import { useMemo, useState } from "react";
 import type { DamageLevel, TreatmentRecord } from "../types";
 import { DAMAGE_LEVELS } from "../constants";
-import { formatJP } from "../utils/date";
-import { damageCode, maxDamage } from "../utils/damage";
+import { maxDamage } from "../utils/damage";
 import { navigate } from "../hooks/useHashRoute";
-import { DamageBadge } from "./DamageBadge";
-import { HairStrand } from "./HairDamageChart";
+import { CustomerList } from "./CustomerList";
+import { RecordCard } from "./RecordCard";
+
+type Mode = "records" | "customers";
 
 export function RecordList({ records }: { records: TreatmentRecord[] }) {
   const [q, setQ] = useState("");
   const [filter, setFilter] = useState<DamageLevel | "all">("all");
-
-  const filtered = useMemo(() => {
-    const kw = q.trim().toLowerCase();
-    return records.filter((r) => {
-      if (filter !== "all" && maxDamage(r.damageBefore) !== filter) return false;
-      if (!kw) return true;
-      return (
-        r.customerName.toLowerCase().includes(kw) ||
-        r.menu.toLowerCase().includes(kw) ||
-        (r.memo ?? "").toLowerCase().includes(kw) ||
-        r.recipe.some((s) => s.product.toLowerCase().includes(kw))
-      );
-    });
-  }, [records, q, filter]);
+  const [mode, setMode] = useState<Mode>("records");
 
   if (records.length === 0) {
     return (
@@ -40,67 +28,84 @@ export function RecordList({ records }: { records: TreatmentRecord[] }) {
     );
   }
 
+  const filtered = useMemo(() => {
+    const kw = q.trim().toLowerCase();
+    return records.filter((r) => {
+      if (filter !== "all" && maxDamage(r.damageBefore) !== filter) return false;
+      if (!kw) return true;
+      return (
+        r.customerName.toLowerCase().includes(kw) ||
+        r.menu.toLowerCase().includes(kw) ||
+        (r.memo ?? "").toLowerCase().includes(kw) ||
+        r.recipe.some((s) => s.product.toLowerCase().includes(kw))
+      );
+    });
+  }, [records, q, filter]);
+
   return (
     <div className="list">
-      <div className="list__controls">
-        <input
-          className="input list__search"
-          placeholder="お客様名・メニュー・薬剤で検索"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-        />
-        <div className="chips">
-          <button
-            className={`chip ${filter === "all" ? "is-active" : ""}`}
-            onClick={() => setFilter("all")}
-          >
-            すべて
-          </button>
-          {DAMAGE_LEVELS.map((d) => (
-            <button
-              key={d.level}
-              className={`chip ${filter === d.level ? "is-active" : ""}`}
-              style={filter === d.level ? { backgroundColor: d.color, borderColor: d.color, color: "#fff" } : undefined}
-              onClick={() => setFilter(d.level)}
-            >
-              {d.short}
-            </button>
-          ))}
-        </div>
+      <div className="segmented">
+        <button
+          className={`segmented__btn ${mode === "records" ? "is-active" : ""}`}
+          onClick={() => setMode("records")}
+        >
+          記録
+        </button>
+        <button
+          className={`segmented__btn ${mode === "customers" ? "is-active" : ""}`}
+          onClick={() => setMode("customers")}
+        >
+          お客様
+        </button>
       </div>
 
-      {filtered.length === 0 ? (
-        <p className="list__none">条件に合う記録が見つかりませんでした。</p>
+      {mode === "customers" ? (
+        <CustomerList records={records} />
       ) : (
-        <ul className="record-cards">
-          {filtered.map((r) => (
-            <li key={r.id}>
-              <button className="record-card" onClick={() => navigate(`#/record/${r.id}`)}>
-                <div className="record-card__thumb">
-                  {r.beforePhotos[0] ? (
-                    <img src={r.beforePhotos[0]} alt="" />
-                  ) : (
-                    <HairStrand profile={r.damageBefore} width={40} showNumbers={false} />
-                  )}
-                </div>
-                <div className="record-card__body">
-                  <div className="record-card__row">
-                    <span className="record-card__menu">{r.menu}</span>
-                    <DamageBadge level={maxDamage(r.damageBefore)} size="sm" />
-                  </div>
-                  <div className="record-card__name">{r.customerName || "お客様"}</div>
-                  <div className="record-card__meta">
-                    <span className="record-card__code">{damageCode(r.damageBefore)}</span>
-                    {r.extraAreas && r.extraAreas.length > 0 && (
-                      <span className="record-card__areas">＋{r.extraAreas.length}部位</span>
-                    )}
-                    <span className="record-card__date">{formatJP(r.date)}</span>
-                  </div>
-                </div>
+        <>
+          <div className="list__controls">
+            <input
+              className="input list__search"
+              placeholder="お客様名・メニュー・薬剤で検索"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
+            <div className="chips">
+              <button
+                className={`chip ${filter === "all" ? "is-active" : ""}`}
+                onClick={() => setFilter("all")}
+              >
+                すべて
               </button>
-            </li>
-          ))}
-        </ul>
+              {DAMAGE_LEVELS.map((d) => (
+                <button
+                  key={d.level}
+                  className={`chip ${filter === d.level ? "is-active" : ""}`}
+                  style={
+                    filter === d.level
+                      ? { backgroundColor: d.color, borderColor: d.color, color: d.text }
+                      : undefined
+                  }
+                  onClick={() => setFilter(d.level)}
+                >
+                  {d.short}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {filtered.length === 0 ? (
+            <p className="list__none">条件に合う記録が見つかりませんでした。</p>
+          ) : (
+            <ul className="record-cards">
+              {filtered.map((r) => (
+                <li key={r.id}>
+                  <RecordCard record={r} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
       )}
     </div>
   );
