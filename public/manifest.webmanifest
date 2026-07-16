@@ -1,0 +1,20 @@
+{
+  "name": "KEMA Chart｜施術記録",
+  "short_name": "KEMA Chart",
+  "description": "美容師のためのKEMA施術記録アプリ。ダメージレベル測定・レシピ・ビフォーアフターを記録します。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f3ee",
+  "theme_color": "#8a6f52",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
