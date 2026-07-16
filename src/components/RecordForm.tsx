@@ -83,7 +83,7 @@ export function RecordForm({ initial, onSave }: Props) {
       <section className="card">
         <div className="field">
           <label className="field__label" htmlFor="f-date">
-            来店日
+            来店日 <span className="field__hint">(タップでカレンダー選択)</span>
           </label>
           <input
             id="f-date"
