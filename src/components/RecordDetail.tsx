@@ -5,6 +5,7 @@ import { formatJP } from "../utils/date";
 import { navigate } from "../hooks/useHashRoute";
 import { HairStrand, DamageSummary } from "./HairDamageChart";
 import { ShareButtons } from "./ShareButtons";
+import { KarteExport } from "./KarteExport";
 
 export function RecordDetail({
   record,
@@ -103,6 +104,12 @@ export function RecordDetail({
       <section className="card">
         <h2 className="card__title">友達・仲間に共有</h2>
         <ShareButtons record={record} />
+      </section>
+
+      <section className="card">
+        <h2 className="card__title">カルテを出力</h2>
+        <p className="card__note">この記録を1枚のカルテ画像／PDFにして保存・共有できます。</p>
+        <KarteExport record={record} />
       </section>
 
       <div className="detail__actions">
