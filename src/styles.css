@@ -120,6 +120,77 @@ img {
   margin: 4px 2px 16px;
 }
 
+/* ---------- Hero (トップ画面のブランド) ---------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  /* .content の左右パディングを打ち消してフルブリードに */
+  margin: -16px -16px 18px;
+  padding: 30px 20px 26px;
+  text-align: center;
+  border-radius: 0 0 26px 26px;
+  color: #fff;
+  background:
+    linear-gradient(135deg, #f3ccbd 0%, #e4a88f 46%, #cc8570 100%);
+  box-shadow: 0 10px 24px rgba(176, 118, 96, 0.28);
+}
+.hero__sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(130% 90% at 12% -20%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 55%),
+    radial-gradient(90% 70% at 105% 120%, rgba(240, 205, 165, 0.55), rgba(240, 205, 165, 0) 60%);
+}
+.hero__mark {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 14px;
+  filter: drop-shadow(0 6px 14px rgba(150, 90, 70, 0.35));
+}
+.hero__mark svg {
+  width: 100%;
+  height: 100%;
+}
+.hero__title {
+  position: relative;
+  margin: 0;
+  font-family: "Hiragino Mincho ProN", Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(140, 80, 62, 0.35);
+}
+.hero__tagline {
+  position: relative;
+  margin: 6px 0 0;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.95);
+}
+.hero__brand {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+.hero__brand-rule {
+  width: 34px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.7);
+}
+.hero__brand-name {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: #fff;
+  text-indent: 0.28em;
+}
+
 /* ---------- Cards / fields ---------- */
 .card {
   background: var(--surface);

@@ -23,10 +23,14 @@ export default function App() {
           ) : (
             <span className="iconbtn iconbtn--ghost" aria-hidden="true" />
           )}
-          <button className="brand" onClick={() => navigate("#/")}>
-            <img src="./icon.svg" alt="" className="brand__icon" />
-            <span className="brand__name">KEMA my Recipi</span>
-          </button>
+          {route.name === "list" ? (
+            <span aria-hidden="true" />
+          ) : (
+            <button className="brand" onClick={() => navigate("#/")}>
+              <img src="./icon.svg" alt="" className="brand__icon" />
+              <span className="brand__name">KEMA my Recipi</span>
+            </button>
+          )}
           {route.name === "list" ? (
             <DataMenu records={records} onImport={replaceAll} />
           ) : (
