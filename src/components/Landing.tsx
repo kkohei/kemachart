@@ -1,8 +1,22 @@
+import { useEffect, useState } from "react";
 import type { TreatmentRecord } from "../types";
 import { navigate } from "../hooks/useHashRoute";
 import { DataMenu } from "./DataMenu";
+import { BgAurora, BgTechNet, BgSalon, BgFoil } from "./landing/Backgrounds";
 
-/** トップ (ハブ) 画面: ピンクゴールドのグラデ背景に2つの入口 */
+type VariantId = "aurora" | "tech" | "salon" | "foil";
+
+const VARIANTS: { id: VariantId; label: string }[] = [
+  { id: "aurora", label: "① オーロラ" },
+  { id: "tech", label: "② テック" },
+  { id: "salon", label: "③ サロン" },
+  { id: "foil", label: "④ フォイル" },
+];
+
+const KEY = "kemachart.landingVariant";
+const LOGO = `${import.meta.env.BASE_URL}brand/kema-logo-white.png`;
+
+/** トップ (ハブ) 画面。4つのデザイン案を切り替えて選べます。 */
 export function Landing({
   records,
   onImport,
@@ -10,42 +24,36 @@ export function Landing({
   records: TreatmentRecord[];
   onImport: (records: TreatmentRecord[]) => void;
 }) {
-  return (
-    <div className="landing">
-      <div className="landing__sheen" aria-hidden="true" />
+  const [variant, setVariant] = useState<VariantId>(() => {
+    const v = localStorage.getItem(KEY);
+    return (VARIANTS.some((x) => x.id === v) ? v : "aurora") as VariantId;
+  });
+  useEffect(() => {
+    localStorage.setItem(KEY, variant);
+  }, [variant]);
 
-      <div className="landing__top">
+  return (
+    <div className={`land land--${variant}`}>
+      {variant === "aurora" && <BgAurora />}
+      {variant === "tech" && <BgTechNet />}
+      {variant === "salon" && <BgSalon />}
+      {variant === "foil" && <BgFoil />}
+
+      <div className="land__top">
         <DataMenu records={records} onImport={onImport} variant="light" />
       </div>
 
-      <div className="landing__brand">
-        <div className="landing__mark">
-          <svg viewBox="0 0 100 100" width="100" height="100" aria-hidden="true">
-            <defs>
-              <linearGradient id="landStrand" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#d99f89" />
-                <stop offset="1" stopColor="#b9765f" />
-              </linearGradient>
-            </defs>
-            <rect x="4" y="4" width="92" height="92" rx="26" fill="#ffffff" />
-            <g fill="none" stroke="url(#landStrand)" strokeWidth="5" strokeLinecap="round">
-              <path d="M33 22 C 23 42, 23 64, 34 80" />
-              <path d="M50 20 C 41 42, 41 66, 50 82" />
-              <path d="M67 22 C 77 42, 77 64, 66 80" />
-            </g>
-            <circle cx="50" cy="50" r="7" fill="#b9765f" />
-          </svg>
-        </div>
-        <h1 className="landing__title">KEMA my Recipi</h1>
-        <p className="landing__tagline">美容師のための施術カルテ</p>
-        <div className="landing__by">
-          <span className="landing__by-rule" />
-          <span className="landing__by-name">KEMA PRO SHOP</span>
-          <span className="landing__by-rule" />
+      <div className="land__brand">
+        <img className="land__logo" src={LOGO} alt="KEMA — Advanced · Quality · Oriented" />
+        <p className="land__subtitle">美容師のための施術カルテ</p>
+        <div className="land__by">
+          <span className="land__by-rule" />
+          <span className="land__by-name">KEMA PRO SHOP</span>
+          <span className="land__by-rule" />
         </div>
       </div>
 
-      <div className="landing__menu">
+      <div className="land__menu">
         <button className="hub-card" onClick={() => navigate("#/records")}>
           <span className="hub-card__icon" aria-hidden="true">✍️</span>
           <span className="hub-card__body">
@@ -63,6 +71,23 @@ export function Landing({
           </span>
           <span className="hub-card__soon">Coming Soon</span>
         </button>
+      </div>
+
+      <div className="land__switch" role="tablist" aria-label="デザイン案">
+        <span className="land__switch-label">デザイン案</span>
+        <div className="land__switch-btns">
+          {VARIANTS.map((v) => (
+            <button
+              key={v.id}
+              role="tab"
+              aria-selected={variant === v.id}
+              className={`land__switch-btn ${variant === v.id ? "is-active" : ""}`}
+              onClick={() => setVariant(v.id)}
+            >
+              {v.label}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

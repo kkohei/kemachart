@@ -121,86 +121,222 @@ img {
 }
 
 /* ---------- Landing (トップ / ハブ) ---------- */
-.landing {
+.land {
   position: relative;
   min-height: 100vh;
   min-height: 100dvh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: calc(env(safe-area-inset-top) + 12px) 22px calc(env(safe-area-inset-bottom) + 28px);
+  padding: calc(env(safe-area-inset-top) + 12px) 22px calc(env(safe-area-inset-bottom) + 20px);
   color: #fff;
-  background: linear-gradient(160deg, #f6d0c1 0%, #e7ab92 42%, #cf8670 74%, #c07b64 100%);
 }
-.landing__sheen {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(120% 70% at 12% -10%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 55%),
-    radial-gradient(90% 60% at 108% 108%, rgba(243, 210, 170, 0.6), rgba(243, 210, 170, 0) 60%);
-}
-.landing__top {
+.land__top {
   position: relative;
+  z-index: 2;
   display: flex;
   justify-content: flex-end;
   min-height: 40px;
 }
-.landing__brand {
+.land__brand {
   position: relative;
+  z-index: 2;
   text-align: center;
   margin-top: auto;
-  padding-bottom: 8px;
 }
-.landing__mark {
-  width: 88px;
-  height: 88px;
-  margin: 0 auto 16px;
-  filter: drop-shadow(0 8px 18px rgba(150, 90, 70, 0.4));
+.land__logo {
+  width: min(66%, 260px);
+  height: auto;
+  margin: 0 auto 14px;
+  filter: drop-shadow(0 6px 16px rgba(90, 50, 40, 0.35));
 }
-.landing__mark svg {
-  width: 100%;
-  height: 100%;
-}
-.landing__title {
+.land__subtitle {
   margin: 0;
-  font-family: "Hiragino Mincho ProN", Georgia, "Times New Roman", serif;
-  font-size: 34px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-shadow: 0 1px 4px rgba(140, 80, 62, 0.35);
-}
-.landing__tagline {
-  margin: 8px 0 0;
   font-size: 13px;
   letter-spacing: 0.16em;
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(255, 255, 255, 0.96);
+  text-shadow: 0 1px 3px rgba(120, 70, 55, 0.3);
 }
-.landing__by {
+.land__by {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-top: 18px;
+  margin-top: 16px;
 }
-.landing__by-rule {
-  width: 34px;
+.land__by-rule {
+  width: 30px;
   height: 1px;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.65);
 }
-.landing__by-name {
-  font-size: 11px;
+.land__by-name {
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.28em;
-  text-indent: 0.28em;
+  letter-spacing: 0.26em;
+  text-indent: 0.26em;
 }
-.landing__menu {
+.land__menu {
   position: relative;
+  z-index: 2;
   margin-top: auto;
-  padding-top: 32px;
+  padding-top: 30px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+.land__switch {
+  position: relative;
+  z-index: 2;
+  margin-top: 18px;
+  text-align: center;
+}
+.land__switch-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 8px;
+}
+.land__switch-btns {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.land__switch-btn {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+.land__switch-btn.is-active {
+  background: #fff;
+  color: var(--accent-dark);
+  border-color: #fff;
+}
+
+/* --- 背景 ① オーロラ --- */
+.land--aurora {
+  background: linear-gradient(160deg, #f6d0c1 0%, #e7ab92 42%, #cf8670 74%, #bf7a63 100%);
+}
+.bg-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg-aurora span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: 0.7;
+  mix-blend-mode: screen;
+}
+.bg-aurora span:nth-child(1) {
+  width: 60vw;
+  height: 60vw;
+  left: -12vw;
+  top: 8vh;
+  background: radial-gradient(circle, #ffe6cf, transparent 70%);
+  animation: aurora1 16s ease-in-out infinite;
+}
+.bg-aurora span:nth-child(2) {
+  width: 55vw;
+  height: 55vw;
+  right: -14vw;
+  top: 26vh;
+  background: radial-gradient(circle, #f6c1c6, transparent 70%);
+  animation: aurora2 20s ease-in-out infinite;
+}
+.bg-aurora span:nth-child(3) {
+  width: 66vw;
+  height: 66vw;
+  left: 6vw;
+  bottom: -18vh;
+  background: radial-gradient(circle, #f3d29f, transparent 70%);
+  animation: aurora3 24s ease-in-out infinite;
+}
+@keyframes aurora1 {
+  50% { transform: translate(14vw, 8vh) scale(1.15); }
+}
+@keyframes aurora2 {
+  50% { transform: translate(-12vw, 12vh) scale(1.1); }
+}
+@keyframes aurora3 {
+  50% { transform: translate(8vw, -10vh) scale(1.2); }
+}
+
+/* --- 背景 ② テック --- */
+.land--tech {
+  background: linear-gradient(165deg, #2c2020 0%, #5f382d 55%, #9a5c48 100%);
+}
+.bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* --- 背景 ③ サロン --- */
+.land--salon {
+  background: linear-gradient(160deg, #f3ccbd 0%, #e2a488 45%, #c97e68 100%);
+}
+.bg-salon {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.bg-salon__strand {
+  fill: none;
+  stroke: rgba(255, 244, 232, 0.5);
+  stroke-width: 1.4;
+  transform-origin: center;
+  animation: sway 7s ease-in-out infinite;
+}
+@keyframes sway {
+  0%, 100% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+}
+
+/* --- 背景 ④ フォイル --- */
+.land--foil {
+  background: linear-gradient(135deg, #e9b9a6 0%, #d59a84 42%, #bd7c67 100%);
+}
+.bg-foil {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg-foil__sheen {
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 240, 214, 0.55) 46%,
+    rgba(255, 226, 196, 0.2) 52%,
+    transparent 66%
+  );
+  animation: foil 7s linear infinite;
+}
+@keyframes foil {
+  0% { transform: translateX(-30%); }
+  100% { transform: translateX(30%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg-aurora span,
+  .bg-salon__strand,
+  .bg-foil__sheen {
+    animation: none;
+  }
 }
 
 /* ハブのカードボタン */

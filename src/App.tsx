@@ -23,7 +23,11 @@ export default function App() {
             ‹
           </button>
           <button className="brand" onClick={() => navigate("#/")}>
-            <img src="./icon.svg" alt="" className="brand__icon" />
+            <img
+              src={`${import.meta.env.BASE_URL}brand/kema-symbol-black.png`}
+              alt=""
+              className="brand__icon"
+            />
             <span className="brand__name">KEMA my Recipi</span>
           </button>
           <span className="iconbtn iconbtn--ghost" aria-hidden="true" />
