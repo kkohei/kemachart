@@ -8,3 +8,6 @@ dist-ssr
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Capacitor: ネイティブ生成物は ios/.gitignore 側で管理します。
+# (Pods / DerivedData / コピーされた web assets などはコミットしません)

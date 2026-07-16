@@ -1,10 +1,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// GitHub Pages でホストする場合、リポジトリ名がベースパスになります。
-// 例: https://kkohei.github.io/kemachart/  →  base = "/kemachart/"
-// 独自ドメインやローカルでは "/" を使います。
-export default defineConfig(({ command }) => ({
-  base: command === "build" ? "/kemachart/" : "/",
+// 相対パス ("./") を使うことで、以下のすべてで同じビルドが動作します:
+//  - GitHub Pages のプロジェクトサイト (https://kkohei.github.io/kemachart/)
+//  - Capacitor による iOS/Android ネイティブアプリ (capacitor://localhost)
+//  - ローカルの file:// やサブディレクトリ配信
+// ハッシュルーティング (#/...) を使っているため、相対パスでもディープリンクは壊れません。
+export default defineConfig({
+  base: "./",
   plugins: [react()],
-}));
+});

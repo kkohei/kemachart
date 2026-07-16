@@ -14,7 +14,18 @@
 - 🔍 **見返し** — お客様名・メニュー・薬剤名で検索、ダメージレベルで絞り込み
 - 📤 **SNS共有** — 端末のネイティブ共有 (写真つき) / LINE / X / Facebook
 - 💾 **バックアップ** — 記録をJSONで書き出し・読み込み (機種変更やデータ移行に)
-- 📱 **PWA対応** — ホーム画面に追加してアプリのように利用可能
+- 📱 **PWA / iOSアプリ対応** — ホーム画面に追加して利用、または Capacitor でネイティブiOSアプリ化
+
+## iOSアプリ
+
+[Capacitor](https://capacitorjs.com/) を統合済みで、この Web アプリを**そのままネイティブiOSアプリ**として
+ビルド・App Store申請できます（UIコードは web と共通）。ビルドには **macOS + Xcode が必須**です。
+
+```bash
+npm run ios      # build → cap sync ios → Xcode で開く (要 macOS)
+```
+
+手順の詳細・App Store申請・Macがない場合の選択肢は **[docs/ios.md](docs/ios.md)** を参照してください。
 
 ## データの保存について
 
@@ -45,7 +56,8 @@ npm run typecheck # 型チェック
 1. リポジトリの **Settings → Pages → Build and deployment → Source** を **GitHub Actions** に設定
 2. `main` に push すると `https://kkohei.github.io/kemachart/` に公開されます
 
-> リポジトリ名を変更した場合、または独自ドメインで公開する場合は `vite.config.ts` の `base` を合わせて変更してください。
+> ベースパスは相対パス (`base: "./"`) にしてあるため、GitHub Pages のサブパス配信・独自ドメイン・
+> Capacitorネイティブアプリのいずれでも、同じビルドがそのまま動作します。
 
 ## ロードマップ
 

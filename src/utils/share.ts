@@ -1,3 +1,4 @@
+import { Capacitor } from "@capacitor/core";
 import type { TreatmentRecord } from "../types";
 import { areaDef, damageDef } from "../constants";
 import { formatJP } from "./date";
@@ -45,6 +46,20 @@ export interface ShareResult {
 export async function nativeShare(rec: TreatmentRecord): Promise<ShareResult> {
   const text = buildShareText(rec);
   const title = `KEMA my Recipi｜${rec.menu}`;
+
+  // Capacitor ネイティブ (iOS/Android) ではネイティブ共有シートを使用
+  if (Capacitor.isNativePlatform()) {
+    try {
+      const { Share } = await import("@capacitor/share");
+      await Share.share({ title, text, dialogTitle: "施術記録を共有" });
+      return { ok: true, method: "native", message: "共有しました" };
+    } catch (e) {
+      if ((e as Error)?.message?.includes("cancel")) {
+        return { ok: false, method: "native", message: "共有をキャンセルしました" };
+      }
+      // 続けてWeb経路を試す
+    }
+  }
 
   const nav = navigator as Navigator & {
     canShare?: (data?: ShareData) => boolean;
