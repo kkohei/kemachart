@@ -25,7 +25,11 @@
 npm run ios      # build → cap sync ios → Xcode で開く (要 macOS)
 ```
 
-手順の詳細・App Store申請・Macがない場合の選択肢は **[docs/ios.md](docs/ios.md)** を参照してください。
+- ビルド手順・Macがない場合の選択肢 → **[docs/ios.md](docs/ios.md)**
+- App Store申請ガイド（署名・TestFlight・掲載情報の日本語案・審査対策）→ **[docs/app-store.md](docs/app-store.md)**
+
+申請に必要なプライバシーポリシーは `public/privacy.html`（公開時 `https://kkohei.github.io/kemachart/privacy.html`）に用意しています。
+プライバシーマニフェスト・カメラ/写真の利用目的・輸出コンプライアンス設定などの審査対策は対応済みです。
 
 ## データの保存について
 
