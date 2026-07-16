@@ -1,6 +1,6 @@
 {
-  "name": "KEMA Chart｜施術記録",
-  "short_name": "KEMA Chart",
+  "name": "KEMA my Recipi｜施術記録",
+  "short_name": "KEMA my Recipi",
   "description": "美容師のためのKEMA施術記録アプリ。ダメージレベル測定・レシピ・ビフォーアフターを記録します。",
   "start_url": "./",
   "scope": "./",

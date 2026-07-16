@@ -44,7 +44,7 @@ export interface ShareResult {
  */
 export async function nativeShare(rec: TreatmentRecord): Promise<ShareResult> {
   const text = buildShareText(rec);
-  const title = `KEMA施術記録 - ${rec.menu}`;
+  const title = `KEMA my Recipi｜${rec.menu}`;
 
   const nav = navigator as Navigator & {
     canShare?: (data?: ShareData) => boolean;

@@ -24,7 +24,7 @@ export default function App() {
           )}
           <button className="brand" onClick={() => navigate("#/")}>
             <img src="./icon.svg" alt="" className="brand__icon" />
-            <span className="brand__name">KEMA Chart</span>
+            <span className="brand__name">KEMA my Recipi</span>
           </button>
           {route.name === "list" ? (
             <DataMenu records={records} onImport={replaceAll} />

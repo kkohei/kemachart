@@ -54,7 +54,7 @@ export function buildBackup(records: TreatmentRecord[]): BackupPayload {
 export function parseBackup(json: string): TreatmentRecord[] {
   const data = JSON.parse(json) as Partial<BackupPayload>;
   if (data?.app !== "kemachart" || !Array.isArray(data.records)) {
-    throw new Error("KEMA Chart のバックアップファイルではありません");
+    throw new Error("KEMA my Recipi のバックアップファイルではありません");
   }
   return (data.records as TreatmentRecord[]).map(migrate);
 }
