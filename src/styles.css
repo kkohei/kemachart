@@ -184,41 +184,6 @@ img {
   flex-direction: column;
   gap: 14px;
 }
-.land__switch {
-  position: relative;
-  z-index: 2;
-  margin-top: 18px;
-  text-align: center;
-}
-.land__switch-label {
-  display: block;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: rgba(255, 255, 255, 0.85);
-  margin-bottom: 8px;
-}
-.land__switch-btns {
-  display: flex;
-  gap: 6px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.land__switch-btn {
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.14);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 6px 12px;
-  border-radius: 999px;
-  backdrop-filter: blur(4px);
-}
-.land__switch-btn.is-active {
-  background: #fff;
-  color: var(--accent-dark);
-  border-color: #fff;
-}
-
 /* --- サロン背景 (毛束のカーブ) --- */
 .bg-salon {
   position: absolute;
@@ -239,20 +204,11 @@ img {
   50% { transform: translateX(8px); }
 }
 
-/* --- カラーリング (4種) --- */
-.land--rose {
-  background: linear-gradient(160deg, #f3ccbd 0%, #e2a488 45%, #c97e68 100%);
-}
-.land--champagne {
-  background: linear-gradient(160deg, #ecdcc0 0%, #cdb083 46%, #a9855a 100%);
-}
-.land--mauve {
-  background: linear-gradient(160deg, #e6c8d1 0%, #bd93a5 46%, #8f6076 100%);
-}
+/* --- カラーリング: ディープモカ --- */
 .land--mocha {
   background: linear-gradient(160deg, #7c584e 0%, #533a34 52%, #33221f 100%);
 }
-/* モカは深色なので毛束をやや明るく */
+/* 深色なので毛束をやや明るく */
 .land--mocha .bg-salon__strand {
   stroke: rgba(255, 240, 224, 0.32);
 }

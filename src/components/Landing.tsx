@@ -1,22 +1,11 @@
-import { useEffect, useState } from "react";
 import type { TreatmentRecord } from "../types";
 import { navigate } from "../hooks/useHashRoute";
 import { DataMenu } from "./DataMenu";
 import { BgSalon } from "./landing/Backgrounds";
 
-type ColorId = "rose" | "champagne" | "mauve" | "mocha";
-
-const COLORWAYS: { id: ColorId; label: string }[] = [
-  { id: "rose", label: "ピンクゴールド" },
-  { id: "champagne", label: "シャンパン" },
-  { id: "mauve", label: "モーヴ" },
-  { id: "mocha", label: "ディープモカ" },
-];
-
-const KEY = "kemachart.landingColor";
 const LOGO = `${import.meta.env.BASE_URL}brand/kema-logo-white.png`;
 
-/** トップ (ハブ) 画面。サロンデザイン + 4色のカラーリングを切り替えられます。 */
+/** トップ (ハブ) 画面。サロンデザイン × ディープモカ。 */
 export function Landing({
   records,
   onImport,
@@ -24,16 +13,8 @@ export function Landing({
   records: TreatmentRecord[];
   onImport: (records: TreatmentRecord[]) => void;
 }) {
-  const [color, setColor] = useState<ColorId>(() => {
-    const v = localStorage.getItem(KEY);
-    return (COLORWAYS.some((x) => x.id === v) ? v : "rose") as ColorId;
-  });
-  useEffect(() => {
-    localStorage.setItem(KEY, color);
-  }, [color]);
-
   return (
-    <div className={`land land--salon land--${color}`}>
+    <div className="land land--salon land--mocha">
       <BgSalon />
 
       <div className="land__top">
@@ -68,23 +49,6 @@ export function Landing({
           </span>
           <span className="hub-card__soon">Coming Soon</span>
         </button>
-      </div>
-
-      <div className="land__switch" role="tablist" aria-label="カラーリング">
-        <span className="land__switch-label">カラーリング</span>
-        <div className="land__switch-btns">
-          {COLORWAYS.map((c) => (
-            <button
-              key={c.id}
-              role="tab"
-              aria-selected={color === c.id}
-              className={`land__switch-btn ${color === c.id ? "is-active" : ""}`}
-              onClick={() => setColor(c.id)}
-            >
-              {c.label}
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   );
