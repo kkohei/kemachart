@@ -22,22 +22,13 @@ export function HairStrand({
     <div className="strand" style={{ width }}>
       {profile.map((lv, i) => {
         const def = damageDef(lv);
-        const isFirst = i === 0;
-        const isLast = i === profile.length - 1;
         const Tag = onPick ? "button" : "div";
         return (
           <Tag
             key={i}
             type={onPick ? "button" : undefined}
             className={`strand__seg ${active === i ? "is-active" : ""}`}
-            style={{
-              background: def.color,
-              color: def.text,
-              borderTopLeftRadius: isFirst ? width * 0.42 : 0,
-              borderTopRightRadius: isFirst ? width * 0.42 : 0,
-              borderBottomLeftRadius: isLast ? width * 0.16 : 0,
-              borderBottomRightRadius: isLast ? width * 0.16 : 0,
-            }}
+            style={{ background: def.color, color: def.text }}
             onClick={onPick ? () => onPick(i) : undefined}
             aria-label={onPick ? `${SECTIONS[i].label} (現在Lv.${lv})` : undefined}
           >

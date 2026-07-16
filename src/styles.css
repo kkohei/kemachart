@@ -238,12 +238,13 @@ img {
   padding: 2px 8px;
 }
 
-/* Hair strand diagram */
+/* Hair strand diagram (根元=太い → 毛先=細い 逆台形) */
 .strand {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(80, 60, 35, 0.14);
+  /* 上辺(根元)は全幅、下辺(毛先)は約40%幅にすぼまる台形 */
+  clip-path: polygon(0 0, 100% 0, 70% 100%, 30% 100%);
+  filter: drop-shadow(0 2px 4px rgba(80, 60, 35, 0.22));
 }
 .strand__seg {
   flex: 1;
