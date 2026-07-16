@@ -2,21 +2,21 @@ import { useEffect, useState } from "react";
 import type { TreatmentRecord } from "../types";
 import { navigate } from "../hooks/useHashRoute";
 import { DataMenu } from "./DataMenu";
-import { BgAurora, BgTechNet, BgSalon, BgFoil } from "./landing/Backgrounds";
+import { BgSalon } from "./landing/Backgrounds";
 
-type VariantId = "aurora" | "tech" | "salon" | "foil";
+type ColorId = "rose" | "champagne" | "mauve" | "mocha";
 
-const VARIANTS: { id: VariantId; label: string }[] = [
-  { id: "aurora", label: "① オーロラ" },
-  { id: "tech", label: "② テック" },
-  { id: "salon", label: "③ サロン" },
-  { id: "foil", label: "④ フォイル" },
+const COLORWAYS: { id: ColorId; label: string }[] = [
+  { id: "rose", label: "ピンクゴールド" },
+  { id: "champagne", label: "シャンパン" },
+  { id: "mauve", label: "モーヴ" },
+  { id: "mocha", label: "ディープモカ" },
 ];
 
-const KEY = "kemachart.landingVariant";
+const KEY = "kemachart.landingColor";
 const LOGO = `${import.meta.env.BASE_URL}brand/kema-logo-white.png`;
 
-/** トップ (ハブ) 画面。4つのデザイン案を切り替えて選べます。 */
+/** トップ (ハブ) 画面。サロンデザイン + 4色のカラーリングを切り替えられます。 */
 export function Landing({
   records,
   onImport,
@@ -24,20 +24,17 @@ export function Landing({
   records: TreatmentRecord[];
   onImport: (records: TreatmentRecord[]) => void;
 }) {
-  const [variant, setVariant] = useState<VariantId>(() => {
+  const [color, setColor] = useState<ColorId>(() => {
     const v = localStorage.getItem(KEY);
-    return (VARIANTS.some((x) => x.id === v) ? v : "aurora") as VariantId;
+    return (COLORWAYS.some((x) => x.id === v) ? v : "rose") as ColorId;
   });
   useEffect(() => {
-    localStorage.setItem(KEY, variant);
-  }, [variant]);
+    localStorage.setItem(KEY, color);
+  }, [color]);
 
   return (
-    <div className={`land land--${variant}`}>
-      {variant === "aurora" && <BgAurora />}
-      {variant === "tech" && <BgTechNet />}
-      {variant === "salon" && <BgSalon />}
-      {variant === "foil" && <BgFoil />}
+    <div className={`land land--salon land--${color}`}>
+      <BgSalon />
 
       <div className="land__top">
         <DataMenu records={records} onImport={onImport} variant="light" />
@@ -73,18 +70,18 @@ export function Landing({
         </button>
       </div>
 
-      <div className="land__switch" role="tablist" aria-label="デザイン案">
-        <span className="land__switch-label">デザイン案</span>
+      <div className="land__switch" role="tablist" aria-label="カラーリング">
+        <span className="land__switch-label">カラーリング</span>
         <div className="land__switch-btns">
-          {VARIANTS.map((v) => (
+          {COLORWAYS.map((c) => (
             <button
-              key={v.id}
+              key={c.id}
               role="tab"
-              aria-selected={variant === v.id}
-              className={`land__switch-btn ${variant === v.id ? "is-active" : ""}`}
-              onClick={() => setVariant(v.id)}
+              aria-selected={color === c.id}
+              className={`land__switch-btn ${color === c.id ? "is-active" : ""}`}
+              onClick={() => setColor(c.id)}
             >
-              {v.label}
+              {c.label}
             </button>
           ))}
         </div>

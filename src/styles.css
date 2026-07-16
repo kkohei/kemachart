@@ -219,73 +219,7 @@ img {
   border-color: #fff;
 }
 
-/* --- 背景 ① オーロラ --- */
-.land--aurora {
-  background: linear-gradient(160deg, #f6d0c1 0%, #e7ab92 42%, #cf8670 74%, #bf7a63 100%);
-}
-.bg-aurora {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-.bg-aurora span {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(46px);
-  opacity: 0.7;
-  mix-blend-mode: screen;
-}
-.bg-aurora span:nth-child(1) {
-  width: 60vw;
-  height: 60vw;
-  left: -12vw;
-  top: 8vh;
-  background: radial-gradient(circle, #ffe6cf, transparent 70%);
-  animation: aurora1 16s ease-in-out infinite;
-}
-.bg-aurora span:nth-child(2) {
-  width: 55vw;
-  height: 55vw;
-  right: -14vw;
-  top: 26vh;
-  background: radial-gradient(circle, #f6c1c6, transparent 70%);
-  animation: aurora2 20s ease-in-out infinite;
-}
-.bg-aurora span:nth-child(3) {
-  width: 66vw;
-  height: 66vw;
-  left: 6vw;
-  bottom: -18vh;
-  background: radial-gradient(circle, #f3d29f, transparent 70%);
-  animation: aurora3 24s ease-in-out infinite;
-}
-@keyframes aurora1 {
-  50% { transform: translate(14vw, 8vh) scale(1.15); }
-}
-@keyframes aurora2 {
-  50% { transform: translate(-12vw, 12vh) scale(1.1); }
-}
-@keyframes aurora3 {
-  50% { transform: translate(8vw, -10vh) scale(1.2); }
-}
-
-/* --- 背景 ② テック --- */
-.land--tech {
-  background: linear-gradient(165deg, #2c2020 0%, #5f382d 55%, #9a5c48 100%);
-}
-.bg-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-/* --- 背景 ③ サロン --- */
-.land--salon {
-  background: linear-gradient(160deg, #f3ccbd 0%, #e2a488 45%, #c97e68 100%);
-}
+/* --- サロン背景 (毛束のカーブ) --- */
 .bg-salon {
   position: absolute;
   inset: 0;
@@ -305,36 +239,26 @@ img {
   50% { transform: translateX(8px); }
 }
 
-/* --- 背景 ④ フォイル --- */
-.land--foil {
-  background: linear-gradient(135deg, #e9b9a6 0%, #d59a84 42%, #bd7c67 100%);
+/* --- カラーリング (4種) --- */
+.land--rose {
+  background: linear-gradient(160deg, #f3ccbd 0%, #e2a488 45%, #c97e68 100%);
 }
-.bg-foil {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
+.land--champagne {
+  background: linear-gradient(160deg, #ecdcc0 0%, #cdb083 46%, #a9855a 100%);
 }
-.bg-foil__sheen {
-  position: absolute;
-  inset: -40%;
-  background: linear-gradient(
-    115deg,
-    transparent 30%,
-    rgba(255, 240, 214, 0.55) 46%,
-    rgba(255, 226, 196, 0.2) 52%,
-    transparent 66%
-  );
-  animation: foil 7s linear infinite;
+.land--mauve {
+  background: linear-gradient(160deg, #e6c8d1 0%, #bd93a5 46%, #8f6076 100%);
 }
-@keyframes foil {
-  0% { transform: translateX(-30%); }
-  100% { transform: translateX(30%); }
+.land--mocha {
+  background: linear-gradient(160deg, #7c584e 0%, #533a34 52%, #33221f 100%);
 }
+/* モカは深色なので毛束をやや明るく */
+.land--mocha .bg-salon__strand {
+  stroke: rgba(255, 240, 224, 0.32);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .bg-aurora span,
-  .bg-salon__strand,
-  .bg-foil__sheen {
+  .bg-salon__strand {
     animation: none;
   }
 }
