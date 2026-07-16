@@ -208,46 +208,225 @@ img {
 }
 
 /* ---------- Damage ---------- */
+.card__note {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin: -6px 0 14px;
+}
+.toggle-label {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.toggle-label input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
 .damage-badge {
   display: inline-block;
-  color: #fff;
   font-size: 13px;
   font-weight: 700;
   padding: 4px 12px;
   border-radius: 999px;
   white-space: nowrap;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 .damage-badge--sm {
   font-size: 11px;
   padding: 2px 8px;
 }
-.damage-picker {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
+
+/* Hair strand diagram */
+.strand {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(80, 60, 35, 0.14);
 }
-.damage-picker__btn {
-  border: 1.5px solid var(--line);
+.strand__seg {
+  flex: 1;
+  min-height: 22px;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+button.strand__seg {
+  cursor: pointer;
+}
+.strand__seg.is-active {
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.9);
+}
+.strand__num {
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+/* Chart input */
+.chart-input {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
   background: var(--surface-2);
-  border-radius: 12px;
-  padding: 8px 2px;
+}
+.chart-input__main {
+  display: flex;
+  gap: 14px;
+  align-items: stretch;
+}
+.chart-input__strand {
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  color: var(--ink-2);
-  transition: all 0.12s;
 }
-.damage-picker__btn.is-active {
-  color: #fff;
+.chart-input__strand .strand {
+  flex: 1;
 }
-.damage-picker__num {
-  font-size: 18px;
-  font-weight: 800;
+.chart-input__ends {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.damage-picker__label {
+.chart-input__ends {
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
   font-size: 10px;
+  color: var(--ink-2);
+  margin-top: 4px;
+}
+.chart-input__rows {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.sec-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.sec-row__label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
   font-weight: 600;
+  color: var(--ink);
+}
+.sec-row__n {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.sec-row__picker {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+}
+.lvl-dot {
+  height: 34px;
+  border: 2px solid transparent;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  opacity: 0.55;
+  transition: opacity 0.12s, transform 0.06s;
+}
+.lvl-dot.is-active {
+  opacity: 1;
+  border-color: var(--ink);
+  transform: translateY(-1px);
+}
+.lvl-dot:active {
+  transform: translateY(1px);
+}
+
+/* Damage summary */
+.dmg-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.dmg-summary__code strong {
+  font-size: 15px;
+  color: var(--ink);
+  letter-spacing: 0.06em;
+}
+.dmg-summary__badge {
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+.dmg-summary__avg {
+  margin-left: auto;
+}
+
+/* Damage view (detail) */
+.dmg-view {
+  display: grid;
+  gap: 16px;
+}
+.dmg-view--pair {
+  grid-template-columns: 1fr 1fr;
+}
+.dmg-view__label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-dark);
+  margin-bottom: 8px;
+}
+.dmg-view__body {
+  display: flex;
+  gap: 12px;
+}
+.dmg-view__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dmg-view__list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.dmg-view__sec {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.dmg-view__lvl {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
 /* ---------- Recipe editor ---------- */
@@ -531,10 +710,27 @@ img {
   color: var(--ink);
   margin-top: 2px;
 }
+.record-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+}
+.record-card__code {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--accent-dark);
+  background: var(--accent-soft);
+  padding: 1px 8px;
+  border-radius: 999px;
+}
 .record-card__date {
   font-size: 12px;
   color: var(--ink-2);
-  margin-top: 2px;
+}
+.record-card__thumb .strand {
+  height: 60px;
 }
 
 /* ---------- Empty ---------- */

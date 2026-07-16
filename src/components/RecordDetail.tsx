@@ -1,9 +1,9 @@
 import { useState } from "react";
-import type { TreatmentRecord } from "../types";
-import { damageDef } from "../constants";
+import type { DamageProfile, TreatmentRecord } from "../types";
+import { SECTIONS, damageDef } from "../constants";
 import { formatJP } from "../utils/date";
 import { navigate } from "../hooks/useHashRoute";
-import { DamageBadge } from "./DamageBadge";
+import { HairStrand, DamageSummary } from "./HairDamageChart";
 import { ShareButtons } from "./ShareButtons";
 
 export function RecordDetail({
@@ -14,7 +14,6 @@ export function RecordDetail({
   onDelete: (id: string) => void;
 }) {
   const [lightbox, setLightbox] = useState<string | null>(null);
-  const before = damageDef(record.damageBefore);
 
   function handleDelete() {
     if (confirm("この記録を削除しますか？この操作は取り消せません。")) {
@@ -34,17 +33,11 @@ export function RecordDetail({
       </div>
 
       <section className="card">
-        <h2 className="card__title">ダメージレベル</h2>
-        <div className="detail__damage">
-          <DamageBadge level={record.damageBefore} />
-          {record.damageAfter && (
-            <>
-              <span className="detail__arrow">→</span>
-              <DamageBadge level={record.damageAfter} />
-            </>
-          )}
+        <h2 className="card__title">ダメージレベル (根元→毛先)</h2>
+        <div className={`dmg-view ${record.damageAfter ? "dmg-view--pair" : ""}`}>
+          <DamageProfileView label="施術前" profile={record.damageBefore} />
+          {record.damageAfter && <DamageProfileView label="施術後" profile={record.damageAfter} />}
         </div>
-        <p className="detail__damage-desc">{before.description}</p>
         {record.damageNote && <p className="detail__note">{record.damageNote}</p>}
       </section>
 
@@ -110,6 +103,34 @@ export function RecordDetail({
           </button>
         </div>
       )}
+    </div>
+  );
+}
+
+function DamageProfileView({ label, profile }: { label: string; profile: DamageProfile }) {
+  return (
+    <div className="dmg-view__col">
+      <div className="dmg-view__label">{label}</div>
+      <div className="dmg-view__body">
+        <HairStrand profile={profile} width={64} />
+        <ul className="dmg-view__list">
+          {SECTIONS.map((s) => {
+            const def = damageDef(profile[s.index]);
+            return (
+              <li key={s.index}>
+                <span className="dmg-view__sec">{s.label}</span>
+                <span
+                  className="dmg-view__lvl"
+                  style={{ background: def.color, color: def.text }}
+                >
+                  {def.short}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <DamageSummary profile={profile} />
     </div>
   );
 }

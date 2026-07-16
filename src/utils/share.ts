@@ -1,15 +1,19 @@
 import type { TreatmentRecord } from "../types";
 import { damageDef } from "../constants";
 import { formatJP } from "./date";
+import { damageCode, maxDamage } from "./damage";
 import { dataURLtoBlob } from "./image";
 
 /** 記録から共有用のテキストを生成 */
 export function buildShareText(rec: TreatmentRecord): string {
-  const before = damageDef(rec.damageBefore);
   const lines: string[] = [];
   lines.push(`【KEMA施術記録】${rec.menu}`);
   lines.push(`来店日: ${formatJP(rec.date)}`);
-  lines.push(`ダメージ: ${before.short}${rec.damageAfter ? ` → ${damageDef(rec.damageAfter).short}` : ""}`);
+  const beforeCode = `根元→毛先 ${damageCode(rec.damageBefore)} (最大${damageDef(maxDamage(rec.damageBefore)).short})`;
+  const afterCode = rec.damageAfter
+    ? ` ⇒ 施術後 ${damageCode(rec.damageAfter)}`
+    : "";
+  lines.push(`ダメージ: ${beforeCode}${afterCode}`);
   if (rec.recipe.length) {
     lines.push("レシピ:");
     for (const s of rec.recipe) {

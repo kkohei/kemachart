@@ -2,8 +2,10 @@ import { useMemo, useState } from "react";
 import type { DamageLevel, TreatmentRecord } from "../types";
 import { DAMAGE_LEVELS } from "../constants";
 import { formatJP } from "../utils/date";
+import { damageCode, maxDamage } from "../utils/damage";
 import { navigate } from "../hooks/useHashRoute";
 import { DamageBadge } from "./DamageBadge";
+import { HairStrand } from "./HairDamageChart";
 
 export function RecordList({ records }: { records: TreatmentRecord[] }) {
   const [q, setQ] = useState("");
@@ -12,7 +14,7 @@ export function RecordList({ records }: { records: TreatmentRecord[] }) {
   const filtered = useMemo(() => {
     const kw = q.trim().toLowerCase();
     return records.filter((r) => {
-      if (filter !== "all" && r.damageBefore !== filter) return false;
+      if (filter !== "all" && maxDamage(r.damageBefore) !== filter) return false;
       if (!kw) return true;
       return (
         r.customerName.toLowerCase().includes(kw) ||
@@ -78,18 +80,19 @@ export function RecordList({ records }: { records: TreatmentRecord[] }) {
                   {r.beforePhotos[0] ? (
                     <img src={r.beforePhotos[0]} alt="" />
                   ) : (
-                    <span className="record-card__noimg">No Photo</span>
+                    <HairStrand profile={r.damageBefore} width={40} showNumbers={false} />
                   )}
                 </div>
                 <div className="record-card__body">
                   <div className="record-card__row">
                     <span className="record-card__menu">{r.menu}</span>
-                    <DamageBadge level={r.damageBefore} size="sm" />
+                    <DamageBadge level={maxDamage(r.damageBefore)} size="sm" />
                   </div>
-                  <div className="record-card__name">
-                    {r.customerName || "お客様"}
+                  <div className="record-card__name">{r.customerName || "お客様"}</div>
+                  <div className="record-card__meta">
+                    <span className="record-card__code">{damageCode(r.damageBefore)}</span>
+                    <span className="record-card__date">{formatJP(r.date)}</span>
                   </div>
-                  <div className="record-card__date">{formatJP(r.date)}</div>
                 </div>
               </button>
             </li>

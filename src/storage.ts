@@ -1,6 +1,16 @@
 import type { BackupPayload, TreatmentRecord } from "./types";
+import { normalizeProfile } from "./utils/damage";
 
 const KEY = "kemachart.records.v1";
+
+/** 旧形式 (単一レベル) を含む記録を現行のプロファイル形式へ正規化 */
+function migrate(rec: TreatmentRecord): TreatmentRecord {
+  return {
+    ...rec,
+    damageBefore: normalizeProfile(rec.damageBefore),
+    damageAfter: rec.damageAfter == null ? undefined : normalizeProfile(rec.damageAfter),
+  };
+}
 
 /** localStorage から全記録を読み込み (新しい順) */
 export function loadRecords(): TreatmentRecord[] {
@@ -9,7 +19,7 @@ export function loadRecords(): TreatmentRecord[] {
     if (!raw) return [];
     const data = JSON.parse(raw) as TreatmentRecord[];
     if (!Array.isArray(data)) return [];
-    return data.sort(sortByDateDesc);
+    return data.map(migrate).sort(sortByDateDesc);
   } catch {
     return [];
   }
@@ -29,7 +39,7 @@ function sortByDateDesc(a: TreatmentRecord, b: TreatmentRecord): number {
 export function buildBackup(records: TreatmentRecord[]): BackupPayload {
   return {
     app: "kemachart",
-    version: 1,
+    version: 2,
     exportedAt: Date.now(),
     records,
   };
@@ -41,5 +51,5 @@ export function parseBackup(json: string): TreatmentRecord[] {
   if (data?.app !== "kemachart" || !Array.isArray(data.records)) {
     throw new Error("KEMA Chart のバックアップファイルではありません");
   }
-  return data.records as TreatmentRecord[];
+  return (data.records as TreatmentRecord[]).map(migrate);
 }

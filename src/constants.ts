@@ -1,56 +1,89 @@
 import type { DamageLevel } from "./types";
 
-/** ダメージレベルの定義 (美容師が来店時に測定・記録するための目安) */
+/**
+ * ダメージレベルの定義 (KEMAダメージチャートに準拠)。
+ * 色はチャートと同じく「健康毛=暗色 → ダメージ毛=淡色」のグラデーション。
+ */
 export interface DamageLevelDef {
   level: DamageLevel;
   label: string;
   short: string;
+  /** 状態の目安 */
   description: string;
-  /** バッジ表示色 */
+  /** 想定される施術履歴 */
+  history: string;
+  /** ダイアグラム/バッジの塗り色 */
   color: string;
+  /** 上に載せる文字色 */
+  text: string;
 }
 
 export const DAMAGE_LEVELS: DamageLevelDef[] = [
   {
     level: 1,
-    label: "Lv.1 健康毛",
-    short: "健康毛",
-    description: "ダメージほぼなし。ハリ・コシ・ツヤがあり、手触りがなめらか。",
-    color: "#4c9a76",
+    label: "Damage Lv.1",
+    short: "Lv.1",
+    description: "ブラッシングがよくできて、やや乾燥した毛髪。",
+    history: "カラーリング及び一般パーマ 各0〜2回",
+    color: "#2d2823",
+    text: "#ffffff",
   },
   {
     level: 2,
-    label: "Lv.2 軽度",
-    short: "軽度",
-    description: "毛先に軽い引っかかり。カラー・パーマ1回程度の履歴。",
-    color: "#7bb662",
+    label: "Damage Lv.2",
+    short: "Lv.2",
+    description: "髪をとかす時、ちょぼちょぼとひっかかる。",
+    history: "カラーリング+一般パーマ1〜2回、または熱パーマ1回",
+    color: "#4f3626",
+    text: "#ffffff",
   },
   {
     level: 3,
-    label: "Lv.3 中度",
-    short: "中度",
-    description: "中間〜毛先が乾燥・ザラつき。カラー/ブリーチや繰り返しの履歴あり。",
-    color: "#e0a63c",
+    label: "Damage Lv.3",
+    short: "Lv.3",
+    description: "ブラッシングの際、髪がもつれやすい。",
+    history: "カラーリング+一般パーマ3回",
+    color: "#9a7649",
+    text: "#ffffff",
   },
   {
     level: 4,
-    label: "Lv.4 重度",
-    short: "重度",
-    description: "全体的に多孔質でパサつき。ブリーチ複数回、絡まりやすい。",
-    color: "#dd7f3e",
+    label: "Damage Lv.4",
+    short: "Lv.4",
+    description: "ブラッシング時に切れやすい／シャンプー中に切れやすい髪質。",
+    history: "ブリーチ1回、またはカラーリング+パーマ3回",
+    color: "#ddce93",
+    text: "#4a4020",
   },
   {
     level: 5,
-    label: "Lv.5 極度",
-    short: "極度",
-    description: "ハイダメージ。濡らすと伸びる/切れる、ビビり毛の兆候あり。",
-    color: "#cf5757",
+    label: "Damage Lv.5",
+    short: "Lv.5",
+    description: "ブラッシング時・シャンプー中に切れやすい、ハイダメージの髪質。",
+    history: "ブリーチ2回以上、またはブリーチ1回+軟化パーマ1回",
+    color: "#e6e1d4",
+    text: "#5a5445",
   },
 ];
 
 export function damageDef(level: DamageLevel): DamageLevelDef {
   return DAMAGE_LEVELS.find((d) => d.level === level) ?? DAMAGE_LEVELS[0];
 }
+
+/** 頭部セクションの定義 (根元→毛先の5段階) */
+export interface SectionDef {
+  index: number;
+  label: string;
+  short: string;
+}
+
+export const SECTIONS: SectionDef[] = [
+  { index: 0, label: "根元", short: "根元" },
+  { index: 1, label: "根元〜中間", short: "上部" },
+  { index: 2, label: "中間", short: "中間" },
+  { index: 3, label: "中間〜毛先", short: "下部" },
+  { index: 4, label: "毛先", short: "毛先" },
+];
 
 /** メニュー候補 (自由入力も可) */
 export const MENU_PRESETS: string[] = [

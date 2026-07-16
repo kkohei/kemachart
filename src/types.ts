@@ -1,7 +1,16 @@
 // KEMA施術記録のデータモデル
 
-/** ダメージレベル (1: 健康毛 〜 5: 極度のダメージ) */
+/** ダメージレベル (1: 最も健康 〜 5: 最もダメージ) */
 export type DamageLevel = 1 | 2 | 3 | 4 | 5;
+
+/**
+ * ダメージプロファイル。
+ * 頭部を根元(先頭)から毛先(末尾)まで5セクションに分け、
+ * 各セクションのダメージレベルを記録します。
+ * 5セクション × 5段階 = 5の5乗 (3125) 通りにお客様を分類できます。
+ * 例: [1, 2, 3, 4, 5] = 根元は健康、毛先ほどダメージ
+ */
+export type DamageProfile = [DamageLevel, DamageLevel, DamageLevel, DamageLevel, DamageLevel];
 
 /** レシピの1工程 (使用薬剤や塗布など) */
 export interface RecipeStep {
@@ -25,10 +34,10 @@ export interface TreatmentRecord {
   customerName: string;
   /** 施術メニュー 例: KEMAトリートメント / KEMAカラー */
   menu: string;
-  /** 来店時 (施術前) のダメージレベル */
-  damageBefore: DamageLevel;
-  /** 施術後のダメージレベル (任意) */
-  damageAfter?: DamageLevel;
+  /** 来店時 (施術前) のダメージプロファイル (根元→毛先の5セクション) */
+  damageBefore: DamageProfile;
+  /** 施術後のダメージプロファイル (任意) */
+  damageAfter?: DamageProfile;
   /** ダメージ測定の所見メモ */
   damageNote?: string;
   /** レシピ工程 */
@@ -47,7 +56,7 @@ export interface TreatmentRecord {
 /** エクスポート/インポート用のバックアップ形式 */
 export interface BackupPayload {
   app: "kemachart";
-  version: 1;
+  version: 2;
   exportedAt: number;
   records: TreatmentRecord[];
 }

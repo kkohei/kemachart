@@ -1,10 +1,11 @@
 import { useState } from "react";
-import type { DamageLevel, RecipeStep, TreatmentRecord } from "../types";
+import type { DamageProfile, RecipeStep, TreatmentRecord } from "../types";
 import { MENU_PRESETS } from "../constants";
 import { todayISO } from "../utils/date";
 import { uid } from "../utils/id";
+import { defaultProfile, uniformProfile } from "../utils/damage";
 import { navigate } from "../hooks/useHashRoute";
-import { DamagePicker } from "./DamageBadge";
+import { DamageChartInput } from "./HairDamageChart";
 import { PhotoInput } from "./PhotoInput";
 import { RecipeEditor } from "./RecipeEditor";
 
@@ -18,8 +19,13 @@ export function RecordForm({ initial, onSave }: Props) {
   const [date, setDate] = useState(initial?.date ?? todayISO());
   const [customerName, setCustomerName] = useState(initial?.customerName ?? "");
   const [menu, setMenu] = useState(initial?.menu ?? MENU_PRESETS[0]);
-  const [damageBefore, setDamageBefore] = useState<DamageLevel>(initial?.damageBefore ?? 3);
-  const [damageAfter, setDamageAfter] = useState<DamageLevel | undefined>(initial?.damageAfter);
+  const [damageBefore, setDamageBefore] = useState<DamageProfile>(
+    initial?.damageBefore ?? defaultProfile(),
+  );
+  const [afterEnabled, setAfterEnabled] = useState<boolean>(!!initial?.damageAfter);
+  const [damageAfter, setDamageAfter] = useState<DamageProfile>(
+    initial?.damageAfter ?? uniformProfile(1),
+  );
   const [damageNote, setDamageNote] = useState(initial?.damageNote ?? "");
   const [recipe, setRecipe] = useState<RecipeStep[]>(initial?.recipe ?? []);
   const [beforePhotos, setBeforePhotos] = useState<string[]>(initial?.beforePhotos ?? []);
@@ -35,7 +41,7 @@ export function RecordForm({ initial, onSave }: Props) {
       customerName: customerName.trim(),
       menu: menu.trim() || "KEMA施術",
       damageBefore,
-      damageAfter,
+      damageAfter: afterEnabled ? damageAfter : undefined,
       damageNote: damageNote.trim() || undefined,
       recipe: recipe
         .filter((s) => s.name.trim() || s.product.trim())
@@ -99,15 +105,23 @@ export function RecordForm({ initial, onSave }: Props) {
 
       <section className="card">
         <h2 className="card__title">ダメージレベル測定</h2>
+        <p className="card__note">
+          根元から毛先まで5セクションに分け、各セクションを Lv.1〜5 で測定します。
+        </p>
         <div className="field">
           <label className="field__label">来店時 (施術前)</label>
-          <DamagePicker value={damageBefore} onChange={(v) => v && setDamageBefore(v)} />
+          <DamageChartInput profile={damageBefore} onChange={setDamageBefore} />
         </div>
         <div className="field">
-          <label className="field__label">
-            施術後 <span className="field__hint">(任意)</span>
+          <label className="field__label toggle-label">
+            <input
+              type="checkbox"
+              checked={afterEnabled}
+              onChange={(e) => setAfterEnabled(e.target.checked)}
+            />
+            施術後も記録する
           </label>
-          <DamagePicker value={damageAfter} onChange={setDamageAfter} allowClear />
+          {afterEnabled && <DamageChartInput profile={damageAfter} onChange={setDamageAfter} />}
         </div>
         <div className="field">
           <label className="field__label" htmlFor="f-dnote">
