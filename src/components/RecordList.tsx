@@ -5,7 +5,6 @@ import { maxDamage } from "../utils/damage";
 import { navigate } from "../hooks/useHashRoute";
 import { CustomerList } from "./CustomerList";
 import { RecordCard } from "./RecordCard";
-import { Hero } from "./Hero";
 
 type Mode = "records" | "customers";
 
@@ -30,25 +29,21 @@ export function RecordList({ records }: { records: TreatmentRecord[] }) {
 
   if (records.length === 0) {
     return (
-      <div className="list">
-        <Hero />
-        <div className="empty">
-          <div className="empty__icon">✂️</div>
-          <h2 className="empty__title">まだ記録がありません</h2>
-          <p className="empty__text">
-            最初のKEMA施術を記録しましょう。ダメージレベル・レシピ・ビフォーアフター写真をまとめて残せます。
-          </p>
-          <button className="btn btn--primary" onClick={() => navigate("#/new")}>
-            ＋ 施術を記録する
-          </button>
-        </div>
+      <div className="empty">
+        <div className="empty__icon">✂️</div>
+        <h2 className="empty__title">まだ記録がありません</h2>
+        <p className="empty__text">
+          最初のKEMA施術を記録しましょう。ダメージレベル・レシピ・ビフォーアフター写真をまとめて残せます。
+        </p>
+        <button className="btn btn--primary" onClick={() => navigate("#/new")}>
+          ＋ 施術を記録する
+        </button>
       </div>
     );
   }
 
   return (
     <div className="list">
-      <Hero />
       <div className="segmented">
         <button
           className={`segmented__btn ${mode === "records" ? "is-active" : ""}`}

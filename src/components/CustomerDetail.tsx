@@ -20,7 +20,7 @@ export function CustomerDetail({
     return (
       <div className="empty">
         <h2 className="empty__title">記録が見つかりません</h2>
-        <button className="btn btn--primary" onClick={() => navigate("#/")}>
+        <button className="btn btn--primary" onClick={() => navigate("#/records")}>
           一覧へ戻る
         </button>
       </div>

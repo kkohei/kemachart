@@ -1,46 +1,42 @@
 import { useRecords } from "./hooks/useRecords";
 import { navigate, useHashRoute } from "./hooks/useHashRoute";
+import { Landing } from "./components/Landing";
 import { RecordList } from "./components/RecordList";
 import { RecordForm } from "./components/RecordForm";
 import { RecordDetail } from "./components/RecordDetail";
 import { CustomerDetail } from "./components/CustomerDetail";
-import { DataMenu } from "./components/DataMenu";
 
 export default function App() {
   const { records, upsert, remove, getById, replaceAll } = useRecords();
   const route = useHashRoute();
 
-  const back = route.name !== "list";
+  // トップ (ハブ) は全面グラデのため、共通トップバー/コンテンツ枠の外で描画
+  if (route.name === "home") {
+    return <Landing records={records} onImport={replaceAll} />;
+  }
 
   return (
     <div className="app">
       <header className="topbar">
         <div className="topbar__inner">
-          {back ? (
-            <button className="iconbtn" aria-label="戻る" onClick={() => history.back()}>
-              ‹
-            </button>
-          ) : (
-            <span className="iconbtn iconbtn--ghost" aria-hidden="true" />
-          )}
-          {route.name === "list" ? (
-            <span aria-hidden="true" />
-          ) : (
-            <button className="brand" onClick={() => navigate("#/")}>
-              <img src="./icon.svg" alt="" className="brand__icon" />
-              <span className="brand__name">KEMA my Recipi</span>
-            </button>
-          )}
-          {route.name === "list" ? (
-            <DataMenu records={records} onImport={replaceAll} />
-          ) : (
-            <span className="iconbtn iconbtn--ghost" aria-hidden="true" />
-          )}
+          <button className="iconbtn" aria-label="戻る" onClick={() => history.back()}>
+            ‹
+          </button>
+          <button className="brand" onClick={() => navigate("#/")}>
+            <img src="./icon.svg" alt="" className="brand__icon" />
+            <span className="brand__name">KEMA my Recipi</span>
+          </button>
+          <span className="iconbtn iconbtn--ghost" aria-hidden="true" />
         </div>
       </header>
 
       <main className="content">
-        {route.name === "list" && <RecordList records={records} />}
+        {route.name === "records" && (
+          <>
+            <PageTitle>施術記録</PageTitle>
+            <RecordList records={records} />
+          </>
+        )}
 
         {route.name === "new" && (
           <>
@@ -71,7 +67,7 @@ export default function App() {
         {route.name === "customer" && <CustomerDetail name={route.customer} records={records} />}
       </main>
 
-      {route.name === "list" && records.length > 0 && (
+      {route.name === "records" && records.length > 0 && (
         <button className="fab" onClick={() => navigate("#/new")} aria-label="施術を記録する">
           ＋
         </button>
@@ -88,7 +84,7 @@ function NotFound() {
   return (
     <div className="empty">
       <h2 className="empty__title">記録が見つかりません</h2>
-      <button className="btn btn--primary" onClick={() => navigate("#/")}>
+      <button className="btn btn--primary" onClick={() => navigate("#/records")}>
         一覧へ戻る
       </button>
     </div>

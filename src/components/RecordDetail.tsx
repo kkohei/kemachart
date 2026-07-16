@@ -19,7 +19,7 @@ export function RecordDetail({
   function handleDelete() {
     if (confirm("この記録を削除しますか？この操作は取り消せません。")) {
       onDelete(record.id);
-      navigate("#/");
+      navigate("#/records");
     }
   }
 

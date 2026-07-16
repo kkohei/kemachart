@@ -9,9 +9,11 @@ import { buildBackup, parseBackup } from "../storage";
 export function DataMenu({
   records,
   onImport,
+  variant = "default",
 }: {
   records: TreatmentRecord[];
   onImport: (records: TreatmentRecord[]) => void;
+  variant?: "default" | "light";
 }) {
   const [open, setOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -54,7 +56,7 @@ export function DataMenu({
   return (
     <div className="datamenu">
       <button
-        className="iconbtn"
+        className={`iconbtn ${variant === "light" ? "iconbtn--light" : ""}`}
         aria-label="データメニュー"
         onClick={() => setOpen((v) => !v)}
       >

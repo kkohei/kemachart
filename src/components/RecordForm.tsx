@@ -242,7 +242,7 @@ export function RecordForm({ initial, onSave }: Props) {
         <button
           type="button"
           className="btn btn--ghost"
-          onClick={() => navigate(isEdit && initial ? `#/record/${initial.id}` : "#/")}
+          onClick={() => navigate(isEdit && initial ? `#/record/${initial.id}` : "#/records")}
         >
           キャンセル
         </button>
