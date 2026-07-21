@@ -5,7 +5,9 @@ import { todayISO } from "../utils/date";
 import { uid } from "../utils/id";
 import { defaultProfile, uniformProfile } from "../utils/damage";
 import { navigate } from "../hooks/useHashRoute";
+import type { KemaMenuDef } from "../data/kemaMenus";
 import { DamageChartInput } from "./HairDamageChart";
+import { MenuRecommend } from "./MenuRecommend";
 import { PhotoInput } from "./PhotoInput";
 import { RecipeEditor } from "./RecipeEditor";
 
@@ -46,6 +48,24 @@ export function RecordForm({ initial, onSave }: Props) {
   const [beforePhotos, setBeforePhotos] = useState<string[]>(initial?.beforePhotos ?? []);
   const [afterPhotos, setAfterPhotos] = useState<string[]>(initial?.afterPhotos ?? []);
   const [memo, setMemo] = useState(initial?.memo ?? "");
+
+  /** 提案メニューのレシピテンプレートをフォームに反映 */
+  function applyKemaMenu(def: KemaMenuDef) {
+    const hasContent = recipe.some((s) => s.name.trim() || s.product.trim());
+    if (hasContent && !confirm(`レシピを「${def.name}」の標準手順で置き換えますか？`)) {
+      return;
+    }
+    setMenu(def.name);
+    setRecipe(
+      def.steps.map((s) => ({
+        id: uid(),
+        name: s.name,
+        product: s.product,
+        minutes: s.minutes,
+        note: s.note,
+      })),
+    );
+  }
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -209,6 +229,11 @@ export function RecordForm({ initial, onSave }: Props) {
             onChange={(e) => setDamageNote(e.target.value)}
           />
         </div>
+      </section>
+
+      <section className="card">
+        <h2 className="card__title">おすすめメニュー提案</h2>
+        <MenuRecommend profile={damageBefore} onApply={applyKemaMenu} />
       </section>
 
       <section className="card">

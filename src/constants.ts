@@ -108,8 +108,11 @@ export function areaDef(key: HeadAreaKey): HeadAreaDef {
   return ALL_AREAS.find((a) => a.key === key) ?? AREA_BACK;
 }
 
-/** メニュー候補 (自由入力も可) */
+/** メニュー候補 (自由入力も可)。先頭3つは湿熱システムマニュアルの標準メニュー */
 export const MENU_PRESETS: string[] = [
+  "KEMAブリーチ",
+  "KEMAクリニック",
+  "KEMA根元ボリューム",
   "KEMAトリートメント",
   "KEMAカラー",
   "KEMAストレート",

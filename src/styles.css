@@ -936,6 +936,153 @@ button.strand__seg {
   font-size: 20px;
 }
 
+/* ---------- Menu recommendation ---------- */
+.reco__lead {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin: 0 0 12px;
+}
+.reco-item {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-2);
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.reco-item__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 12px 14px;
+  text-align: left;
+}
+.reco-item__name {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.reco-item__badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.reco-item__chev {
+  color: var(--ink-2);
+  font-size: 12px;
+}
+.reco-item__body {
+  padding: 0 14px 14px;
+}
+.reco-item__desc {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin: 0 0 8px;
+}
+.reco-item__reasons {
+  margin: 0 0 10px;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--ink);
+}
+.reco-item__reasons li {
+  margin-bottom: 2px;
+}
+.reco-item__apply {
+  width: 100%;
+  font-size: 14px;
+  padding: 10px 16px;
+}
+.reco-item__apply:disabled {
+  background: var(--line);
+  color: var(--ink-2);
+}
+.reco__guide {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  border: none;
+  background: none;
+  color: var(--accent-dark);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px;
+}
+
+/* ---------- Guide ---------- */
+.guide__intro {
+  font-size: 14px;
+  color: var(--ink-2);
+  margin: 0 2px 16px;
+}
+.guide__concept {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+}
+.guide__concept li {
+  margin-bottom: 8px;
+}
+.guide__en {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-2);
+  letter-spacing: 0.08em;
+}
+.guide__desc {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin: 0 0 12px;
+}
+.guide__cautions {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: #fdf6ec;
+  border: 1px solid #f0e0c4;
+  border-radius: 10px;
+}
+.guide__cautions p {
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: #8a6a2f;
+}
+.guide__cautions p:last-child {
+  margin-bottom: 0;
+}
+.guide__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.guide__table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.guide__table tr:last-child td {
+  border-bottom: none;
+}
+.guide__table-tool {
+  font-weight: 700;
+  white-space: nowrap;
+}
+.guide__table-temp {
+  color: var(--accent-dark);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.guide__source {
+  font-size: 11px;
+  color: var(--ink-2);
+  margin: 4px 2px 0;
+}
+
 /* ---------- Karte export ---------- */
 .karte-export__btns {
   display: flex;

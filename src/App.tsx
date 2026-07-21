@@ -5,6 +5,7 @@ import { RecordList } from "./components/RecordList";
 import { RecordForm } from "./components/RecordForm";
 import { RecordDetail } from "./components/RecordDetail";
 import { CustomerDetail } from "./components/CustomerDetail";
+import { GuideView } from "./components/GuideView";
 
 export default function App() {
   const { records, upsert, remove, getById, replaceAll } = useRecords();
@@ -69,6 +70,13 @@ export default function App() {
           })()}
 
         {route.name === "customer" && <CustomerDetail name={route.customer} records={records} />}
+
+        {route.name === "guide" && (
+          <>
+            <PageTitle>KEMAメニューガイド</PageTitle>
+            <GuideView />
+          </>
+        )}
       </main>
 
       {route.name === "records" && records.length > 0 && (
