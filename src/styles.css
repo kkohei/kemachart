@@ -946,6 +946,72 @@ button.strand__seg {
   font-size: 20px;
 }
 
+/* ---------- Menu picker ---------- */
+.menu-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.menu-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid var(--line);
+  background: var(--surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.menu-chip.is-active {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.menu-chip__label {
+  border: none;
+  background: none;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 14px;
+}
+.menu-chip.is-active .menu-chip__label {
+  color: #fff;
+}
+.menu-chip__del {
+  border: none;
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1;
+  width: 26px;
+  align-self: stretch;
+}
+.menu-chip.is-active .menu-chip__del {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+.menu-chip--add {
+  border-style: dashed;
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 9px 14px;
+}
+.menu-add {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.menu-add .input {
+  flex: 1;
+}
+.menu-add__ok,
+.menu-add__cancel {
+  flex: 0 0 auto;
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
 /* ---------- Menu recommendation ---------- */
 .reco__lead {
   font-size: 13px;

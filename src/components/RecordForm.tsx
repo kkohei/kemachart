@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { AreaMeasurement, DamageProfile, HeadAreaKey, RecipeStep, TreatmentRecord } from "../types";
 import { EXTRA_AREAS, MENU_PRESETS, areaDef } from "../constants";
+import { MenuPicker } from "./MenuPicker";
 import { todayISO } from "../utils/date";
 import { uid } from "../utils/id";
 import { defaultProfile, uniformProfile } from "../utils/damage";
@@ -127,21 +128,8 @@ export function RecordForm({ initial, onSave }: Props) {
           />
         </div>
         <div className="field">
-          <label className="field__label" htmlFor="f-menu">
-            メニュー
-          </label>
-          <input
-            id="f-menu"
-            className="input"
-            list="menu-presets"
-            value={menu}
-            onChange={(e) => setMenu(e.target.value)}
-          />
-          <datalist id="menu-presets">
-            {MENU_PRESETS.map((m) => (
-              <option value={m} key={m} />
-            ))}
-          </datalist>
+          <label className="field__label">メニュー</label>
+          <MenuPicker value={menu} onChange={setMenu} />
         </div>
       </section>
 
