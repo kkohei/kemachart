@@ -7,8 +7,9 @@ const config: CapacitorConfig = {
   // vite の出力先。`npm run build` で dist/ が生成されます。
   webDir: "dist",
   ios: {
-    // ノッチ/ホームインジケータの安全領域はCSSの env(safe-area-inset) で対応済み
-    contentInset: "always",
+    // WebViewを画面全体に広げる (真の全画面)。ノッチ/ホームインジケータの
+    // 安全領域は CSS の env(safe-area-inset) 側でパディングとして確保する。
+    contentInset: "never",
   },
 };
 

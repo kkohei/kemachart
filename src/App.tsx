@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { useRecords } from "./hooks/useRecords";
 import { navigate, useHashRoute } from "./hooks/useHashRoute";
+import { setStatusBarForBackground } from "./native";
 import { Landing } from "./components/Landing";
 import { RecordList } from "./components/RecordList";
 import { RecordForm } from "./components/RecordForm";
@@ -11,8 +13,16 @@ export default function App() {
   const { records, upsert, remove, getById, replaceAll } = useRecords();
   const route = useHashRoute();
 
+  const isLanding = route.name === "home";
+
+  // 背景の明暗に合わせて、ステータスバー文字色と端の背景色を切り替える
+  useEffect(() => {
+    document.documentElement.classList.toggle("theme--dark", isLanding);
+    void setStatusBarForBackground(isLanding ? "dark" : "light");
+  }, [isLanding]);
+
   // トップ (ハブ) は全面グラデのため、共通トップバー/コンテンツ枠の外で描画
-  if (route.name === "home") {
+  if (isLanding) {
     return <Landing records={records} onImport={replaceAll} />;
   }
 

@@ -11,12 +11,25 @@ export async function initNative(): Promise<void> {
   document.documentElement.classList.add("is-native", `platform-${Capacitor.getPlatform()}`);
 
   try {
-    const { StatusBar, Style } = await import("@capacitor/status-bar");
-    // 明るい背景に合わせて、ステータスバーの文字を暗色に
-    await StatusBar.setStyle({ style: Style.Light });
-    // iOSではWebViewがステータスバー下に潜り込まないようにする
-    await StatusBar.setOverlaysWebView({ overlay: false });
+    const { StatusBar } = await import("@capacitor/status-bar");
+    // WebViewをステータスバー下まで広げて全画面表示にする
+    await StatusBar.setOverlaysWebView({ overlay: true });
   } catch {
     // StatusBarが使えない環境では無視
+  }
+}
+
+/**
+ * ステータスバーの文字色を背景の明暗に合わせて切り替えます。
+ *  - dark = 暗い背景 → 白い文字
+ *  - light = 明るい背景 → 黒い文字
+ */
+export async function setStatusBarForBackground(mode: "dark" | "light"): Promise<void> {
+  if (!Capacitor.isNativePlatform()) return;
+  try {
+    const { StatusBar, Style } = await import("@capacitor/status-bar");
+    await StatusBar.setStyle({ style: mode === "dark" ? Style.Dark : Style.Light });
+  } catch {
+    // 無視
   }
 }

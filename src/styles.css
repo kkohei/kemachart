@@ -25,6 +25,10 @@ body {
   margin: 0;
   padding: 0;
 }
+html {
+  /* オーバースクロール(バウンス)時に端に見える色。内部画面=ベージュ基調 */
+  background: var(--bg);
+}
 
 body {
   background: var(--bg);
@@ -34,6 +38,12 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
+}
+
+/* トップ (ハブ) 表示中は、端まで背景をモカに (上下の余白も同色に) */
+html.theme--dark,
+html.theme--dark body {
+  background: #33221f;
 }
 
 button {
