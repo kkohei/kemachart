@@ -946,56 +946,33 @@ button.strand__seg {
   font-size: 20px;
 }
 
-/* ---------- Menu picker ---------- */
-.menu-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+/* ---------- Menu picker (プルダウン) ---------- */
+.select-wrap {
+  position: relative;
 }
-.menu-chip {
-  display: inline-flex;
-  align-items: center;
-  border: 1.5px solid var(--line);
-  background: var(--surface-2);
-  border-radius: 999px;
-  overflow: hidden;
+.select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 40px;
+  cursor: pointer;
 }
-.menu-chip.is-active {
-  border-color: var(--accent);
-  background: var(--accent);
+.select-wrap__chev {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--accent);
+  font-size: 14px;
 }
-.menu-chip__label {
+.menu-picker__del {
+  margin-top: 8px;
   border: none;
   background: none;
-  color: var(--ink);
-  font-size: 14px;
+  color: var(--danger);
+  font-size: 12px;
   font-weight: 600;
-  padding: 9px 14px;
-}
-.menu-chip.is-active .menu-chip__label {
-  color: #fff;
-}
-.menu-chip__del {
-  border: none;
-  background: rgba(0, 0, 0, 0.06);
-  color: var(--ink-2);
-  font-size: 15px;
-  line-height: 1;
-  width: 26px;
-  align-self: stretch;
-}
-.menu-chip.is-active .menu-chip__del {
-  background: rgba(255, 255, 255, 0.22);
-  color: #fff;
-}
-.menu-chip--add {
-  border-style: dashed;
-  border-color: var(--accent);
-  background: var(--accent-soft);
-  color: var(--accent-dark);
-  font-size: 14px;
-  font-weight: 700;
-  padding: 9px 14px;
+  padding: 4px 2px;
 }
 .menu-add {
   display: flex;
