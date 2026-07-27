@@ -142,19 +142,35 @@ export function groupRecipe(
   })).filter((g) => g.steps.length > 0);
 }
 
-/** レシピ工程名の候補 (プルダウン用) */
-export const STEP_NAME_PRESETS: string[] = [
-  "前処理",
-  "1剤",
-  "2剤",
-  "塗布",
-  "中間処理",
-  "中間水洗",
-  "水分チャージ",
-  "トリートメント",
-  "すすぎ",
-  "乾燥",
-  "スタイリング",
-  "仕上げ",
-  "後処理",
-];
+/** レシピ工程名の候補 (パート別・プルダウン用) */
+export const STEP_PRESETS_BY_PART: Record<RecipePart, string[]> = {
+  clinic: [
+    "プレシャンプー",
+    "サブシャンプー",
+    "サブベース",
+    "EQ塗布",
+    "ANTA塗布",
+    "ANTA3塗布",
+  ],
+  design: [
+    "EZ100塗布",
+    "AR50塗布",
+    "AFREE塗布",
+    "カラー剤塗布",
+    "2剤塗布",
+    "EQ塗布",
+    "DBSTスライド",
+    "STCをトゥム＋スライド",
+  ],
+  care: [
+    "ケマチン塗布",
+    "クレマトリートメントブラック塗布",
+    "ボンドバーム塗布",
+    "DBSTで仕上げ",
+  ],
+};
+
+/** 全パートの候補をまとめたリスト (判定用) */
+export const STEP_NAME_PRESETS: string[] = Array.from(
+  new Set(Object.values(STEP_PRESETS_BY_PART).flat()),
+);

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { RecipePart, RecipeStep } from "../types";
-import { RECIPE_PARTS, STEP_NAME_PRESETS, recipePartOf } from "../constants";
+import { RECIPE_PARTS, STEP_PRESETS_BY_PART, recipePartOf } from "../constants";
 import { uid } from "../utils/id";
 
 const CUSTOM = "__custom__";
@@ -58,7 +58,8 @@ export function RecipeEditor({
 
             {group.map((s, i) => {
               const custom = customIds.has(s.id);
-              const isPreset = STEP_NAME_PRESETS.includes(s.name);
+              const presets = STEP_PRESETS_BY_PART[part.key];
+              const isPreset = presets.includes(s.name);
               return (
                 <div className="recipe-step" key={s.id}>
                   <div className="recipe-step__top">
@@ -91,7 +92,7 @@ export function RecipeEditor({
                         }}
                       >
                         <option value="">工程名を選択</option>
-                        {STEP_NAME_PRESETS.map((n) => (
+                        {presets.map((n) => (
                           <option value={n} key={n}>
                             {n}
                           </option>
