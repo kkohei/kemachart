@@ -62,9 +62,9 @@ export function RecordForm({ initial, onSave }: Props) {
       def.steps.map((s) => ({
         id: uid(),
         name: s.name,
-        product: s.product,
+        // メモ欄に薬剤・手順＋温度メモをまとめて入れる
+        product: s.note ? `${s.product}\n${s.note}` : s.product,
         minutes: s.minutes,
-        note: s.note,
       })),
     );
   }
