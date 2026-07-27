@@ -25,6 +25,12 @@ export interface AreaMeasurement {
 /** レシピの大枠パート */
 export type RecipePart = "clinic" | "design" | "care";
 
+/** 薬剤の配合 (1種類ぶん)。比率は% */
+export interface MixItem {
+  chem: string;
+  percent: number;
+}
+
 /** レシピの1工程 (使用薬剤や塗布など) */
 export interface RecipeStep {
   id: string;
@@ -32,6 +38,8 @@ export interface RecipeStep {
   part?: RecipePart;
   /** 工程名 例: 前処理 / 1剤 / 2剤 / トリートメント */
   name: string;
+  /** 薬剤の配合 (ダメージレベル別の薬剤塗布などで使用)。比率は% */
+  mix?: MixItem[];
   /** 使用した薬剤・製品 例: KEMA base + water 1:1 */
   product: string;
   /** 放置時間 (分) */

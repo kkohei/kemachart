@@ -1,6 +1,12 @@
 import { useState } from "react";
 import type { RecipePart, RecipeStep } from "../types";
-import { RECIPE_PARTS, STEP_PRESETS_BY_PART, recipePartOf } from "../constants";
+import {
+  MIX_CHEMICALS,
+  RECIPE_PARTS,
+  STEP_PRESETS_BY_PART,
+  isMixStep,
+  recipePartOf,
+} from "../constants";
 import { uid } from "../utils/id";
 
 const CUSTOM = "__custom__";
@@ -27,6 +33,38 @@ export function RecipeEditor({
   }
   function add(part: RecipePart) {
     onChange([...steps, { id: uid(), part, name: "", product: "" }]);
+  }
+  /** 工程名を変更。薬剤塗布(Lv)工程なら配合を初期化 */
+  function setName(id: string, name: string) {
+    onChange(
+      steps.map((s) => {
+        if (s.id !== id) return s;
+        const next = { ...s, name };
+        if (isMixStep(name)) {
+          if (!next.mix || next.mix.length === 0) next.mix = [{ chem: MIX_CHEMICALS[0], percent: 100 }];
+        }
+        return next;
+      }),
+    );
+  }
+  function addMix(id: string) {
+    onChange(
+      steps.map((s) =>
+        s.id === id ? { ...s, mix: [...(s.mix ?? []), { chem: MIX_CHEMICALS[0], percent: 0 }] } : s,
+      ),
+    );
+  }
+  function updateMix(id: string, idx: number, patch: Partial<{ chem: string; percent: number }>) {
+    onChange(
+      steps.map((s) =>
+        s.id === id ? { ...s, mix: (s.mix ?? []).map((m, i) => (i === idx ? { ...m, ...patch } : m)) } : s,
+      ),
+    );
+  }
+  function removeMix(id: string, idx: number) {
+    onChange(
+      steps.map((s) => (s.id === id ? { ...s, mix: (s.mix ?? []).filter((_, i) => i !== idx) } : s)),
+    );
   }
   function remove(id: string) {
     setCustom(id, false);
@@ -88,7 +126,7 @@ export function RecipeEditor({
                         value={s.name}
                         onChange={(e) => {
                           if (e.target.value === CUSTOM) setCustom(s.id, true);
-                          else update(s.id, { name: e.target.value });
+                          else setName(s.id, e.target.value);
                         }}
                       >
                         <option value="">工程名を選択</option>
@@ -125,9 +163,64 @@ export function RecipeEditor({
                     </div>
                   </div>
 
+                  {isMixStep(s.name) && (
+                    <div className="mix">
+                      <div className="mix__label">薬剤の配合（比率%）</div>
+                      {(s.mix ?? []).map((m, mi) => (
+                        <div className="mix__row" key={mi}>
+                          <select
+                            className="mix__chem"
+                            value={m.chem}
+                            onChange={(e) => updateMix(s.id, mi, { chem: e.target.value })}
+                          >
+                            {MIX_CHEMICALS.map((c) => (
+                              <option value={c} key={c}>
+                                {c}
+                              </option>
+                            ))}
+                          </select>
+                          <input
+                            className="mix__pct"
+                            type="number"
+                            min={0}
+                            max={100}
+                            inputMode="numeric"
+                            value={m.percent}
+                            onChange={(e) =>
+                              updateMix(s.id, mi, { percent: Number(e.target.value) || 0 })
+                            }
+                          />
+                          <span className="mix__unit">%</span>
+                          <button
+                            type="button"
+                            className="mix__del"
+                            aria-label="薬剤を削除"
+                            onClick={() => removeMix(s.id, mi)}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                      <div className="mix__foot">
+                        <button type="button" className="mix__add" onClick={() => addMix(s.id)}>
+                          ＋ 薬剤を追加
+                        </button>
+                        <span
+                          className={`mix__total ${
+                            (s.mix ?? []).reduce((a, m) => a + (m.percent || 0), 0) === 100
+                              ? "is-ok"
+                              : ""
+                          }`}
+                        >
+                          合計 {(s.mix ?? []).reduce((a, m) => a + (m.percent || 0), 0)}%
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
                   <textarea
                     className="recipe-step__product"
-                    placeholder="メモ（薬剤・手順・温度など）"
+                    placeholder="メモ（手順・温度など）"
                     rows={2}
                     value={s.product}
                     onChange={(e) => update(s.id, { product: e.target.value })}

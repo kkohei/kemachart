@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { DamageProfile, TreatmentRecord } from "../types";
-import { AREA_BACK, SECTIONS, areaDef, damageDef, groupRecipe } from "../constants";
+import { AREA_BACK, SECTIONS, areaDef, damageDef, formatMix, groupRecipe } from "../constants";
 import { formatJP } from "../utils/date";
 import { navigate } from "../hooks/useHashRoute";
 import { HairStrand, DamageSummary } from "./HairDamageChart";
@@ -96,7 +96,10 @@ export function RecordDetail({
                           <span className="recipe-view__min">{s.minutes}分</span>
                         )}
                       </div>
-                      <div className="recipe-view__product">{s.product}</div>
+                      {s.mix && s.mix.length > 0 && (
+                        <div className="recipe-view__mix">{formatMix(s.mix)}</div>
+                      )}
+                      {s.product && <div className="recipe-view__product">{s.product}</div>}
                       {s.note && <div className="recipe-view__note">{s.note}</div>}
                     </div>
                   </li>

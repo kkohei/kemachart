@@ -1,6 +1,6 @@
 import { Capacitor } from "@capacitor/core";
 import type { HeadAreaKey, RecipePart, TreatmentRecord } from "../types";
-import { damageDef, groupRecipe } from "../constants";
+import { damageDef, formatMix, groupRecipe } from "../constants";
 import { formatJP, formatKO } from "./date";
 import { damageCode, maxDamage } from "./damage";
 import { dataURLtoBlob } from "./image";
@@ -83,7 +83,9 @@ export function buildShareText(rec: TreatmentRecord, lang: ShareLang = "ja"): st
       lines.push(`［${t.partLabel[g.key]}］`);
       for (const s of g.steps) {
         const tm = s.minutes ? t.min(s.minutes) : "";
-        lines.push(`・${s.name}: ${s.product}${tm}`);
+        const mix = s.mix && s.mix.length > 0 ? formatMix(s.mix) : "";
+        const detail = [mix, s.product].filter(Boolean).join(" / ");
+        lines.push(`・${s.name}: ${detail}${tm}`);
       }
     }
   }

@@ -1,5 +1,5 @@
 import type { DamageProfile, TreatmentRecord } from "../types";
-import { AREA_BACK, SECTIONS, areaDef, damageDef, groupRecipe } from "../constants";
+import { AREA_BACK, SECTIONS, areaDef, damageDef, formatMix, groupRecipe } from "../constants";
 import { damageCode, maxDamage } from "./damage";
 import { formatJP } from "./date";
 
@@ -90,7 +90,12 @@ export async function renderKarteCanvas(rec: TreatmentRecord): Promise<HTMLCanva
         const head = `${i + 1}. ${s.name || "工程"}${typeof s.minutes === "number" ? `  (${s.minutes}分)` : ""}`;
         ctx.fillText(head, PAD + 10, y);
         y += 24;
-        y = wrapText(ctx, s.product, PAD + 28, y, W - PAD * 2 - 28, 22, INK, "400 15px sans-serif");
+        if (s.mix && s.mix.length > 0) {
+          y = wrapText(ctx, formatMix(s.mix), PAD + 28, y, W - PAD * 2 - 28, 22, ACCENT, "700 15px sans-serif");
+        }
+        if (s.product) {
+          y = wrapText(ctx, s.product, PAD + 28, y, W - PAD * 2 - 28, 22, INK, "400 15px sans-serif");
+        }
         if (s.note) {
           y = wrapText(ctx, s.note, PAD + 28, y, W - PAD * 2 - 28, 20, INK2, "400 14px sans-serif");
         }

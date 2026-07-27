@@ -153,9 +153,11 @@ export const STEP_PRESETS_BY_PART: Record<RecipePart, string[]> = {
     "ANTA3塗布",
   ],
   design: [
-    "EZ100塗布",
-    "AR50塗布",
-    "AFREE塗布",
+    "Lv.1 薬剤塗布",
+    "Lv.2 薬剤塗布",
+    "Lv.3 薬剤塗布",
+    "Lv.4 薬剤塗布",
+    "Lv.5 薬剤塗布",
     "カラー剤塗布",
     "2剤塗布",
     "EQ塗布",
@@ -174,3 +176,20 @@ export const STEP_PRESETS_BY_PART: Record<RecipePart, string[]> = {
 export const STEP_NAME_PRESETS: string[] = Array.from(
   new Set(Object.values(STEP_PRESETS_BY_PART).flat()),
 );
+
+/** ダメージレベル別「薬剤塗布」工程名 (配合エディタを表示する対象) */
+export const DAMAGE_MIX_STEP_NAMES: string[] = [1, 2, 3, 4, 5].map((lv) => `Lv.${lv} 薬剤塗布`);
+
+/** その工程が「薬剤配合」を持つ工程か */
+export function isMixStep(name: string): boolean {
+  return DAMAGE_MIX_STEP_NAMES.includes(name);
+}
+
+/** 配合に使える薬剤 */
+export const MIX_CHEMICALS: string[] = ["EZ100", "AR50", "アフリー", "ANTA3", "ANTA"];
+
+/** 配合を「EZ100 50% ・ ANTA3 30%」形式の文字列に */
+export function formatMix(mix: { chem: string; percent: number }[] | undefined): string {
+  if (!mix || mix.length === 0) return "";
+  return mix.map((m) => `${m.chem} ${m.percent}%`).join(" ・ ");
+}
