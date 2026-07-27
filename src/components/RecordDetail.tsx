@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { DamageProfile, TreatmentRecord } from "../types";
-import { AREA_BACK, SECTIONS, areaDef, damageDef } from "../constants";
+import { AREA_BACK, SECTIONS, areaDef, damageDef, groupRecipe } from "../constants";
 import { formatJP } from "../utils/date";
 import { navigate } from "../hooks/useHashRoute";
 import { HairStrand, DamageSummary } from "./HairDamageChart";
@@ -80,23 +80,30 @@ export function RecordDetail({
       {record.recipe.length > 0 && (
         <section className="card">
           <h2 className="card__title">レシピ</h2>
-          <ol className="recipe-view">
-            {record.recipe.map((s, i) => (
-              <li className="recipe-view__item" key={s.id}>
-                <span className="recipe-view__idx">{i + 1}</span>
-                <div className="recipe-view__body">
-                  <div className="recipe-view__line">
-                    <span className="recipe-view__name">{s.name || "工程"}</span>
-                    {typeof s.minutes === "number" && (
-                      <span className="recipe-view__min">{s.minutes}分</span>
-                    )}
-                  </div>
-                  <div className="recipe-view__product">{s.product}</div>
-                  {s.note && <div className="recipe-view__note">{s.note}</div>}
-                </div>
-              </li>
-            ))}
-          </ol>
+          {groupRecipe(record.recipe).map((g) => (
+            <div className="recipe-part-view" key={g.key}>
+              <div className={`recipe-part-view__head recipe-part-view__head--${g.key}`}>
+                {g.label}
+              </div>
+              <ol className="recipe-view">
+                {g.steps.map((s, i) => (
+                  <li className="recipe-view__item" key={s.id}>
+                    <span className="recipe-view__idx">{i + 1}</span>
+                    <div className="recipe-view__body">
+                      <div className="recipe-view__line">
+                        <span className="recipe-view__name">{s.name || "工程"}</span>
+                        {typeof s.minutes === "number" && (
+                          <span className="recipe-view__min">{s.minutes}分</span>
+                        )}
+                      </div>
+                      <div className="recipe-view__product">{s.product}</div>
+                      {s.note && <div className="recipe-view__note">{s.note}</div>}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))}
         </section>
       )}
 

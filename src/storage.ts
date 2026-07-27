@@ -8,6 +8,7 @@ function migrate(rec: TreatmentRecord): TreatmentRecord {
   return {
     ...rec,
     status: rec.status === "draft" ? "draft" : "done",
+    recipe: rec.recipe?.map((s) => ({ ...s, part: s.part ?? "clinic" })),
     damageBefore: normalizeProfile(rec.damageBefore),
     damageAfter: rec.damageAfter == null ? undefined : normalizeProfile(rec.damageAfter),
     extraAreas: rec.extraAreas?.map((a) => ({

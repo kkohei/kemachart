@@ -897,6 +897,48 @@ button.strand__seg {
   width: 100%;
 }
 
+/* レシピの大枠パート (編集) */
+.recipe-part {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 14px;
+  background: var(--surface-2);
+}
+.recipe-part__head {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--accent-dark);
+  padding-left: 10px;
+  border-left: 4px solid var(--accent);
+  margin-bottom: 10px;
+}
+.recipe-part__empty {
+  font-size: 12px;
+  color: var(--ink-2);
+  margin: 0 0 10px;
+}
+.recipe-part .recipe-step {
+  background: #fff;
+}
+.recipe-part__add {
+  width: 100%;
+  font-size: 14px;
+}
+
+/* レシピの大枠パート (詳細表示) */
+.recipe-part-view + .recipe-part-view {
+  margin-top: 16px;
+}
+.recipe-part-view__head {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--accent-dark);
+  padding-left: 9px;
+  border-left: 4px solid var(--accent);
+  margin-bottom: 6px;
+}
+
 /* ---------- Photo input ---------- */
 .photo-input {
   margin-bottom: 14px;

@@ -1,5 +1,5 @@
 import type { DamageProfile, TreatmentRecord } from "../types";
-import { AREA_BACK, SECTIONS, areaDef, damageDef } from "../constants";
+import { AREA_BACK, SECTIONS, areaDef, damageDef, groupRecipe } from "../constants";
 import { damageCode, maxDamage } from "./damage";
 import { formatJP } from "./date";
 
@@ -76,24 +76,29 @@ export async function renderKarteCanvas(rec: TreatmentRecord): Promise<HTMLCanva
   }
   y += 20;
 
-  // レシピ
+  // レシピ (大枠パートごと)
   if (rec.recipe.length) {
     y = section(ctx, "レシピ", y);
-    ctx.font = "400 16px sans-serif";
-    rec.recipe.forEach((s, i) => {
+    for (const g of groupRecipe(rec.recipe)) {
       ctx.fillStyle = ACCENT;
-      ctx.font = "700 16px sans-serif";
-      const head = `${i + 1}. ${s.name || "工程"}${typeof s.minutes === "number" ? `  (${s.minutes}分)` : ""}`;
-      ctx.fillText(head, PAD, y);
+      ctx.font = "700 15px sans-serif";
+      ctx.fillText(`［${g.label}］`, PAD, y);
       y += 24;
-      ctx.fillStyle = INK;
-      y = wrapText(ctx, s.product, PAD + 18, y, W - PAD * 2 - 18, 22, INK, "400 15px sans-serif");
-      if (s.note) {
-        y = wrapText(ctx, s.note, PAD + 18, y, W - PAD * 2 - 18, 20, INK2, "400 14px sans-serif");
-      }
-      y += 8;
-    });
-    y += 12;
+      g.steps.forEach((s, i) => {
+        ctx.fillStyle = INK;
+        ctx.font = "700 16px sans-serif";
+        const head = `${i + 1}. ${s.name || "工程"}${typeof s.minutes === "number" ? `  (${s.minutes}分)` : ""}`;
+        ctx.fillText(head, PAD + 10, y);
+        y += 24;
+        y = wrapText(ctx, s.product, PAD + 28, y, W - PAD * 2 - 28, 22, INK, "400 15px sans-serif");
+        if (s.note) {
+          y = wrapText(ctx, s.note, PAD + 28, y, W - PAD * 2 - 28, 20, INK2, "400 14px sans-serif");
+        }
+        y += 8;
+      });
+      y += 6;
+    }
+    y += 8;
   }
 
   // 写真

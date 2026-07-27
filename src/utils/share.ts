@@ -1,6 +1,6 @@
 import { Capacitor } from "@capacitor/core";
-import type { HeadAreaKey, TreatmentRecord } from "../types";
-import { damageDef } from "../constants";
+import type { HeadAreaKey, RecipePart, TreatmentRecord } from "../types";
+import { damageDef, groupRecipe } from "../constants";
 import { formatJP, formatKO } from "./date";
 import { damageCode, maxDamage } from "./damage";
 import { dataURLtoBlob } from "./image";
@@ -21,6 +21,7 @@ interface ShareStrings {
   memo: string;
   tags: string;
   areaShort: Record<HeadAreaKey, string>;
+  partLabel: Record<RecipePart, string>;
   fmtDate: (iso: string) => string;
 }
 
@@ -38,6 +39,7 @@ const STRINGS: Record<ShareLang, ShareStrings> = {
     memo: "メモ",
     tags: "#KEMA #美容師 #施術記録",
     areaShort: { back: "後ろ", leftSide: "左", rightSide: "右", frontTop: "前" },
+    partLabel: { clinic: "クリニックパート", design: "デザインパート", care: "ケアパート" },
     fmtDate: formatJP,
   },
   ko: {
@@ -53,6 +55,7 @@ const STRINGS: Record<ShareLang, ShareStrings> = {
     memo: "메모",
     tags: "#KEMA #미용사 #시술기록",
     areaShort: { back: "뒷머리", leftSide: "좌", rightSide: "우", frontTop: "앞" },
+    partLabel: { clinic: "클리닉 파트", design: "디자인 파트", care: "케어 파트" },
     fmtDate: formatKO,
   },
 };
@@ -76,9 +79,12 @@ export function buildShareText(rec: TreatmentRecord, lang: ShareLang = "ja"): st
   }
   if (rec.recipe.length) {
     lines.push(`${t.recipe}:`);
-    for (const s of rec.recipe) {
-      const tm = s.minutes ? t.min(s.minutes) : "";
-      lines.push(`・${s.name}: ${s.product}${tm}`);
+    for (const g of groupRecipe(rec.recipe)) {
+      lines.push(`［${t.partLabel[g.key]}］`);
+      for (const s of g.steps) {
+        const tm = s.minutes ? t.min(s.minutes) : "";
+        lines.push(`・${s.name}: ${s.product}${tm}`);
+      }
     }
   }
   if (rec.memo) lines.push(`${t.memo}: ${rec.memo}`);

@@ -1,4 +1,4 @@
-import type { DamageLevel, HeadAreaKey } from "./types";
+import type { DamageLevel, HeadAreaKey, RecipePart, RecipeStep } from "./types";
 
 /**
  * ダメージレベルの定義 (KEMAダメージチャートに準拠)。
@@ -120,6 +120,27 @@ export const MENU_PRESETS: string[] = [
   "KEMA×カット",
   "その他",
 ];
+
+/** レシピの大枠パート (3つ) */
+export const RECIPE_PARTS: { key: RecipePart; label: string; short: string }[] = [
+  { key: "clinic", label: "クリニックパート", short: "クリニック" },
+  { key: "design", label: "デザインパート", short: "デザイン" },
+  { key: "care", label: "ケアパート", short: "ケア" },
+];
+
+export function recipePartOf(s: RecipeStep): RecipePart {
+  return s.part ?? "clinic";
+}
+
+/** 工程を大枠パートごとにまとめる (空パートは除外, パート順は固定) */
+export function groupRecipe(
+  steps: RecipeStep[],
+): { key: RecipePart; label: string; short: string; steps: RecipeStep[] }[] {
+  return RECIPE_PARTS.map((p) => ({
+    ...p,
+    steps: steps.filter((s) => recipePartOf(s) === p.key),
+  })).filter((g) => g.steps.length > 0);
+}
 
 /** レシピ工程名の候補 (プルダウン用) */
 export const STEP_NAME_PRESETS: string[] = [

@@ -22,9 +22,14 @@ export interface AreaMeasurement {
   after?: DamageProfile;
 }
 
+/** レシピの大枠パート */
+export type RecipePart = "clinic" | "design" | "care";
+
 /** レシピの1工程 (使用薬剤や塗布など) */
 export interface RecipeStep {
   id: string;
+  /** 所属する大枠パート (クリニック/デザイン/ケア)。未指定は clinic 扱い */
+  part?: RecipePart;
   /** 工程名 例: 前処理 / 1剤 / 2剤 / トリートメント */
   name: string;
   /** 使用した薬剤・製品 例: KEMA base + water 1:1 */

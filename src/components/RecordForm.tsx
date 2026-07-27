@@ -57,10 +57,13 @@ export function RecordForm({ initial, onSave }: Props) {
     if (hasContent && !confirm(`レシピを「${def.name}」の標準手順で置き換えますか？`)) {
       return;
     }
+    // メニュー種別に応じて大枠パートを割り当て (クリニック=clinic / ブリーチ・根元=design)
+    const part: "clinic" | "design" | "care" = def.id === "clinic" ? "clinic" : "design";
     setMenu(def.name);
     setRecipe(
       def.steps.map((s) => ({
         id: uid(),
+        part,
         name: s.name,
         // メモ欄に薬剤・手順＋温度メモをまとめて入れる
         product: s.note ? `${s.product}\n${s.note}` : s.product,
