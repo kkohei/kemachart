@@ -87,7 +87,10 @@ export async function renderKarteCanvas(rec: TreatmentRecord): Promise<HTMLCanva
       g.steps.forEach((s, i) => {
         ctx.fillStyle = INK;
         ctx.font = "700 16px sans-serif";
-        const head = `${i + 1}. ${s.name || "工程"}${typeof s.minutes === "number" ? `  (${s.minutes}分)` : ""}`;
+        const meta = [s.amount ? `塗布量${s.amount}` : "", typeof s.minutes === "number" ? `${s.minutes}分` : ""]
+          .filter(Boolean)
+          .join(" ・ ");
+        const head = `${i + 1}. ${s.name || "工程"}${meta ? `  (${meta})` : ""}`;
         ctx.fillText(head, PAD + 10, y);
         y += 24;
         if (s.mix && s.mix.length > 0) {

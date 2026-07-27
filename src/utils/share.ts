@@ -84,7 +84,8 @@ export function buildShareText(rec: TreatmentRecord, lang: ShareLang = "ja"): st
       for (const s of g.steps) {
         const tm = s.minutes ? t.min(s.minutes) : "";
         const mix = s.mix && s.mix.length > 0 ? formatMix(s.mix) : "";
-        const detail = [mix, s.product].filter(Boolean).join(" / ");
+        const amt = s.amount ? `塗布量${s.amount}` : "";
+        const detail = [mix, s.product, amt].filter(Boolean).join(" / ");
         lines.push(`・${s.name}: ${detail}${tm}`);
       }
     }

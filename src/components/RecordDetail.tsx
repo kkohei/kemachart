@@ -92,6 +92,7 @@ export function RecordDetail({
                     <div className="recipe-view__body">
                       <div className="recipe-view__line">
                         <span className="recipe-view__name">{s.name || "工程"}</span>
+                        {s.amount && <span className="recipe-view__amount">塗布量 {s.amount}</span>}
                         {typeof s.minutes === "number" && (
                           <span className="recipe-view__min">{s.minutes}分</span>
                         )}

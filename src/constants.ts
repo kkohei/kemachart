@@ -1,4 +1,4 @@
-import type { DamageLevel, HeadAreaKey, RecipePart, RecipeStep } from "./types";
+import type { ApplyAmount, DamageLevel, HeadAreaKey, RecipePart, RecipeStep } from "./types";
 
 /**
  * ダメージレベルの定義 (KEMAダメージチャートに準拠)。
@@ -187,6 +187,9 @@ export function isMixStep(name: string): boolean {
 
 /** 配合に使える薬剤 */
 export const MIX_CHEMICALS: string[] = ["EZ100", "AR50", "アフリー", "ANTA3", "ANTA"];
+
+/** 塗布量の選択肢 (少/中/大) */
+export const APPLY_AMOUNTS: ApplyAmount[] = ["少", "中", "大"];
 
 /** 配合を「EZ100 50% ・ ANTA3 30%」形式の文字列に */
 export function formatMix(mix: { chem: string; percent: number }[] | undefined): string {

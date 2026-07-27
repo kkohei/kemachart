@@ -31,6 +31,9 @@ export interface MixItem {
   percent: number;
 }
 
+/** 塗布量 (少/中/大) */
+export type ApplyAmount = "少" | "中" | "大";
+
 /** レシピの1工程 (使用薬剤や塗布など) */
 export interface RecipeStep {
   id: string;
@@ -40,6 +43,8 @@ export interface RecipeStep {
   name: string;
   /** 薬剤の配合 (ダメージレベル別の薬剤塗布などで使用)。比率は% */
   mix?: MixItem[];
+  /** 塗布量 (少/中/大)。クリニック・デザインパートで使用 */
+  amount?: ApplyAmount;
   /** 使用した薬剤・製品 例: KEMA base + water 1:1 */
   product: string;
   /** 放置時間 (分) */

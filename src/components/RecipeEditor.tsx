@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { RecipePart, RecipeStep } from "../types";
 import {
+  APPLY_AMOUNTS,
   MIX_CHEMICALS,
   RECIPE_PARTS,
   STEP_PRESETS_BY_PART,
@@ -225,6 +226,25 @@ export function RecipeEditor({
                     value={s.product}
                     onChange={(e) => update(s.id, { product: e.target.value })}
                   />
+
+                  {part.key !== "care" && (
+                    <div className="amount">
+                      <span className="amount__label">塗布量</span>
+                      <div className="amount__btns">
+                        {APPLY_AMOUNTS.map((a) => (
+                          <button
+                            type="button"
+                            key={a}
+                            className={`amount__btn ${s.amount === a ? "is-active" : ""}`}
+                            aria-pressed={s.amount === a}
+                            onClick={() => update(s.id, { amount: s.amount === a ? undefined : a })}
+                          >
+                            {a}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="recipe-step__meta">
                     <label className="recipe-step__min">
