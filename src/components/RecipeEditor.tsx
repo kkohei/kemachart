@@ -66,9 +66,10 @@ export function RecipeEditor({
               </button>
             </div>
           </div>
-          <input
+          <textarea
             className="recipe-step__product"
             placeholder="使用薬剤・製品 (例: KEMA base + water 1:1)"
+            rows={2}
             value={s.product}
             onChange={(e) => update(s.id, { product: e.target.value })}
           />

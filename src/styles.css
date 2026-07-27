@@ -781,6 +781,10 @@ button.strand__seg {
   font-size: 15px;
   background: #fff;
   margin-bottom: 8px;
+  font-family: inherit;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 2.8em;
 }
 .recipe-step__meta {
   display: flex;
