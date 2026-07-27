@@ -1540,6 +1540,29 @@ button.strand__seg {
 .share {
   position: relative;
 }
+.share__lang {
+  display: flex;
+  gap: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px;
+  margin: 0 0 12px;
+  width: fit-content;
+}
+.share__lang-btn {
+  border: none;
+  background: none;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+.share__lang-btn.is-active {
+  background: var(--accent);
+  color: #fff;
+}
 .share__native {
   width: 100%;
   display: inline-flex;

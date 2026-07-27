@@ -1,35 +1,88 @@
 import { Capacitor } from "@capacitor/core";
-import type { TreatmentRecord } from "../types";
-import { areaDef, damageDef } from "../constants";
-import { formatJP } from "./date";
+import type { HeadAreaKey, TreatmentRecord } from "../types";
+import { damageDef } from "../constants";
+import { formatJP, formatKO } from "./date";
 import { damageCode, maxDamage } from "./damage";
 import { dataURLtoBlob } from "./image";
 
-/** 記録から共有用のテキストを生成 */
-export function buildShareText(rec: TreatmentRecord): string {
+/** 共有テキストの言語 */
+export type ShareLang = "ja" | "ko";
+
+interface ShareStrings {
+  title: (menu: string) => string;
+  date: string;
+  damage: string;
+  rootToTip: string;
+  max: string;
+  afterArrow: (code: string) => string;
+  backPrefix: string;
+  recipe: string;
+  min: (m: number) => string;
+  memo: string;
+  tags: string;
+  areaShort: Record<HeadAreaKey, string>;
+  fmtDate: (iso: string) => string;
+}
+
+const STRINGS: Record<ShareLang, ShareStrings> = {
+  ja: {
+    title: (menu) => `【KEMA施術記録】${menu}`,
+    date: "来店日",
+    damage: "ダメージ",
+    rootToTip: "根元→毛先",
+    max: "最大",
+    afterArrow: (code) => ` ⇒ 施術後 ${code}`,
+    backPrefix: "後ろ ",
+    recipe: "レシピ",
+    min: (m) => ` (${m}分)`,
+    memo: "メモ",
+    tags: "#KEMA #美容師 #施術記録",
+    areaShort: { back: "後ろ", leftSide: "左", rightSide: "右", frontTop: "前" },
+    fmtDate: formatJP,
+  },
+  ko: {
+    title: (menu) => `[KEMA 시술기록] ${menu}`,
+    date: "방문일",
+    damage: "데미지",
+    rootToTip: "뿌리→모발끝",
+    max: "최대",
+    afterArrow: (code) => ` ⇒ 시술 후 ${code}`,
+    backPrefix: "뒷머리 ",
+    recipe: "레시피",
+    min: (m) => ` (${m}분)`,
+    memo: "메모",
+    tags: "#KEMA #미용사 #시술기록",
+    areaShort: { back: "뒷머리", leftSide: "좌", rightSide: "우", frontTop: "앞" },
+    fmtDate: formatKO,
+  },
+};
+
+/** 記録から共有用のテキストを生成 (言語指定可) */
+export function buildShareText(rec: TreatmentRecord, lang: ShareLang = "ja"): string {
+  const t = STRINGS[lang];
   const lines: string[] = [];
-  lines.push(`【KEMA施術記録】${rec.menu}`);
-  lines.push(`来店日: ${formatJP(rec.date)}`);
+  lines.push(t.title(rec.menu));
+  lines.push(`${t.date}: ${t.fmtDate(rec.date)}`);
   const hasExtra = rec.extraAreas && rec.extraAreas.length > 0;
-  const backLabel = hasExtra ? "後ろ " : "";
-  const beforeCode = `根元→毛先 ${damageCode(rec.damageBefore)} (最大${damageDef(maxDamage(rec.damageBefore)).short})`;
-  const afterCode = rec.damageAfter ? ` ⇒ 施術後 ${damageCode(rec.damageAfter)}` : "";
-  lines.push(`ダメージ: ${backLabel}${beforeCode}${afterCode}`);
+  const backLabel = hasExtra ? t.backPrefix : "";
+  const beforeCode = `${t.rootToTip} ${damageCode(rec.damageBefore)} (${t.max}${damageDef(maxDamage(rec.damageBefore)).short})`;
+  const afterCode = rec.damageAfter ? t.afterArrow(damageCode(rec.damageAfter)) : "";
+  lines.push(`${t.damage}: ${backLabel}${beforeCode}${afterCode}`);
   if (rec.extraAreas) {
     for (const a of rec.extraAreas) {
-      const ac = a.after ? ` ⇒ 施術後 ${damageCode(a.after)}` : "";
-      lines.push(`　${areaDef(a.area).short}: ${damageCode(a.before)}${ac}`);
+      const ac = a.after ? t.afterArrow(damageCode(a.after)) : "";
+      lines.push(`　${t.areaShort[a.area]}: ${damageCode(a.before)}${ac}`);
     }
   }
   if (rec.recipe.length) {
-    lines.push("レシピ:");
+    lines.push(`${t.recipe}:`);
     for (const s of rec.recipe) {
-      const t = s.minutes ? ` (${s.minutes}分)` : "";
-      lines.push(`・${s.name}: ${s.product}${t}`);
+      const tm = s.minutes ? t.min(s.minutes) : "";
+      lines.push(`・${s.name}: ${s.product}${tm}`);
     }
   }
-  if (rec.memo) lines.push(`メモ: ${rec.memo}`);
-  lines.push("#KEMA #美容師 #施術記録");
+  if (rec.memo) lines.push(`${t.memo}: ${rec.memo}`);
+  lines.push(t.tags);
   return lines.join("\n");
 }
 
@@ -43,8 +96,8 @@ export interface ShareResult {
  * ネイティブ共有 (Web Share API) を試みます。
  * 画像付き共有に対応している端末では写真も添付します。
  */
-export async function nativeShare(rec: TreatmentRecord): Promise<ShareResult> {
-  const text = buildShareText(rec);
+export async function nativeShare(rec: TreatmentRecord, lang: ShareLang = "ja"): Promise<ShareResult> {
+  const text = buildShareText(rec, lang);
   const title = `KEMA my Recipi｜${rec.menu}`;
 
   // Capacitor ネイティブ (iOS/Android) ではネイティブ共有シートを使用
@@ -102,8 +155,9 @@ export async function nativeShare(rec: TreatmentRecord): Promise<ShareResult> {
 /** URLで共有できるSNS (LINE / X) のリンクを生成 */
 export function snsShareLinks(
   rec: TreatmentRecord,
+  lang: ShareLang = "ja",
 ): { label: string; url: string; color: string; text: string }[] {
-  const text = buildShareText(rec);
+  const text = buildShareText(rec, lang);
   const enc = encodeURIComponent(text);
   return [
     {
@@ -126,8 +180,8 @@ export function snsShareLinks(
  * KakaoTalkはWebの公式テキスト共有URLが無い(SDK要)ため、
  * レシピ文をクリップボードにコピーし、カカオトークを起動して貼り付けてもらう方式。
  */
-export async function shareToKakao(rec: TreatmentRecord): Promise<ShareResult> {
-  const text = buildShareText(rec);
+export async function shareToKakao(rec: TreatmentRecord, lang: ShareLang = "ja"): Promise<ShareResult> {
+  const text = buildShareText(rec, lang);
   let copied = false;
   try {
     await navigator.clipboard.writeText(text);

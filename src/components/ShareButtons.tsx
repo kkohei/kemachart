@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { TreatmentRecord } from "../types";
-import { nativeShare, shareToKakao, snsShareLinks } from "../utils/share";
+import { nativeShare, shareToKakao, snsShareLinks, type ShareLang } from "../utils/share";
 
-/** SNS共有ボタン群 (ネイティブ共有 + LINE / X / カカオトーク) */
+const LANG_KEY = "kemachart.shareLang";
+
+/** SNS共有ボタン群 (ネイティブ共有 + LINE / X / カカオトーク)。日本語/韓国語を切替。 */
 export function ShareButtons({ record }: { record: TreatmentRecord }) {
   const [toast, setToast] = useState<string | null>(null);
-  const links = snsShareLinks(record);
+  const [lang, setLang] = useState<ShareLang>(() =>
+    localStorage.getItem(LANG_KEY) === "ko" ? "ko" : "ja",
+  );
+  useEffect(() => {
+    localStorage.setItem(LANG_KEY, lang);
+  }, [lang]);
+
+  const links = snsShareLinks(record, lang);
 
   function flash(msg: string) {
     if (!msg) return;
@@ -14,19 +23,38 @@ export function ShareButtons({ record }: { record: TreatmentRecord }) {
   }
 
   async function handleNative() {
-    const res = await nativeShare(record);
+    const res = await nativeShare(record, lang);
     flash(res.message);
   }
 
   async function handleKakao() {
-    const res = await shareToKakao(record);
+    const res = await shareToKakao(record, lang);
     flash(res.message);
   }
 
   return (
     <div className="share">
+      <div className="share__lang" role="tablist" aria-label="共有する言語">
+        <button
+          role="tab"
+          aria-selected={lang === "ja"}
+          className={`share__lang-btn ${lang === "ja" ? "is-active" : ""}`}
+          onClick={() => setLang("ja")}
+        >
+          日本語
+        </button>
+        <button
+          role="tab"
+          aria-selected={lang === "ko"}
+          className={`share__lang-btn ${lang === "ko" ? "is-active" : ""}`}
+          onClick={() => setLang("ko")}
+        >
+          한국어
+        </button>
+      </div>
+
       <button type="button" className="btn btn--primary share__native" onClick={handleNative}>
-        <ShareIcon /> 共有する
+        <ShareIcon /> {lang === "ko" ? "공유하기" : "共有する"}
       </button>
       <div className="share__sns">
         {links.map((l) => (
@@ -47,7 +75,7 @@ export function ShareButtons({ record }: { record: TreatmentRecord }) {
           style={{ backgroundColor: "#FEE500", color: "#3c1e1e" }}
           onClick={handleKakao}
         >
-          カカオトーク
+          {lang === "ko" ? "카카오톡" : "カカオトーク"}
         </button>
       </div>
       {toast && <div className="toast">{toast}</div>}
