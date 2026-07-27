@@ -1,18 +1,26 @@
 import { useState } from "react";
 import type { TreatmentRecord } from "../types";
-import { nativeShare, snsShareLinks } from "../utils/share";
+import { nativeShare, shareToKakao, snsShareLinks } from "../utils/share";
 
-/** SNS共有ボタン群 (ネイティブ共有 + LINE/X/Facebook) */
+/** SNS共有ボタン群 (ネイティブ共有 + LINE / X / カカオトーク) */
 export function ShareButtons({ record }: { record: TreatmentRecord }) {
   const [toast, setToast] = useState<string | null>(null);
   const links = snsShareLinks(record);
 
+  function flash(msg: string) {
+    if (!msg) return;
+    setToast(msg);
+    setTimeout(() => setToast(null), 2800);
+  }
+
   async function handleNative() {
     const res = await nativeShare(record);
-    if (res.message) {
-      setToast(res.message);
-      setTimeout(() => setToast(null), 2400);
-    }
+    flash(res.message);
+  }
+
+  async function handleKakao() {
+    const res = await shareToKakao(record);
+    flash(res.message);
   }
 
   return (
@@ -25,7 +33,7 @@ export function ShareButtons({ record }: { record: TreatmentRecord }) {
           <a
             key={l.label}
             className="share__sns-btn"
-            style={{ backgroundColor: l.color }}
+            style={{ backgroundColor: l.color, color: l.text }}
             href={l.url}
             target="_blank"
             rel="noopener noreferrer"
@@ -33,6 +41,14 @@ export function ShareButtons({ record }: { record: TreatmentRecord }) {
             {l.label}
           </a>
         ))}
+        <button
+          type="button"
+          className="share__sns-btn"
+          style={{ backgroundColor: "#FEE500", color: "#3c1e1e" }}
+          onClick={handleKakao}
+        >
+          カカオトーク
+        </button>
       </div>
       {toast && <div className="toast">{toast}</div>}
     </div>

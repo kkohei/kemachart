@@ -99,26 +99,53 @@ export async function nativeShare(rec: TreatmentRecord): Promise<ShareResult> {
   }
 }
 
-/** 各SNSの共有URLを生成 (テキストベース) */
-export function snsShareLinks(rec: TreatmentRecord): { label: string; url: string; color: string }[] {
+/** URLで共有できるSNS (LINE / X) のリンクを生成 */
+export function snsShareLinks(
+  rec: TreatmentRecord,
+): { label: string; url: string; color: string; text: string }[] {
   const text = buildShareText(rec);
   const enc = encodeURIComponent(text);
-  const pageUrl = encodeURIComponent(location.href);
   return [
     {
       label: "LINE",
       url: `https://line.me/R/msg/text/?${enc}`,
       color: "#06c755",
+      text: "#ffffff",
     },
     {
       label: "X",
       url: `https://twitter.com/intent/tweet?text=${enc}`,
       color: "#000000",
-    },
-    {
-      label: "Facebook",
-      url: `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}&quote=${enc}`,
-      color: "#1877f2",
+      text: "#ffffff",
     },
   ];
+}
+
+/**
+ * カカオトークへ共有します。
+ * KakaoTalkはWebの公式テキスト共有URLが無い(SDK要)ため、
+ * レシピ文をクリップボードにコピーし、カカオトークを起動して貼り付けてもらう方式。
+ */
+export async function shareToKakao(rec: TreatmentRecord): Promise<ShareResult> {
+  const text = buildShareText(rec);
+  let copied = false;
+  try {
+    await navigator.clipboard.writeText(text);
+    copied = true;
+  } catch {
+    copied = false;
+  }
+  // カカオトークを起動 (インストール時)
+  try {
+    window.location.href = "kakaotalk://";
+  } catch {
+    // スキームが無い環境では無視
+  }
+  return {
+    ok: copied,
+    method: copied ? "clipboard" : "none",
+    message: copied
+      ? "レシピをコピーしました。カカオトークで貼り付けて送信してください"
+      : "コピーできませんでした。上の「共有する」からお試しください",
+  };
 }
