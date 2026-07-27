@@ -60,6 +60,8 @@ export interface TreatmentRecord {
   afterPhotos: string[];
   /** 全体メモ・振り返り */
   memo?: string;
+  /** 記録の状態。draft=下書き(仮保存) / done=確定。未指定は done 扱い */
+  status?: "draft" | "done";
   /** 作成・更新のタイムスタンプ (epoch ms) */
   createdAt: number;
   updatedAt: number;

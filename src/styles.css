@@ -415,6 +415,51 @@ input[type="date"].input::-webkit-datetime-edit {
   color: var(--danger);
   border: 1px solid #f2d2d2;
 }
+.btn--soft {
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  border: 1px solid var(--line);
+}
+
+/* 下書き (仮保存) */
+.draft-pill {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 700;
+  color: #8a6a2f;
+  background: #fdf1d6;
+  border: 1px solid #efd9a6;
+  padding: 2px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.draft-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fdf6ec;
+  border: 1px solid #f0e0c4;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: #8a6a2f;
+}
+.form__actions--stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.form__actions-row {
+  display: flex;
+  gap: 10px;
+}
+.form__actions-row .btn {
+  flex: 1;
+}
+.form__draft {
+  width: 100%;
+}
 
 /* ---------- Damage ---------- */
 .card__note {

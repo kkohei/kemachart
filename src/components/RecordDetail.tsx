@@ -25,6 +25,12 @@ export function RecordDetail({
 
   return (
     <div className="detail">
+      {record.status === "draft" && (
+        <div className="draft-banner">
+          <span className="draft-pill">下書き</span>
+          <span>この記録は仮保存です。編集して「確定して保存」で完成できます。</span>
+        </div>
+      )}
       <div className="detail__head">
         <div>
           <div className="detail__menu">{record.menu}</div>

@@ -19,6 +19,7 @@ interface Props {
 
 export function RecordForm({ initial, onSave }: Props) {
   const isEdit = !!initial;
+  const isDraft = initial?.status === "draft";
   const [date, setDate] = useState(initial?.date ?? todayISO());
   const [customerName, setCustomerName] = useState(initial?.customerName ?? "");
   const [menu, setMenu] = useState(initial?.menu ?? MENU_PRESETS[0]);
@@ -68,10 +69,9 @@ export function RecordForm({ initial, onSave }: Props) {
     );
   }
 
-  function submit(e: React.FormEvent) {
-    e.preventDefault();
+  function build(status: "draft" | "done"): TreatmentRecord {
     const now = Date.now();
-    const rec: TreatmentRecord = {
+    return {
       id: initial?.id ?? uid(),
       date,
       customerName: customerName.trim(),
@@ -92,11 +92,23 @@ export function RecordForm({ initial, onSave }: Props) {
       beforePhotos,
       afterPhotos,
       memo: memo.trim() || undefined,
+      status,
       createdAt: initial?.createdAt ?? now,
       updatedAt: now,
     };
+  }
+
+  function submit(e: React.FormEvent) {
+    e.preventDefault();
+    const rec = build("done");
     onSave(rec);
     navigate(`#/record/${rec.id}`);
+  }
+
+  function saveDraft() {
+    const rec = build("draft");
+    onSave(rec);
+    navigate("#/records");
   }
 
   return (
@@ -251,16 +263,21 @@ export function RecordForm({ initial, onSave }: Props) {
         </div>
       </section>
 
-      <div className="form__actions">
-        <button
-          type="button"
-          className="btn btn--ghost"
-          onClick={() => navigate(isEdit && initial ? `#/record/${initial.id}` : "#/records")}
-        >
-          キャンセル
-        </button>
-        <button type="submit" className="btn btn--primary">
-          {isEdit ? "更新する" : "保存する"}
+      <div className="form__actions form__actions--stack">
+        <div className="form__actions-row">
+          <button
+            type="button"
+            className="btn btn--ghost"
+            onClick={() => navigate(isEdit && initial ? `#/record/${initial.id}` : "#/records")}
+          >
+            キャンセル
+          </button>
+          <button type="submit" className="btn btn--primary">
+            {isDraft ? "確定して保存" : isEdit ? "更新する" : "保存する"}
+          </button>
+        </div>
+        <button type="button" className="btn btn--soft form__draft" onClick={saveDraft}>
+          {isDraft ? "下書きのまま保存" : "仮保存（下書き）"}
         </button>
       </div>
     </form>

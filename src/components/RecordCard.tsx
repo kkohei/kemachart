@@ -19,7 +19,11 @@ export function RecordCard({ record: r, hideName }: { record: TreatmentRecord; h
       <div className="record-card__body">
         <div className="record-card__row">
           <span className="record-card__menu">{r.menu}</span>
-          <DamageBadge level={maxDamage(r.damageBefore)} size="sm" />
+          {r.status === "draft" ? (
+            <span className="draft-pill">下書き</span>
+          ) : (
+            <DamageBadge level={maxDamage(r.damageBefore)} size="sm" />
+          )}
         </div>
         {!hideName && <div className="record-card__name">{r.customerName || "お客様"}</div>}
         <div className="record-card__meta">

@@ -7,6 +7,7 @@ const KEY = "kemachart.records.v1";
 function migrate(rec: TreatmentRecord): TreatmentRecord {
   return {
     ...rec,
+    status: rec.status === "draft" ? "draft" : "done",
     damageBefore: normalizeProfile(rec.damageBefore),
     damageAfter: rec.damageAfter == null ? undefined : normalizeProfile(rec.damageAfter),
     extraAreas: rec.extraAreas?.map((a) => ({
