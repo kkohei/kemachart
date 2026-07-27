@@ -10,9 +10,9 @@
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "sync": "npm run build && cap sync",
-    "ios:pods": "cd ios/App && pod install",
-    "ios": "npm run build && cap sync ios && npm run ios:pods && cap open ios",
-    "ios:open": "cap open ios"
+    "ios": "npm run build && npx cap sync ios && npx cap open ios",
+    "ios:open": "npx cap open ios",
+    "ios:pods": "cd ios/App && pod install"
   },
   "dependencies": {
     "@capacitor/core": "^6.2.1",
