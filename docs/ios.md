@@ -1,5 +1,22 @@
 # iOSアプリのビルド手順
 
+> ## ⚠️ 重要ルール: 更新のたびに `pod install` は不要（忘れない）
+>
+> **Webの変更（画面・機能・文言など）だけの更新では、Podの更新は一切不要です。**
+> `pod install` を毎回走らせると、失敗したときに既存のPodまで壊れて
+> 「No such module 'Capacitor'」の原因になります。
+>
+> - **通常の更新（ほぼ毎回これ）**: `npm run ios`
+>   → build → `cap copy`（Web資産をコピーするだけ・**podは触らない**）→ Xcodeを開く
+> - **Podが必要なのは「新しいCapacitorプラグインを追加したとき」だけ**: `npm run ios:full`
+>   → build → `cap sync` → `pod install` → Xcodeを開く
+>
+> Podは最初に一度入れば、Web更新では入れ直す必要はありません。
+> 「No such module 'Capacitor'」が出たときだけ、下の「トラブル時」の手順で
+> 一度 `pod install`（または `npm run ios:full`）を実行してください。
+
+
+
 このアプリは [Capacitor](https://capacitorjs.com/) を使い、Webアプリ (Vite + React) をそのまま
 ネイティブiOSアプリとしてビルド・App Store申請できるようにしています。UIコードは web と 100% 共通です。
 

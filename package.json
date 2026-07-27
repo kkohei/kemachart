@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "sync": "npm run build && cap sync",
-    "ios": "npm run build && npx cap sync ios && cd ios/App && pod install && cd ../.. && npx cap open ios",
+    "ios": "npm run build && npx cap copy ios && npx cap open ios",
+    "ios:full": "npm run build && npx cap sync ios && cd ios/App && pod install && cd ../.. && npx cap open ios",
     "ios:open": "npx cap open ios",
     "ios:pods": "cd ios/App && pod install"
   },
