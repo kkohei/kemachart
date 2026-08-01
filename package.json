@@ -1,7 +1,7 @@
 {
   "name": "kemachart",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "KEMA施術記録アプリ — 美容師向けのダメージレベル測定・レシピ・ビフォーアフター記録ツール",
   "scripts": {
