@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { AreaMeasurement, DamageProfile, HeadAreaKey, RecipeStep, TreatmentRecord } from "../types";
-import { EXTRA_AREAS, MENU_PRESETS, areaDef } from "../constants";
+import { EXTRA_AREAS, MAX_PHOTOS_PER_RECORD, MENU_PRESETS, areaDef } from "../constants";
 import { MenuPicker } from "./MenuPicker";
 import { todayISO } from "../utils/date";
 import { uid } from "../utils/id";
@@ -246,8 +246,19 @@ export function RecordForm({ initial, onSave }: Props) {
 
       <section className="card">
         <h2 className="card__title">ビフォー・アフター写真</h2>
-        <PhotoInput label="ビフォー" photos={beforePhotos} onChange={setBeforePhotos} />
-        <PhotoInput label="アフター" photos={afterPhotos} onChange={setAfterPhotos} />
+        <p className="card__note">写真は1件の記録につき合計{MAX_PHOTOS_PER_RECORD}枚まで保存できます。</p>
+        <PhotoInput
+          label="ビフォー"
+          photos={beforePhotos}
+          remaining={MAX_PHOTOS_PER_RECORD - beforePhotos.length - afterPhotos.length}
+          onChange={setBeforePhotos}
+        />
+        <PhotoInput
+          label="アフター"
+          photos={afterPhotos}
+          remaining={MAX_PHOTOS_PER_RECORD - beforePhotos.length - afterPhotos.length}
+          onChange={setAfterPhotos}
+        />
       </section>
 
       <section className="card">

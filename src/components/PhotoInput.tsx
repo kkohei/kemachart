@@ -1,14 +1,20 @@
 import { useRef, useState } from "react";
+import { MAX_PHOTOS_PER_RECORD } from "../constants";
 import { fileToCompressedDataURL } from "../utils/image";
 
-/** 複数枚の写真をカメラ/ライブラリから追加・削除できる入力 */
+/**
+ * 複数枚の写真をカメラ/ライブラリから追加・削除できる入力。
+ * remaining = この記録であと何枚追加できるか (ビフォー+アフター合計10枚まで)。
+ */
 export function PhotoInput({
   label,
   photos,
+  remaining,
   onChange,
 }: {
   label: string;
   photos: string[];
+  remaining: number;
   onChange: (next: string[]) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -16,11 +22,19 @@ export function PhotoInput({
 
   async function handleFiles(files: FileList | null) {
     if (!files || !files.length) return;
+    const images = Array.from(files).filter((f) => f.type.startsWith("image/"));
+    const allowed = images.slice(0, Math.max(0, remaining));
+    if (images.length > allowed.length) {
+      alert(`写真は1件の記録につき合計${MAX_PHOTOS_PER_RECORD}枚までです。追加できるのはあと${Math.max(0, remaining)}枚です。`);
+    }
+    if (allowed.length === 0) {
+      if (inputRef.current) inputRef.current.value = "";
+      return;
+    }
     setBusy(true);
     try {
       const added: string[] = [];
-      for (const file of Array.from(files)) {
-        if (!file.type.startsWith("image/")) continue;
+      for (const file of allowed) {
         added.push(await fileToCompressedDataURL(file));
       }
       onChange([...photos, ...added]);
@@ -29,6 +43,8 @@ export function PhotoInput({
       if (inputRef.current) inputRef.current.value = "";
     }
   }
+
+  const full = remaining <= 0;
 
   return (
     <div className="photo-input">
@@ -54,9 +70,9 @@ export function PhotoInput({
           type="button"
           className="photo-add"
           onClick={() => inputRef.current?.click()}
-          disabled={busy}
+          disabled={busy || full}
         >
-          {busy ? "処理中…" : "＋ 写真"}
+          {busy ? "処理中…" : full ? "上限10枚" : "＋ 写真"}
         </button>
       </div>
       <input
