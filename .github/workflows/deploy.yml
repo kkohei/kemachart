@@ -1,45 +1,32 @@
 name: Deploy to GitHub Pages
 
+# gh-pages ブランチ方式: ビルドした dist/ を gh-pages ブランチへ公開する。
+# (Actions方式のPagesサイト作成はワークフロー権限では不可だったため、この方式を採用)
 on:
   push:
     branches: [main, "claude/kema-treatment-logger-cwnsjo"]
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
-# 同時デプロイは1つに制限 (進行中の実行はキャンセルしない)
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # Pagesが未有効ならこのステップが自動で有効化する (Settings操作は不要)
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
       - run: npm ci
       - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
+      - run: touch dist/.nojekyll
+      - uses: peaceiris/actions-gh-pages@v4
         with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
