@@ -51,5 +51,9 @@
 	<string>施術の記録写真を保存するために写真ライブラリにアクセスします。</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 </dict>
 </plist>

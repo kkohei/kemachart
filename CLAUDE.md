@@ -23,6 +23,8 @@
 ## 構成メモ
 
 - データは端末内 localStorage（サーバー送信なし）。移行はアプリ内のJSONバックアップ。
+- 自動バックアップ: 保存のたびに Documents/バックアップ/ へJSON書き出し（最新＋日付別7日分、`src/utils/autoBackup.ts`）。
+  Documents は iOSの「iCloudバックアップ」対象。ファイルAppにも表示（Info.plist の UIFileSharingEnabled）。
 - 正規KEMAロゴは `public/brand/`（ブランドアイデンティティPDF由来）。ロゴは必ず正規のものを使う。
 - トップ = サロンデザイン × ディープモカ（`src/components/Landing.tsx`）。
 - レシピは3大枠パート（クリニック/デザイン/ケア）。工程名候補は `STEP_PRESETS_BY_PART`（constants.ts）。

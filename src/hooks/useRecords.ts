@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { TreatmentRecord } from "../types";
 import { loadRecords, saveRecords } from "../storage";
+import { scheduleAutoBackup } from "../utils/autoBackup";
 
 /** 施術記録の状態管理 + localStorage 永続化 */
 export function useRecords() {
@@ -12,6 +13,7 @@ export function useRecords() {
     const res = saveRecords(records);
     if (res.ok) {
       warnedRef.current = false;
+      scheduleAutoBackup(records);
       return;
     }
     if (!warnedRef.current) {
