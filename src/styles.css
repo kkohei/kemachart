@@ -64,6 +64,37 @@ img {
   overflow-x: clip;
 }
 
+/* ---------- Crash (ErrorBoundary) ---------- */
+.crash {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 48px) 24px 48px;
+  text-align: center;
+}
+.crash__title {
+  font-size: 20px;
+  margin: 0 0 10px;
+}
+.crash__text {
+  font-size: 14px;
+  color: var(--ink-2);
+  margin: 0 0 20px;
+}
+.crash__detail {
+  margin-top: 24px;
+  text-align: left;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.crash__detail pre {
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+}
+
 /* ---------- Topbar ---------- */
 .topbar {
   position: sticky;

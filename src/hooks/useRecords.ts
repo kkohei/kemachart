@@ -1,14 +1,27 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { TreatmentRecord } from "../types";
 import { loadRecords, saveRecords } from "../storage";
 
 /** 施術記録の状態管理 + localStorage 永続化 */
 export function useRecords() {
   const [records, setRecords] = useState<TreatmentRecord[]>(() => loadRecords());
+  const warnedRef = useRef(false);
 
-  // 変更のたびに保存
+  // 変更のたびに保存 (失敗してもアプリは落とさない)
   useEffect(() => {
-    saveRecords(records);
+    const res = saveRecords(records);
+    if (res.ok) {
+      warnedRef.current = false;
+      return;
+    }
+    if (!warnedRef.current) {
+      warnedRef.current = true;
+      alert(
+        res.quota
+          ? "保存容量がいっぱいのため、この変更を保存できませんでした。\n\n・写真の枚数を減らす\n・右上メニューからバックアップを書き出したうえで、古い記録を削除する\nなどで容量を空けてから、もう一度お試しください。"
+          : `保存に失敗しました: ${res.error ?? "不明なエラー"}`,
+      );
+    }
   }, [records]);
 
   // 別タブでの変更を同期

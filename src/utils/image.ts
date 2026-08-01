@@ -4,8 +4,8 @@
  */
 export async function fileToCompressedDataURL(
   file: File,
-  maxSize = 1280,
-  quality = 0.72,
+  maxSize = 1024,
+  quality = 0.68,
 ): Promise<string> {
   const dataUrl = await readAsDataURL(file);
   const img = await loadImage(dataUrl);

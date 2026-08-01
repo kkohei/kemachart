@@ -32,9 +32,26 @@ export function loadRecords(): TreatmentRecord[] {
   }
 }
 
-/** 全記録を保存 */
-export function saveRecords(records: TreatmentRecord[]): void {
-  localStorage.setItem(KEY, JSON.stringify(records));
+export interface SaveResult {
+  ok: boolean;
+  /** 容量不足 (QuotaExceeded) かどうか */
+  quota: boolean;
+  error?: string;
+}
+
+/** 全記録を保存 (失敗してもクラッシュさせない) */
+export function saveRecords(records: TreatmentRecord[]): SaveResult {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(records));
+    return { ok: true, quota: false };
+  } catch (e) {
+    const err = e as Error & { code?: number };
+    const quota =
+      err?.name === "QuotaExceededError" ||
+      err?.code === 22 ||
+      /quota/i.test(err?.message ?? "");
+    return { ok: false, quota, error: err?.message };
+  }
 }
 
 function sortByDateDesc(a: TreatmentRecord, b: TreatmentRecord): number {
