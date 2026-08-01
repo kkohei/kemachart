@@ -8,12 +8,12 @@
 > - [x] カメラ/写真の利用目的（日本語・Info.plist）
 > - [x] 輸出コンプライアンス（ITSAppUsesNonExemptEncryption=false）
 > - [x] クラッシュ対策（容量超過の安全処理・写真上限・エラー画面）
-> - [x] バージョン: 表示 1.0 ／ ビルド番号 10（衝突回避のため大きめに設定済み）
+> - [x] バージョン: 表示 1.0 ／ ビルド番号 11（衝突回避のため大きめに設定済み）
 > - [x] プライバシーポリシー `public/privacy.html`（Pagesデプロイは下記②）
 > - [x] App Store用スクリーンショット6枚（6.9インチ 1320×2868）生成済み
 >
 > **あなたの操作が必要なもの**
-> 1. [ ] TestFlightで最終ビルド（build 10）の動作確認
+> 1. [ ] TestFlightで最終ビルド（build 11）の動作確認
 > 2. [ ] GitHub Pages を有効化 → プライバシーポリシーURLを公開
 >    （リポジトリ Settings → Pages → Source を **GitHub Actions** に設定。
 >    その後 https://kkohei.github.io/kemachart/privacy.html が開けることを確認）
@@ -73,7 +73,7 @@ Xcode で `App` ターゲット → **Signing & Capabilities**:
 | 項目 | 場所 | 現在値 |
 | --- | --- | --- |
 | 表示バージョン | Xcode → General → Version（`MARKETING_VERSION`） | `1.0` |
-| ビルド番号 | Xcode → General → Build（`CURRENT_PROJECT_VERSION`） | `1` |
+| ビルド番号 | Xcode → General → Build（`CURRENT_PROJECT_VERSION`） | `11` |
 
 アップロードのたびに **ビルド番号を +1** します（表示バージョンは審査に出す単位で上げます）。
 
