@@ -29,6 +29,11 @@ html {
   /* オーバースクロール(バウンス)時に端に見える色。内部画面=ベージュ基調 */
   background: var(--bg);
 }
+html,
+body {
+  /* 画面全体がゴムのように動く「バウンス」を止めて、操作を安定させる */
+  overscroll-behavior-y: none;
+}
 
 body {
   background: var(--bg);

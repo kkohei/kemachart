@@ -17,6 +17,25 @@ export async function initNative(): Promise<void> {
   } catch {
     // StatusBarが使えない環境では無視
   }
+
+  // iOSはキーボード表示時に画面を押し上げ、閉じた後もスクロール位置が
+  // ずれたまま残ることがある。入力を離れたら位置を正常範囲に戻す。
+  window.addEventListener("focusout", () => {
+    setTimeout(() => {
+      const el = document.activeElement;
+      if (
+        el instanceof HTMLInputElement ||
+        el instanceof HTMLTextAreaElement ||
+        el instanceof HTMLSelectElement
+      ) {
+        return; // まだ別の入力にフォーカス中なら何もしない
+      }
+      const doc = document.scrollingElement ?? document.documentElement;
+      const max = Math.max(0, doc.scrollHeight - window.innerHeight);
+      const y = Math.min(Math.max(0, window.scrollY), max);
+      window.scrollTo({ top: y });
+    }, 80);
+  });
 }
 
 /**
