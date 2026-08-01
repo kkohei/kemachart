@@ -1,0 +1,20 @@
+{
+  "name": "KEMA my Recipi｜施術記録",
+  "short_name": "KEMA my Recipi",
+  "description": "美容師のためのKEMA施術記録アプリ。ダメージレベル測定・レシピ・ビフォーアフターを記録します。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#533a34",
+  "theme_color": "#533a34",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
