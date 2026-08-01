@@ -50,6 +50,8 @@ export function Landing({
           <span className="hub-card__soon">Coming Soon</span>
         </button>
       </div>
+
+      <div className="land__ver">v{__APP_VERSION__}</div>
     </div>
   );
 }

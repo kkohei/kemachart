@@ -72,6 +72,16 @@ export function DataMenu({
             <button className="datamenu__item" onClick={() => fileRef.current?.click()}>
               バックアップを読み込む
             </button>
+            <button
+              className="datamenu__item"
+              onClick={() => {
+                const err = localStorage.getItem("kemachart.lastError");
+                alert(err ? `直近のエラー:\n\n${err}` : "記録されたエラーはありません。");
+                setOpen(false);
+              }}
+            >
+              直近のエラーを表示
+            </button>
           </div>
         </>
       )}

@@ -250,6 +250,16 @@ img {
   50% { transform: translateX(8px); }
 }
 
+.land__ver {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 12px;
+}
+
 /* --- カラーリング: ディープモカ --- */
 .land--mocha {
   background: linear-gradient(160deg, #7c584e 0%, #533a34 52%, #33221f 100%);
