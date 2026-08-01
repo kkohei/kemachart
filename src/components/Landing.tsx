@@ -41,6 +41,15 @@ export function Landing({
           <span className="hub-card__chev" aria-hidden="true">›</span>
         </button>
 
+        <button className="hub-card" onClick={() => navigate("#/tenpan")}>
+          <span className="hub-card__icon" aria-hidden="true">🛍️</span>
+          <span className="hub-card__body">
+            <span className="hub-card__title">店販ワークマニュアル</span>
+            <span className="hub-card__desc">お客様へのおすすめのすすめ方・全13品ガイド</span>
+          </span>
+          <span className="hub-card__chev" aria-hidden="true">›</span>
+        </button>
+
         <button className="hub-card hub-card--soon" disabled aria-disabled="true">
           <span className="hub-card__icon" aria-hidden="true">🧴</span>
           <span className="hub-card__body">

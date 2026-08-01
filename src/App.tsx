@@ -8,6 +8,7 @@ import { RecordForm } from "./components/RecordForm";
 import { RecordDetail } from "./components/RecordDetail";
 import { CustomerDetail } from "./components/CustomerDetail";
 import { GuideView } from "./components/GuideView";
+import { TenpanView } from "./components/TenpanView";
 
 export default function App() {
   const { records, upsert, remove, getById, replaceAll } = useRecords();
@@ -85,6 +86,13 @@ export default function App() {
           <>
             <PageTitle>KEMAメニューガイド</PageTitle>
             <GuideView />
+          </>
+        )}
+
+        {route.name === "tenpan" && (
+          <>
+            <PageTitle>店販ワークマニュアル</PageTitle>
+            <TenpanView />
           </>
         )}
       </main>
