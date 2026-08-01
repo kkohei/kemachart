@@ -1,5 +1,12 @@
 import { useState } from "react";
-import type { AreaMeasurement, DamageProfile, HeadAreaKey, RecipeStep, TreatmentRecord } from "../types";
+import type {
+  AreaMeasurement,
+  DamageProfile,
+  HeadAreaKey,
+  RecipeStep,
+  TitledPhoto,
+  TreatmentRecord,
+} from "../types";
 import { EXTRA_AREAS, MAX_PHOTOS_PER_RECORD, MENU_PRESETS, areaDef } from "../constants";
 import { MenuPicker } from "./MenuPicker";
 import { todayISO } from "../utils/date";
@@ -8,6 +15,7 @@ import { defaultProfile, uniformProfile } from "../utils/damage";
 import { navigate } from "../hooks/useHashRoute";
 import type { KemaMenuDef } from "../data/kemaMenus";
 import { DamageChartInput } from "./HairDamageChart";
+import { ExtraPhotoInput } from "./ExtraPhotoInput";
 import { MenuRecommend } from "./MenuRecommend";
 import { PhotoInput } from "./PhotoInput";
 import { RecipeEditor } from "./RecipeEditor";
@@ -49,6 +57,7 @@ export function RecordForm({ initial, onSave }: Props) {
   const availableAreas = EXTRA_AREAS.filter((d) => !extraAreas.some((a) => a.area === d.key));
   const [beforePhotos, setBeforePhotos] = useState<string[]>(initial?.beforePhotos ?? []);
   const [afterPhotos, setAfterPhotos] = useState<string[]>(initial?.afterPhotos ?? []);
+  const [extraPhotos, setExtraPhotos] = useState<TitledPhoto[]>(initial?.extraPhotos ?? []);
   const [memo, setMemo] = useState(initial?.memo ?? "");
 
   /** 提案メニューのレシピテンプレートをフォームに反映 */
@@ -94,6 +103,9 @@ export function RecordForm({ initial, onSave }: Props) {
         .map((s) => ({ ...s, name: s.name.trim(), product: s.product.trim() })),
       beforePhotos,
       afterPhotos,
+      extraPhotos: extraPhotos.length
+        ? extraPhotos.map((p) => ({ ...p, title: p.title.trim() }))
+        : undefined,
       memo: memo.trim() || undefined,
       status,
       createdAt: initial?.createdAt ?? now,
@@ -259,6 +271,14 @@ export function RecordForm({ initial, onSave }: Props) {
           remaining={MAX_PHOTOS_PER_RECORD - beforePhotos.length - afterPhotos.length}
           onChange={setAfterPhotos}
         />
+      </section>
+
+      <section className="card">
+        <h2 className="card__title">その他の写真</h2>
+        <p className="card__note">
+          施術中の様子など、タイトルを付けて残せます（最大5枚・ビフォーアフターとは別枠）。
+        </p>
+        <ExtraPhotoInput photos={extraPhotos} onChange={setExtraPhotos} />
       </section>
 
       <section className="card">

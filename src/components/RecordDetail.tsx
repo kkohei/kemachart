@@ -77,6 +77,20 @@ export function RecordDetail({
         </section>
       )}
 
+      {record.extraPhotos && record.extraPhotos.length > 0 && (
+        <section className="card">
+          <h2 className="card__title">その他の写真</h2>
+          <div className="xphoto-view">
+            {record.extraPhotos.map((p) => (
+              <button className="xphoto-view__item" key={p.id} onClick={() => setLightbox(p.photo)}>
+                <img src={p.photo} alt={p.title || "写真"} />
+                <span className="xphoto-view__title">{p.title || "（タイトルなし）"}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
       {record.recipe.length > 0 && (
         <section className="card">
           <h2 className="card__title">レシピ</h2>

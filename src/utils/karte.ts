@@ -24,6 +24,8 @@ export async function renderKarteCanvas(rec: TreatmentRecord): Promise<HTMLCanva
   // 写真を先読み
   const beforeImgs = await Promise.all(rec.beforePhotos.slice(0, 3).map(loadImage).map((p) => p.catch(() => null)));
   const afterImgs = await Promise.all(rec.afterPhotos.slice(0, 3).map(loadImage).map((p) => p.catch(() => null)));
+  const extras = rec.extraPhotos?.slice(0, 5) ?? [];
+  const extraImgs = await Promise.all(extras.map((p) => loadImage(p.photo).catch(() => null)));
 
   // 高さは大きめに確保して描画後にクロップ
   const scratch = document.createElement("canvas");
@@ -115,6 +117,18 @@ export async function renderKarteCanvas(rec: TreatmentRecord): Promise<HTMLCanva
     y = section(ctx, "ビフォー・アフター", y);
     y = drawPhotoRow(ctx, "Before", beforeImgs, y);
     y = drawPhotoRow(ctx, "After", afterImgs, y);
+    y += 8;
+  }
+
+  // その他の写真 (タイトル付き)
+  if (extraImgs.some(Boolean)) {
+    y = section(ctx, "その他の写真", y);
+    y = drawCaptionedPhotos(
+      ctx,
+      extraImgs,
+      extras.map((p) => p.title || ""),
+      y,
+    );
     y += 8;
   }
 
@@ -299,6 +313,55 @@ function drawPhotoRow(
     x += size + gap;
   }
   return rowY + size + 20;
+}
+
+/** タイトルつき写真を折り返しで描画 (その他の写真) */
+function drawCaptionedPhotos(
+  ctx: CanvasRenderingContext2D,
+  imgs: (HTMLImageElement | null)[],
+  titles: string[],
+  y: number,
+): number {
+  const size = 150;
+  const gap = 12;
+  const perRow = Math.floor((W - PAD * 2 + gap) / (size + gap));
+  let x = PAD;
+  let rowY = y - 4;
+  let count = 0;
+  imgs.forEach((img, i) => {
+    if (!img) return;
+    if (count > 0 && count % perRow === 0) {
+      rowY += size + 34;
+      x = PAD;
+    }
+    const ratio = img.width / img.height;
+    let sx = 0,
+      sy = 0,
+      sw = img.width,
+      sh = img.height;
+    if (ratio > 1) {
+      sw = img.height;
+      sx = (img.width - sw) / 2;
+    } else {
+      sh = img.width;
+      sy = (img.height - sh) / 2;
+    }
+    roundRect(ctx, x, rowY, size, size, 12);
+    ctx.save();
+    ctx.clip();
+    ctx.drawImage(img, sx, sy, sw, sh, x, rowY, size, size);
+    ctx.restore();
+    const title = titles[i];
+    if (title) {
+      ctx.fillStyle = INK2;
+      ctx.font = "600 13px sans-serif";
+      const t = title.length > 12 ? title.slice(0, 12) + "…" : title;
+      ctx.fillText(t, x + 2, rowY + size + 18);
+    }
+    x += size + gap;
+    count++;
+  });
+  return rowY + size + 34;
 }
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {

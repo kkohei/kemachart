@@ -34,6 +34,15 @@ export interface MixItem {
 /** 塗布量 (少/中/大) */
 export type ApplyAmount = "少" | "中" | "大";
 
+/** タイトル付き写真 (施術中など、ビフォー/アフター以外の写真) */
+export interface TitledPhoto {
+  id: string;
+  /** カスタムタイトル 例: 施術中 / 中間水洗後 */
+  title: string;
+  /** 写真 (dataURL) */
+  photo: string;
+}
+
 /** レシピの1工程 (使用薬剤や塗布など) */
 export interface RecipeStep {
   id: string;
@@ -76,6 +85,8 @@ export interface TreatmentRecord {
   beforePhotos: string[];
   /** アフター写真 (dataURL) */
   afterPhotos: string[];
+  /** その他の写真 (施術中など・タイトル付き・最大5枚) */
+  extraPhotos?: TitledPhoto[];
   /** 全体メモ・振り返り */
   memo?: string;
   /** 記録の状態。draft=下書き(仮保存) / done=確定。未指定は done 扱い */

@@ -194,6 +194,9 @@ export const APPLY_AMOUNTS: ApplyAmount[] = ["少", "中", "大"];
 /** 1件の記録あたりの写真の上限 (ビフォー+アフター合計)。容量とクラッシュ対策 */
 export const MAX_PHOTOS_PER_RECORD = 10;
 
+/** その他の写真 (タイトル付き) の上限 */
+export const MAX_EXTRA_PHOTOS = 5;
+
 /** 配合を「EZ100 50% ・ ANTA3 30%」形式の文字列に */
 export function formatMix(mix: { chem: string; percent: number }[] | undefined): string {
   if (!mix || mix.length === 0) return "";

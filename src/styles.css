@@ -1171,6 +1171,73 @@ button.strand__seg {
   opacity: 0.6;
 }
 
+/* ---------- その他の写真 (タイトル付き) ---------- */
+.xphoto__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+.xphoto__img {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.xphoto__body {
+  flex: 1;
+  min-width: 0;
+}
+.xphoto__title {
+  font-size: 15px;
+  padding: 10px 12px;
+}
+.xphoto__del {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 8px;
+  color: var(--danger);
+  font-size: 16px;
+}
+.xphoto__add {
+  aspect-ratio: auto;
+  width: 100%;
+  padding: 12px;
+}
+.xphoto-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.xphoto-view__item {
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
+}
+.xphoto-view__item img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+.xphoto-view__title {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-top: 4px;
+}
+
 /* ---------- Form actions ---------- */
 .form__actions {
   display: flex;
