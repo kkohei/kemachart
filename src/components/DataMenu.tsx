@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
 import { Capacitor } from "@capacitor/core";
 import type { TreatmentRecord } from "../types";
-import { buildBackup, parseBackup } from "../storage";
+import { parseBackup } from "../storage";
 import { lastAutoBackupAt, readAutoBackup } from "../utils/autoBackup";
+import { internRecordPhotos, resolveRecordPhotos } from "../utils/photoStore";
 
 /**
  * データのバックアップ (エクスポート) と復元 (インポート)。
@@ -18,20 +19,37 @@ export function DataMenu({
   variant?: "default" | "light";
 }) {
   const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const isNative = Capacitor.isNativePlatform();
 
-  function exportJSON() {
-    const payload = buildBackup(records);
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    const stamp = new Date().toISOString().slice(0, 10);
-    a.href = url;
-    a.download = `kemachart-backup-${stamp}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    setOpen(false);
+  async function exportJSON() {
+    if (busy) return;
+    setBusy(true);
+    try {
+      // 写真は1記録ずつ展開しながら Blob に積む (全件を一度に文字列化しない)
+      const parts: string[] = [
+        `{"app":"kemachart","version":2,"exportedAt":${Date.now()},"records":[`,
+      ];
+      for (let i = 0; i < records.length; i++) {
+        const resolved = await resolveRecordPhotos(records[i]);
+        parts.push((i > 0 ? "," : "") + JSON.stringify(resolved));
+      }
+      parts.push("]}");
+      const blob = new Blob(parts, { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const stamp = new Date().toISOString().slice(0, 10);
+      a.href = url;
+      a.download = `kemachart-backup-${stamp}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      alert(`書き出しに失敗しました: ${(e as Error).message}`);
+    } finally {
+      setBusy(false);
+      setOpen(false);
+    }
   }
 
   /** 取り込んだ記録を現在の記録とマージ (ID重複は取り込み側を優先) */
@@ -50,11 +68,16 @@ export function DataMenu({
         `${incoming.length}件の記録を読み込みます。\n\n「OK」= 現在の記録と統合\n「キャンセル」= 中止`,
       );
       if (!mode) return;
-      mergeIn(incoming);
+      setBusy(true);
+      // 埋め込み写真は写真ストアへ移してから統合 (localStorageを圧迫しない)
+      const interned: TreatmentRecord[] = [];
+      for (const r of incoming) interned.push(await internRecordPhotos(r));
+      mergeIn(interned);
       alert("読み込みが完了しました。");
     } catch (e) {
       alert(`読み込みに失敗しました: ${(e as Error).message}`);
     } finally {
+      setBusy(false);
       setOpen(false);
       if (fileRef.current) fileRef.current.value = "";
     }
@@ -76,7 +99,9 @@ export function DataMenu({
         `自動バックアップ (${when} / ${backup.records.length}件) を読み込みます。\n\n「OK」= 現在の記録と統合\n「キャンセル」= 中止`,
       );
       if (!ok) return;
-      mergeIn(backup.records);
+      const interned: TreatmentRecord[] = [];
+      for (const r of backup.records) interned.push(await internRecordPhotos(r));
+      mergeIn(interned);
       alert("復元が完了しました。");
     } catch (e) {
       alert(`復元に失敗しました: ${(e as Error).message}`);
@@ -90,9 +115,9 @@ export function DataMenu({
     const when = last ? new Date(last).toLocaleString("ja-JP") : "まだありません";
     alert(
       `最終自動バックアップ: ${when}\n\n` +
-        "記録を保存するたびに、端末内の「書類」フォルダへ自動でバックアップされます (直近7日分)。\n" +
-        "iPhoneの「iCloudバックアップ」がオンなら、iCloudにも自動で含まれ、機種変更時に復元できます。\n\n" +
-        "「ファイル」アプリ →「このiPhone内」→「KEMA my Recipi」→「バックアップ」からも確認・iCloud Driveへのコピーができます。",
+        "記録を保存するたびに、端末内へ自動でバックアップされます (直近7日分)。写真も端末内に保存されます。\n" +
+        "iPhoneの「iCloudバックアップ」がオンなら、記録も写真も自動でiCloudに含まれ、機種変更・復元時に戻せます。\n\n" +
+        "別の端末へ手動でデータを移すときは「バックアップを書き出す」(写真込みのファイル) をご利用ください。",
     );
     setOpen(false);
   }
@@ -110,8 +135,8 @@ export function DataMenu({
         <>
           <div className="datamenu__backdrop" onClick={() => setOpen(false)} />
           <div className="datamenu__pop" role="menu">
-            <button className="datamenu__item" onClick={exportJSON}>
-              バックアップを書き出す
+            <button className="datamenu__item" onClick={exportJSON} disabled={busy}>
+              {busy ? "処理中…" : "バックアップを書き出す"}
             </button>
             <button className="datamenu__item" onClick={() => fileRef.current?.click()}>
               バックアップを読み込む

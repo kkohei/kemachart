@@ -2,6 +2,7 @@ import type { DamageProfile, TreatmentRecord } from "../types";
 import { AREA_BACK, SECTIONS, areaDef, damageDef, formatMix, groupRecipe } from "../constants";
 import { damageCode, maxDamage } from "./damage";
 import { formatJP } from "./date";
+import { loadPhoto } from "./photoStore";
 
 const W = 820;
 const PAD = 40;
@@ -10,12 +11,15 @@ const INK2 = "#7a6a58";
 const ACCENT = "#6f5738";
 const LINE = "#e8ddcf";
 
-function loadImage(src: string): Promise<HTMLImageElement> {
+async function loadImage(src: string): Promise<HTMLImageElement> {
+  // 写真参照 (kphoto:...) は写真ストアから dataURL に解決してから読み込む
+  const resolved = await loadPhoto(src);
+  if (!resolved) throw new Error("image load failed");
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error("image load failed"));
-    img.src = src;
+    img.src = resolved;
   });
 }
 

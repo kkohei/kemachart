@@ -4,6 +4,7 @@ import { damageCode } from "../utils/damage";
 import { groupByCustomer } from "../utils/customer";
 import { navigate } from "../hooks/useHashRoute";
 import { HairStrand } from "./HairDamageChart";
+import { PhotoImg } from "./PhotoImg";
 
 /** お客様の一覧 (来店回数・最終来店・最新ダメージコード) */
 export function CustomerList({ records }: { records: TreatmentRecord[] }) {
@@ -29,7 +30,7 @@ export function CustomerList({ records }: { records: TreatmentRecord[] }) {
             >
               <div className="record-card__thumb">
                 {latest.beforePhotos[0] ? (
-                  <img src={latest.beforePhotos[0]} alt="" />
+                  <PhotoImg src={latest.beforePhotos[0]} alt="" />
                 ) : (
                   <HairStrand profile={latest.damageBefore} width={40} showNumbers={false} />
                 )}

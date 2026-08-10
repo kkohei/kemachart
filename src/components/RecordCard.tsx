@@ -4,6 +4,7 @@ import { damageCode, maxDamage } from "../utils/damage";
 import { navigate } from "../hooks/useHashRoute";
 import { DamageBadge } from "./DamageBadge";
 import { HairStrand } from "./HairDamageChart";
+import { PhotoImg } from "./PhotoImg";
 
 /** 一覧・お客様履歴で共通利用する施術記録カード */
 export function RecordCard({ record: r, hideName }: { record: TreatmentRecord; hideName?: boolean }) {
@@ -11,7 +12,7 @@ export function RecordCard({ record: r, hideName }: { record: TreatmentRecord; h
     <button className="record-card" onClick={() => navigate(`#/record/${r.id}`)}>
       <div className="record-card__thumb">
         {r.beforePhotos[0] ? (
-          <img src={r.beforePhotos[0]} alt="" />
+          <PhotoImg src={r.beforePhotos[0]} alt="" />
         ) : (
           <HairStrand profile={r.damageBefore} width={40} showNumbers={false} />
         )}

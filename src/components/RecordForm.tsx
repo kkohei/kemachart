@@ -12,6 +12,7 @@ import { MenuPicker } from "./MenuPicker";
 import { todayISO } from "../utils/date";
 import { uid } from "../utils/id";
 import { defaultProfile, uniformProfile } from "../utils/damage";
+import { deletePhoto, internRecordPhotos, photoRefsOf } from "../utils/photoStore";
 import { navigate } from "../hooks/useHashRoute";
 import type { KemaMenuDef } from "../data/kemaMenus";
 import { DamageChartInput } from "./HairDamageChart";
@@ -59,6 +60,7 @@ export function RecordForm({ initial, onSave }: Props) {
   const [afterPhotos, setAfterPhotos] = useState<string[]>(initial?.afterPhotos ?? []);
   const [extraPhotos, setExtraPhotos] = useState<TitledPhoto[]>(initial?.extraPhotos ?? []);
   const [memo, setMemo] = useState(initial?.memo ?? "");
+  const [saving, setSaving] = useState(false);
 
   /** 提案メニューのレシピテンプレートをフォームに反映 */
   function applyKemaMenu(def: KemaMenuDef) {
@@ -113,17 +115,35 @@ export function RecordForm({ initial, onSave }: Props) {
     };
   }
 
+  /** 写真を写真ストアへ保存 (参照化) してから記録を確定する */
+  async function persist(status: "draft" | "done", to: (rec: TreatmentRecord) => string) {
+    if (saving) return;
+    setSaving(true);
+    try {
+      const rec = await internRecordPhotos(build(status));
+      // 編集で外した写真をストアからも削除
+      if (initial) {
+        const kept = photoRefsOf([rec]);
+        for (const ref of photoRefsOf([initial])) {
+          if (!kept.has(ref)) void deletePhoto(ref);
+        }
+      }
+      onSave(rec);
+      navigate(to(rec));
+    } catch (e) {
+      alert(`保存に失敗しました: ${(e as Error).message ?? "不明なエラー"}`);
+    } finally {
+      setSaving(false);
+    }
+  }
+
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    const rec = build("done");
-    onSave(rec);
-    navigate(`#/record/${rec.id}`);
+    void persist("done", (rec) => `#/record/${rec.id}`);
   }
 
   function saveDraft() {
-    const rec = build("draft");
-    onSave(rec);
-    navigate("#/records");
+    void persist("draft", () => "#/records");
   }
 
   return (
@@ -306,12 +326,17 @@ export function RecordForm({ initial, onSave }: Props) {
           >
             キャンセル
           </button>
-          <button type="submit" className="btn btn--primary">
-            {isDraft ? "確定して保存" : isEdit ? "更新する" : "保存する"}
+          <button type="submit" className="btn btn--primary" disabled={saving}>
+            {saving ? "保存中…" : isDraft ? "確定して保存" : isEdit ? "更新する" : "保存する"}
           </button>
         </div>
-        <button type="button" className="btn btn--soft form__draft" onClick={saveDraft}>
-          {isDraft ? "下書きのまま保存" : "仮保存（下書き）"}
+        <button
+          type="button"
+          className="btn btn--soft form__draft"
+          onClick={saveDraft}
+          disabled={saving}
+        >
+          {saving ? "保存中…" : isDraft ? "下書きのまま保存" : "仮保存（下書き）"}
         </button>
       </div>
     </form>

@@ -3,6 +3,7 @@ import type { TitledPhoto } from "../types";
 import { MAX_EXTRA_PHOTOS } from "../constants";
 import { uid } from "../utils/id";
 import { fileToCompressedDataURL } from "../utils/image";
+import { PhotoImg } from "./PhotoImg";
 
 /**
  * タイトル付き写真の入力 (施術中など)。ビフォー/アフターとは別枠で最大5枚。
@@ -54,7 +55,7 @@ export function ExtraPhotoInput({
     <div className="xphoto">
       {photos.map((p) => (
         <div className="xphoto__item" key={p.id}>
-          <img className="xphoto__img" src={p.photo} alt={p.title || "写真"} />
+          <PhotoImg className="xphoto__img" src={p.photo} alt={p.title || "写真"} />
           <div className="xphoto__body">
             <input
               className="input xphoto__title"

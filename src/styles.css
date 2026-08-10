@@ -184,7 +184,8 @@ img {
 }
 .land__top {
   position: relative;
-  z-index: 2;
+  /* ⋯メニューのポップアップが下の .land__brand に隠れないよう前面に */
+  z-index: 5;
   display: flex;
   justify-content: flex-end;
   min-height: 40px;
@@ -2377,4 +2378,18 @@ button.strand__seg {
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
   font-size: 24px;
+}
+
+/* 写真の読み込み中プレースホルダ (PhotoImg が参照を解決するまでの表示) */
+.photo-pending {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 48px;
+  background: #ece4d8;
+  border-radius: inherit;
+}
+.lightbox .photo-pending {
+  min-height: 40vh;
+  background: rgba(255, 255, 255, 0.08);
 }

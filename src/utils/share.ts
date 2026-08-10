@@ -4,6 +4,7 @@ import { damageDef, formatMix, groupRecipe } from "../constants";
 import { formatJP, formatKO } from "./date";
 import { damageCode, maxDamage } from "./damage";
 import { dataURLtoBlob } from "./image";
+import { loadPhoto } from "./photoStore";
 
 /** 共有テキストの言語 */
 export type ShareLang = "ja" | "ko";
@@ -127,13 +128,14 @@ export async function nativeShare(rec: TreatmentRecord, lang: ShareLang = "ja"):
     canShare?: (data?: ShareData) => boolean;
   };
 
-  // 画像添付を試みる
+  // 画像添付を試みる (写真参照はストアから解決)
   const files: File[] = [];
   const photos = [...rec.beforePhotos.slice(0, 1), ...rec.afterPhotos.slice(0, 1)];
-  photos.forEach((p, i) => {
-    const blob = dataURLtoBlob(p);
+  for (let i = 0; i < photos.length; i++) {
+    const dataUrl = await loadPhoto(photos[i]);
+    const blob = dataUrl ? dataURLtoBlob(dataUrl) : null;
     if (blob) files.push(new File([blob], `kema-${i === 0 ? "before" : "after"}.jpg`, { type: blob.type }));
-  });
+  }
 
   if (nav.share) {
     try {

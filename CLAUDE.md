@@ -22,7 +22,11 @@
 
 ## 構成メモ
 
-- データは端末内 localStorage（サーバー送信なし）。移行はアプリ内のJSONバックアップ。
+- データは端末内のみ（サーバー送信なし）。記録メタ=localStorage（軽量・約1MB/300件）、
+  写真の実データ=写真ストア `src/utils/photoStore.ts`（記録には `kphoto:` 参照のみ保存）。
+  iOSネイティブ: Library/photos/ のファイル（容量実質無制限・iCloudバックアップ対象）／Web: IndexedDB。
+  旧形式（localStorageに写真埋め込み）は起動時に自動移行。孤児写真は起動時にGC。
+  ※写真をlocalStorageに直接入れると約5MB上限で2〜3件でクラッシュするため厳禁。
 - 自動バックアップ: 保存のたびに Documents/バックアップ/ へJSON書き出し（最新＋日付別7日分、`src/utils/autoBackup.ts`）。
   Documents は iOSの「iCloudバックアップ」対象。ファイルAppにも表示（Info.plist の UIFileSharingEnabled）。
 - 正規KEMAロゴは `public/brand/`（ブランドアイデンティティPDF由来）。ロゴは必ず正規のものを使う。

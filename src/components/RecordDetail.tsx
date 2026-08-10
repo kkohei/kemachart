@@ -6,6 +6,7 @@ import { navigate } from "../hooks/useHashRoute";
 import { HairStrand, DamageSummary } from "./HairDamageChart";
 import { ShareButtons } from "./ShareButtons";
 import { KarteExport } from "./KarteExport";
+import { PhotoImg } from "./PhotoImg";
 
 export function RecordDetail({
   record,
@@ -83,7 +84,7 @@ export function RecordDetail({
           <div className="xphoto-view">
             {record.extraPhotos.map((p) => (
               <button className="xphoto-view__item" key={p.id} onClick={() => setLightbox(p.photo)}>
-                <img src={p.photo} alt={p.title || "写真"} />
+                <PhotoImg src={p.photo} alt={p.title || "写真"} />
                 <span className="xphoto-view__title">{p.title || "（タイトルなし）"}</span>
               </button>
             ))}
@@ -154,7 +155,7 @@ export function RecordDetail({
 
       {lightbox && (
         <div className="lightbox" onClick={() => setLightbox(null)}>
-          <img src={lightbox} alt="拡大写真" />
+          <PhotoImg src={lightbox} alt="拡大写真" />
           <button className="lightbox__close" aria-label="閉じる">
             ×
           </button>
@@ -232,7 +233,7 @@ function BAColumn({
         <div className="ba__photos">
           {photos.map((p, i) => (
             <button className="ba__photo" key={i} onClick={() => onOpen(p)}>
-              <img src={p} alt={`${label} ${i + 1}`} />
+              <PhotoImg src={p} alt={`${label} ${i + 1}`} />
             </button>
           ))}
         </div>

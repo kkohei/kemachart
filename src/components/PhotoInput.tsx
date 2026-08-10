@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { MAX_PHOTOS_PER_RECORD } from "../constants";
 import { fileToCompressedDataURL } from "../utils/image";
+import { PhotoImg } from "./PhotoImg";
 
 /**
  * 複数枚の写真をカメラ/ライブラリから追加・削除できる入力。
@@ -55,7 +56,7 @@ export function PhotoInput({
       <div className="photo-grid">
         {photos.map((p, i) => (
           <div className="photo-thumb" key={i}>
-            <img src={p} alt={`${label} ${i + 1}`} />
+            <PhotoImg src={p} alt={`${label} ${i + 1}`} />
             <button
               type="button"
               className="photo-thumb__del"
