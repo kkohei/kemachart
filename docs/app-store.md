@@ -8,7 +8,7 @@
 > - [x] カメラ/写真の利用目的（日本語・Info.plist）
 > - [x] 輸出コンプライアンス（ITSAppUsesNonExemptEncryption=false）
 > - [x] クラッシュ対策（容量超過の安全処理・写真上限・エラー画面）
-> - [x] バージョン: v1.0 = 表示 1.0／ビルド 11（申請用）。リポジトリは次回 v1.2／ビルド 13
+> - [x] バージョン: v1.0 = 表示 1.0／ビルド 11（申請用）。リポジトリは次回 v1.2／ビルド 14
 >   （自動バックアップ機能入り。v1.0 審査通過後にアップデートとして提出）
 > - [x] プライバシーポリシー `public/privacy.html`（Pagesデプロイは下記②）
 > - [x] App Store用スクリーンショット6枚（6.9インチ 1320×2868）生成済み
@@ -74,7 +74,7 @@ Xcode で `App` ターゲット → **Signing & Capabilities**:
 | 項目 | 場所 | 現在値 |
 | --- | --- | --- |
 | 表示バージョン | Xcode → General → Version（`MARKETING_VERSION`） | `1.2` |
-| ビルド番号 | Xcode → General → Build（`CURRENT_PROJECT_VERSION`） | `13` |
+| ビルド番号 | Xcode → General → Build（`CURRENT_PROJECT_VERSION`） | `14` |
 
 アップロードのたびに **ビルド番号を +1** します（表示バージョンは審査に出す単位で上げます）。
 
