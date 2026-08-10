@@ -207,6 +207,12 @@ async function listStoredRefs(): Promise<string[]> {
   try {
     if (Capacitor.isNativePlatform()) {
       const { Filesystem, Directory } = await import("@capacitor/filesystem");
+      // 初回起動時はフォルダ未作成で readdir がエラーログを出すため、先に作っておく
+      await Filesystem.mkdir({
+        path: NATIVE_DIR,
+        directory: Directory.Library,
+        recursive: true,
+      }).catch(() => {});
       const res = await Filesystem.readdir({ path: NATIVE_DIR, directory: Directory.Library });
       return res.files.map((f) => `${REF_PREFIX}${f.name}`);
     }
