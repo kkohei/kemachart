@@ -1,4 +1,5 @@
 import UIKit
+import WebKit
 import Capacitor
 
 @UIApplicationMain
@@ -7,8 +8,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // キーボードを閉じた後、WKWebViewのスクロール補正 (インセット/オフセット) が
+        // 元に戻らず画面全体がズレたままになるiOSの問題への対策。
+        // キーボードが閉じたタイミングで表示位置を強制的に正常範囲へ戻す。
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(resetWebViewAfterKeyboard),
+            name: UIResponder.keyboardDidHideNotification,
+            object: nil
+        )
         return true
+    }
+
+    @objc private func resetWebViewAfterKeyboard() {
+        DispatchQueue.main.async { [weak self] in
+            guard let webView = self?.findWebView() else { return }
+            let scrollView = webView.scrollView
+            // キーボード表示のために加えられたインセットをリセット
+            scrollView.contentInset = .zero
+            scrollView.verticalScrollIndicatorInsets = .zero
+            // オフセットを正常範囲 (0〜最大スクロール量) にクランプ
+            let maxY = max(0, scrollView.contentSize.height - scrollView.bounds.height)
+            let y = min(max(0, scrollView.contentOffset.y), maxY)
+            if scrollView.contentOffset.y != y || scrollView.contentOffset.x != 0 {
+                scrollView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
+            }
+        }
+    }
+
+    private func findWebView() -> WKWebView? {
+        guard let root = window?.rootViewController
+            ?? UIApplication.shared.connectedScenes
+                .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
+                .first?.rootViewController
+        else { return nil }
+        return searchWebView(in: root.view)
+    }
+
+    private func searchWebView(in view: UIView) -> WKWebView? {
+        if let webView = view as? WKWebView { return webView }
+        for subview in view.subviews {
+            if let found = searchWebView(in: subview) { return found }
+        }
+        return nil
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
