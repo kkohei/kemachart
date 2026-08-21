@@ -2542,3 +2542,30 @@ button.strand__seg {
   gap: 10px;
   margin-top: 12px;
 }
+
+/* 注文シミュレーター: 実価格リスト対応の追加スタイル */
+.osim__lead {
+  margin: -6px 2px 14px;
+}
+.osim__product + .osim__product {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 2px solid var(--line);
+}
+.osim__pname {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.osim__outlet {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: #fdeadb;
+  color: #a9705c;
+  font-size: 10px;
+  font-weight: 800;
+  vertical-align: 1px;
+}

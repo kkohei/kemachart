@@ -33,7 +33,8 @@
 - トップ = サロンデザイン × ディープモカ（`src/components/Landing.tsx`）。
 - レシピは3大枠パート（クリニック/デザイン/ケア）。工程名候補は `STEP_PRESETS_BY_PART`（constants.ts）。
 - 共有は 日本語 / 한국어 切替（`src/utils/share.ts`）。ボタンは LINE / X / カカオトーク。
-- 注文金額シミュレーター（#/order・`src/components/OrderSimulator.tsx`）: 店販13品の数量から
-  サロン金額（小売×掛け率、初期60%・変更可）で仕入合計を試算。数量・掛け率はlocalStorage保存。
+- 注文金額シミュレーター（#/order・`src/components/OrderSimulator.tsx`）: KEMA PRO SHOPの
+  実サロン価格リスト（`src/data/shopPrices.ts`・2026年8月時点・全80SKU、アイロン等の機器含む）
+  でセット数から注文金額を試算。数量はlocalStorage保存。価格改定時は shopPrices.ts を更新する。
 - iOSビルド・申請の詳細は `docs/ios.md`、`docs/app-store.md`。
 - 開発ブランチ: `claude/kema-treatment-logger-cwnsjo`。

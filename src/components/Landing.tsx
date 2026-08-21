@@ -54,7 +54,7 @@ export function Landing({
           <span className="hub-card__icon" aria-hidden="true">🧮</span>
           <span className="hub-card__body">
             <span className="hub-card__title">注文金額シミュレーション</span>
-            <span className="hub-card__desc">店販商品の仕入れ額をサロン金額で試算</span>
+            <span className="hub-card__desc">PRO SHOPのサロン価格で注文金額を試算</span>
           </span>
           <span className="hub-card__chev" aria-hidden="true">›</span>
         </button>
