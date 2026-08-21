@@ -50,6 +50,15 @@ export function Landing({
           <span className="hub-card__chev" aria-hidden="true">›</span>
         </button>
 
+        <button className="hub-card" onClick={() => navigate("#/order")}>
+          <span className="hub-card__icon" aria-hidden="true">🧮</span>
+          <span className="hub-card__body">
+            <span className="hub-card__title">注文金額シミュレーション</span>
+            <span className="hub-card__desc">店販商品の仕入れ額をサロン金額で試算</span>
+          </span>
+          <span className="hub-card__chev" aria-hidden="true">›</span>
+        </button>
+
         <button className="hub-card hub-card--soon" disabled aria-disabled="true">
           <span className="hub-card__icon" aria-hidden="true">🧴</span>
           <span className="hub-card__body">

@@ -2393,3 +2393,152 @@ button.strand__seg {
   min-height: 40vh;
   background: rgba(255, 255, 255, 0.08);
 }
+
+/* ---------- 注文金額シミュレーター ---------- */
+.osim__rate {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.osim__rate-presets {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.osim__preset {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+.osim__preset.is-on {
+  background: var(--accent, #6f5738);
+  border-color: var(--accent, #6f5738);
+  color: #fff;
+}
+.osim__rate-custom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink-2, #7a6a58);
+}
+.osim__rate-input {
+  width: 84px;
+  text-align: right;
+}
+.osim__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.osim__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 10px;
+  align-items: center;
+  padding: 12px 0;
+}
+.osim__row + .osim__row {
+  border-top: 1px solid var(--line);
+}
+.osim__row.is-active {
+  background: linear-gradient(90deg, transparent, rgba(111, 87, 56, 0.06));
+}
+.osim__name {
+  font-weight: 700;
+  font-size: 14px;
+}
+.osim__size {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--ink-2, #7a6a58);
+  margin-left: 4px;
+}
+.osim__prices {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  margin-top: 2px;
+}
+.osim__salon {
+  color: var(--accent, #6f5738);
+  font-weight: 700;
+}
+.osim__retail {
+  color: var(--ink-2, #7a6a58);
+}
+.osim__ctrl {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.osim__step {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+.osim__step:disabled {
+  opacity: 0.35;
+}
+.osim__step:active:not(:disabled) {
+  background: var(--surface-2, #f4ece0);
+}
+.osim__qty {
+  min-width: 34px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.osim__subtotal {
+  grid-column: 1 / -1;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent, #6f5738);
+}
+.osim__totals {
+  margin: 0 0 10px;
+}
+.osim__total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 14px;
+}
+.osim__total-row dt {
+  color: var(--ink-2, #7a6a58);
+}
+.osim__total-row dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.osim__total-row--main {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 0;
+  margin: 4px 0;
+}
+.osim__total-row--main dd {
+  font-size: 22px;
+  color: var(--accent, #6f5738);
+}
+.osim__actions {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 10px;
+  margin-top: 12px;
+}

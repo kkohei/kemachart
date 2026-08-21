@@ -9,6 +9,7 @@ import { RecordDetail } from "./components/RecordDetail";
 import { CustomerDetail } from "./components/CustomerDetail";
 import { GuideView } from "./components/GuideView";
 import { TenpanView } from "./components/TenpanView";
+import { OrderSimulator } from "./components/OrderSimulator";
 
 export default function App() {
   const { records, upsert, remove, getById, replaceAll } = useRecords();
@@ -93,6 +94,13 @@ export default function App() {
           <>
             <PageTitle>店販ワークマニュアル</PageTitle>
             <TenpanView />
+          </>
+        )}
+
+        {route.name === "order" && (
+          <>
+            <PageTitle>注文金額シミュレーション</PageTitle>
+            <OrderSimulator />
           </>
         )}
       </main>
