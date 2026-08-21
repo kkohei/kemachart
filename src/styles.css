@@ -2645,3 +2645,55 @@ button.strand__seg {
   letter-spacing: 0.06em;
   vertical-align: 2px;
 }
+
+/* 注文シミュレーター: 画面下部の固定合計バー */
+.osim__bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  border: none;
+  border-radius: 18px 18px 0 0;
+  padding: 14px max(20px, env(safe-area-inset-right)) calc(14px + env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
+  background: var(--accent-dark);
+  color: #fff;
+  box-shadow: 0 -6px 20px rgba(80, 60, 35, 0.22);
+  text-align: left;
+}
+.osim__bar:active {
+  filter: brightness(1.08);
+}
+.osim__bar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.osim__bar-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+.osim__bar-meta {
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.95;
+}
+.osim__bar-total {
+  font-size: 24px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+/* バーの高さぶん、最下部のカードが隠れないよう余白を確保 */
+.osim {
+  padding-bottom: calc(84px + env(safe-area-inset-bottom));
+}

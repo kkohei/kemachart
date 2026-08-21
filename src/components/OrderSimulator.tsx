@@ -207,7 +207,7 @@ export function OrderSimulator() {
         );
       })}
 
-      <section className="card osim__summary">
+      <section className="card osim__summary" id="osim-summary">
         <h2 className="card__title">試算結果</h2>
         <dl className="osim__totals">
           <div className="osim__total-row">
@@ -234,6 +234,26 @@ export function OrderSimulator() {
           </button>
         </div>
       </section>
+
+      {/* 画面下部に常時表示の合計バー (タップで試算結果へ) */}
+      <button
+        type="button"
+        className="osim__bar"
+        onClick={() =>
+          document.getElementById("osim-summary")?.scrollIntoView({ behavior: "smooth", block: "start" })
+        }
+        aria-label="試算結果を見る"
+      >
+        <span className="osim__bar-left">
+          <span className="osim__bar-label">注文金額</span>
+          <span className="osim__bar-meta">
+            {summary.sets}セット・{summary.units}点
+          </span>
+        </span>
+        <span className="osim__bar-total" data-testid="osim-bar-total">
+          {fmt(summary.total)}
+        </span>
+      </button>
     </div>
   );
 }

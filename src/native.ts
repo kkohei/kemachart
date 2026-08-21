@@ -68,7 +68,20 @@ function setupKeyboardViewportGuard(): void {
   }
 
   // 2) 入力を離れたときにも修復 (visualViewportが発火しないケースの保険)
-  window.addEventListener("focusout", () => {
+  window.addEventListener("focusout", (e) => {
+    // キーボードが出る要素 (入力欄) から離れたときだけ補正する。
+    // ボタン等のフォーカス移動で発動すると、進行中のスムーズスクロールを
+    // キャンセルしてしまうため。
+    const from = e.target;
+    if (
+      !(
+        from instanceof HTMLInputElement ||
+        from instanceof HTMLTextAreaElement ||
+        from instanceof HTMLSelectElement
+      )
+    ) {
+      return;
+    }
     setTimeout(() => {
       const el = document.activeElement;
       if (
