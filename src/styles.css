@@ -848,7 +848,7 @@ button.strand__seg {
   padding: 8px 10px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 16px;
   background: #fff;
 }
 .recipe-step__name--select {
@@ -902,7 +902,7 @@ button.strand__seg {
   padding: 8px 10px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 16px;
   background: #fff;
   margin-bottom: 8px;
   font-family: inherit;
@@ -928,7 +928,7 @@ button.strand__seg {
   padding: 6px 8px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 16px;
   background: #fff;
 }
 .recipe-step__note {
@@ -1012,7 +1012,7 @@ button.strand__seg {
   padding: 8px 10px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 16px;
   background: var(--surface-2);
 }
 .mix__pct {
@@ -1020,7 +1020,7 @@ button.strand__seg {
   padding: 8px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 16px;
   text-align: right;
   background: #fff;
 }
@@ -2737,4 +2737,12 @@ button.strand__seg {
   gap: 10px;
   max-width: 420px;
   margin: 0 auto;
+}
+
+/* iOSの自動ズーム防止の保険: フォーカスを受ける入力系は必ず16px以上にする
+   (16px未満だとiOSがフォーカス時に画面を拡大し、閉じた後も戻らないことがある) */
+input,
+select,
+textarea {
+  font-size: max(16px, 1em);
 }
