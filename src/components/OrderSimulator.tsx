@@ -9,6 +9,8 @@ import { SHOP_CATEGORIES, SHOP_ITEMS, setPrice } from "../data/shopPrices";
  */
 
 const QTY_KEY = "kemachart.orderSim.qty.v2";
+/** サロン専用機能の了承フラグ (アプリを開いている間だけ有効・次回起動時は再確認) */
+const ACK_KEY = "kemachart.orderSim.ack.v1";
 
 function fmt(n: number): string {
   return `¥${Math.round(n).toLocaleString("ja-JP")}`;
@@ -36,6 +38,13 @@ function groupByProduct(items: ShopItem[]): { name: string; items: ShopItem[] }[
 }
 
 export function OrderSimulator() {
+  const [acked, setAcked] = useState<boolean>(() => {
+    try {
+      return sessionStorage.getItem(ACK_KEY) === "1";
+    } catch {
+      return false;
+    }
+  });
   const [qty, setQty] = useState<Record<string, number>>(loadQty);
 
   useEffect(() => {
@@ -115,6 +124,48 @@ export function OrderSimulator() {
   function clearAll() {
     if (summary.sets === 0) return;
     if (confirm("入力した数量をすべてクリアしますか？")) setQty({});
+  }
+
+  function acknowledge() {
+    try {
+      sessionStorage.setItem(ACK_KEY, "1");
+    } catch {
+      // 保存できなくても表示は許可する
+    }
+    setAcked(true);
+  }
+
+  // サロン様専用の注意喚起 (了承するまで価格は表示しない)
+  if (!acked) {
+    return (
+      <div className="osim">
+        <section className="card osim-gate">
+          <div className="osim-gate__icon" aria-hidden="true">🔒</div>
+          <h2 className="osim-gate__title">サロン様専用の機能です</h2>
+          <p className="osim-gate__text">
+            この先の画面には、KEMA PRO SHOPの<strong>サロン価格（仕入れ価格）</strong>が表示されます。
+          </p>
+          <ul className="osim-gate__list">
+            <li>KEMA製品をお取り扱いの美容室・美容師様専用です</li>
+            <li>お客様など第三者への提示はお控えください</li>
+            <li>画面の共有・スクリーンショットのSNS掲載等はお控えください</li>
+          </ul>
+          <div className="osim-gate__actions">
+            <button
+              type="button"
+              className="btn btn--primary"
+              data-testid="osim-ack"
+              onClick={acknowledge}
+            >
+              サロン関係者として了承し、表示する
+            </button>
+            <button type="button" className="btn btn--ghost" onClick={() => history.back()}>
+              戻る
+            </button>
+          </div>
+        </section>
+      </div>
+    );
   }
 
   return (
