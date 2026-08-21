@@ -132,7 +132,6 @@ export function OrderSimulator() {
                         <div className="osim__info">
                           <div className="osim__name">
                             {item.variant}
-                            {item.outlet && <span className="osim__outlet">B品</span>}
                             {item.code && <span className="osim__size">{item.code}</span>}
                           </div>
                           <div className="osim__prices">
