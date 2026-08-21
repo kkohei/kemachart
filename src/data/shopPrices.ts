@@ -23,20 +23,26 @@ export interface ShopItem {
 export interface ShopCategory {
   key: string;
   label: string;
+  /** 選択フローのステップ表示 (例: "STEP 1") */
+  step?: string;
+  /** ナビチップ用の短い名前 */
+  short: string;
 }
 
-/** 表示順のカテゴリ定義 */
+/**
+ * 表示順のカテゴリ定義。
+ * 注文フローに合わせて アイロン → パーマ剤 → 前処理剤 → ホームケア類 の順。
+ */
 export const SHOP_CATEGORIES: ShopCategory[] = [
-  { key: "前処理剤", label: "前処理剤" },
-  { key: "パーマ剤", label: "パーマ剤" },
-  { key: "シャンプー", label: "シャンプー" },
-  { key: "トリートメント", label: "トリートメント" },
-  { key: "バーム", label: "バーム" },
-  { key: "セラム・オイル", label: "セラム・オイル" },
-  { key: "トニック", label: "トニック" },
-  { key: "ヘアアイロン", label: "ヘアアイロン" },
-  { key: "ストレート型", label: "ストレートアイロン" },
-  { key: "その他サプライ", label: "その他サプライ" },
+  { key: "ヘアアイロン", label: "ヘアアイロン", step: "STEP 1", short: "アイロン" },
+  { key: "パーマ剤", label: "パーマ剤", step: "STEP 2", short: "パーマ剤" },
+  { key: "前処理剤", label: "前処理剤", step: "STEP 3", short: "前処理剤" },
+  { key: "シャンプー", label: "シャンプー", short: "シャンプー" },
+  { key: "トリートメント", label: "トリートメント", short: "トリートメント" },
+  { key: "バーム", label: "バーム", short: "バーム" },
+  { key: "セラム・オイル", label: "セラム・オイル", short: "セラム・オイル" },
+  { key: "トニック", label: "トニック", short: "トニック" },
+  { key: "その他サプライ", label: "その他サプライ", short: "サプライ" },
 ];
 
 /** カテゴリキー → 商品リスト。B品・セール品・ケース品・6本(5本)入りは除外して収録。 */
@@ -94,9 +100,7 @@ export const SHOP_ITEMS: Record<string, ShopItem[]> = {
     { key: "A0089", productId: 28, name: "BMI-丸型アイロンシリーズ", variant: "24mmタイプ", code: "A0089", units: 1, unitPrice: 62000 },
     { key: "28-set10", productId: 28, name: "BMI-丸型アイロンシリーズ", variant: "10本セット", units: 1, unitPrice: 620000 },
     { key: "28-set5", productId: 28, name: "BMI-丸型アイロンシリーズ", variant: "6mm〜14mm 5本セット", units: 5, unitPrice: 62000 },
-  ],
-  ストレート型: [
-    { key: "A0016", productId: 32, name: "A・I・O -24", variant: "単品", code: "A0016", units: 1, unitPrice: 35000 },
+    { key: "A0016", productId: 32, name: "A・I・O -24（ストレート型）", variant: "単品", code: "A0016", units: 1, unitPrice: 35000 },
   ],
   その他サプライ: [
     { key: "A0090", productId: 29, name: "デジタルパーマ用シリコンパッド「SPAパッド」60枚入り", variant: "単品", code: "A0090", units: 1, unitPrice: 31000 },

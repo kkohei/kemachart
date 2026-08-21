@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ShopItem } from "../data/shopPrices";
-import { SHOP_CATEGORIES, SHOP_ITEMS, allShopItems, setPrice } from "../data/shopPrices";
+import { SHOP_CATEGORIES, SHOP_ITEMS, setPrice } from "../data/shopPrices";
 
 /**
  * 注文金額シミュレーター。
@@ -61,16 +61,26 @@ export function OrderSimulator() {
     let sets = 0;
     let units = 0;
     let total = 0;
-    for (const item of allShopItems()) {
-      const q = qty[item.key] ?? 0;
-      if (q <= 0) continue;
-      skus += 1;
-      sets += q;
-      units += item.units * q;
-      total += setPrice(item) * q;
+    const catSets: Record<string, number> = {};
+    for (const cat of SHOP_CATEGORIES) {
+      for (const item of SHOP_ITEMS[cat.key] ?? []) {
+        const q = qty[item.key] ?? 0;
+        if (q <= 0) continue;
+        skus += 1;
+        sets += q;
+        units += item.units * q;
+        total += setPrice(item) * q;
+        catSets[cat.key] = (catSets[cat.key] ?? 0) + q;
+      }
     }
-    return { skus, sets, units, total };
+    return { skus, sets, units, total, catSets };
   }, [qty]);
+
+  function jumpToCategory(key: string) {
+    document
+      .getElementById(`osim-cat-${key}`)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   function buildOrderText(): string {
     const lines: string[] = ["【KEMA PRO SHOP 注文シミュレーション】", ""];
@@ -111,15 +121,38 @@ export function OrderSimulator() {
     <div className="osim">
       <p className="card__note osim__lead">
         KEMA PRO SHOPのサロン価格（2026年8月時点）で注文金額を試算できます。
-        数量は保存されるので、決まった分から入力していけます。
+        アイロン → パーマ剤 → 前処理剤 の順に選んでいけます。数量は保存されます。
       </p>
+
+      <nav className="osim__nav" aria-label="カテゴリへ移動">
+        {SHOP_CATEGORIES.map((cat) => {
+          const count = summary.catSets[cat.key] ?? 0;
+          return (
+            <button
+              type="button"
+              key={cat.key}
+              className={`osim__chip ${count > 0 ? "has-items" : ""}`}
+              onClick={() => jumpToCategory(cat.key)}
+            >
+              {cat.step && (
+                <span className="osim__chip-step">{cat.step.replace("STEP ", "")}</span>
+              )}
+              {cat.short}
+              {count > 0 && <span className="osim__chip-count">{count}</span>}
+            </button>
+          );
+        })}
+      </nav>
 
       {SHOP_CATEGORIES.map((cat) => {
         const items = SHOP_ITEMS[cat.key] ?? [];
         if (items.length === 0) return null;
         return (
-          <section className="card" key={cat.key}>
-            <h2 className="card__title">{cat.label}</h2>
+          <section className="card osim__cat" id={`osim-cat-${cat.key}`} key={cat.key}>
+            <h2 className="card__title">
+              {cat.step && <span className="osim__stepbadge">{cat.step}</span>}
+              {cat.label}
+            </h2>
             {groupByProduct(items).map((group) => (
               <div className="osim__product" key={group.name}>
                 <div className="osim__pname">{group.name}</div>

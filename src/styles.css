@@ -2569,3 +2569,79 @@ button.strand__seg {
   font-weight: 800;
   vertical-align: 1px;
 }
+
+/* 注文シミュレーター: ステップナビ */
+.osim__nav {
+  position: sticky;
+  top: calc(56px + env(safe-area-inset-top));
+  z-index: 15;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 8px 2px 10px;
+  margin: 0 -4px 12px;
+  background: linear-gradient(var(--bg) 82%, rgba(247, 243, 238, 0));
+}
+.osim__nav::-webkit-scrollbar {
+  display: none;
+}
+.osim__chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.osim__chip.has-items {
+  border-color: var(--accent-dark);
+}
+.osim__chip-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-dark);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+}
+.osim__chip-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-size: 11px;
+  font-weight: 800;
+}
+.osim__cat {
+  /* ナビからジャンプしたとき、固定ヘッダーに隠れない位置で止める */
+  scroll-margin-top: calc(56px + env(safe-area-inset-top) + 54px);
+}
+.osim__stepbadge {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--accent-dark);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  vertical-align: 2px;
+}
