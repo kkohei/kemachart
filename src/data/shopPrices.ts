@@ -39,7 +39,7 @@ export const SHOP_CATEGORIES: ShopCategory[] = [
   { key: "その他サプライ", label: "その他サプライ" },
 ];
 
-/** カテゴリキー → 商品リスト。B品・セール品・ケース品 (24〜60本入) は除外して収録。 */
+/** カテゴリキー → 商品リスト。B品・セール品・ケース品・6本(5本)入りは除外して収録。 */
 export const SHOP_ITEMS: Record<string, ShopItem[]> = {
   前処理剤: [
     { key: "A0100", productId: 31, name: "KEMA ANTA3 150ml", variant: "単品", code: "A0100", units: 1, unitPrice: 6400 },
@@ -56,37 +56,25 @@ export const SHOP_ITEMS: Record<string, ShopItem[]> = {
   シャンプー: [
     { key: "B001", productId: 33, name: "トライアルセット", variant: "3種1セット", code: "B001", units: 1, unitPrice: 2200 },
     { key: "A0070", productId: 24, name: "KEMA スカルプシャンプー 500ml", variant: "単品", code: "A0070", units: 1, unitPrice: 4100 },
-    { key: "A0070-6", productId: 24, name: "KEMA スカルプシャンプー 500ml", variant: "6本入り", code: "A0070-6", units: 6, unitPrice: 4100 },
     { key: "A0030", productId: 16, name: "KEMA クレマシャンプー 500ml", variant: "単品", code: "A0030", units: 1, unitPrice: 4100 },
-    { key: "A0030-6", productId: 16, name: "KEMA クレマシャンプー 500ml", variant: "6本入り", code: "A0030-6", units: 6, unitPrice: 4100 },
     { key: "A0026", productId: 14, name: "KEMA プレシャンプー 1000ml", variant: "単品", code: "A0026", units: 1, unitPrice: 4350 },
-    { key: "A0026-6", productId: 14, name: "KEMA プレシャンプー 1000ml", variant: "5本入り", code: "A0026-6", units: 5, unitPrice: 4350 },
   ],
   トリートメント: [
     { key: "A0032", productId: 18, name: "KEMA クレマトリートメントブラック 500ml", variant: "単品", code: "A0032", units: 1, unitPrice: 5450 },
-    { key: "A0032-6", productId: 18, name: "KEMA クレマトリートメントブラック 500ml", variant: "6本入り", code: "A0032-6", units: 6, unitPrice: 5450 },
     { key: "A0031", productId: 17, name: "KEMA クレマトリートメントホワイト 500ml", variant: "単品", code: "A0031", units: 1, unitPrice: 3800 },
-    { key: "A0031-6", productId: 17, name: "KEMA クレマトリートメントホワイト 500ml", variant: "6本入り", code: "A0031-6", units: 6, unitPrice: 3800 },
     { key: "A0027", productId: 15, name: "KEMA プレトリートメント 1000ml", variant: "単品", code: "A0027", units: 1, unitPrice: 4350 },
-    { key: "A0027-6", productId: 15, name: "KEMA プレトリートメント 1000ml", variant: "5本入り", code: "A0027-6", units: 5, unitPrice: 4350 },
     { key: "A0025", productId: 13, name: "KEMA ケマチン 500ml", variant: "単品", code: "A0025", units: 1, unitPrice: 4880 },
-    { key: "A0025-6", productId: 13, name: "KEMA ケマチン 500ml", variant: "6本入り", code: "A0025-6", units: 6, unitPrice: 4880 },
   ],
   バーム: [
     { key: "A0041", productId: 20, name: "KEMA ミラクルボンドバーム 120g", variant: "単品", code: "A0041", units: 1, unitPrice: 1950 },
-    { key: "A0041-6", productId: 20, name: "KEMA ミラクルボンドバーム 120g", variant: "6本入り", code: "A0041-6", units: 6, unitPrice: 1950 },
     { key: "A0040", productId: 19, name: "KEMA リーブインバーム", variant: "単品", code: "A0040", units: 1, unitPrice: 2500 },
-    { key: "A0040-6", productId: 19, name: "KEMA リーブインバーム", variant: "6本入り", code: "A0040-6", units: 6, unitPrice: 2500 },
   ],
   "セラム・オイル": [
     { key: "A0073", productId: 27, name: "KEMAカールディファイニングケアセラム 200ml", variant: "単品", code: "A0073", units: 1, unitPrice: 2100 },
-    { key: "A0073-6", productId: 27, name: "KEMAカールディファイニングケアセラム 200ml", variant: "6本入り", code: "A0073-6", units: 6, unitPrice: 2100 },
     { key: "A0072", productId: 26, name: "KEMA ペンタSオイル 100ml", variant: "単品", code: "A0072", units: 1, unitPrice: 2700 },
-    { key: "A0072-6", productId: 26, name: "KEMA ペンタSオイル 100ml", variant: "6本入り", code: "A0072-6", units: 6, unitPrice: 2700 },
   ],
   トニック: [
     { key: "A0071", productId: 25, name: "KEMA スカルプトニック 200ml", variant: "単品", code: "A0071", units: 1, unitPrice: 4100 },
-    { key: "A0071-6", productId: 25, name: "KEMA スカルプトニック 200ml", variant: "6本入り", code: "A0071-6", units: 6, unitPrice: 4100 },
   ],
   ヘアアイロン: [
     { key: "A0014", productId: 30, name: "STC-40", variant: "単品", code: "A0014", units: 1, unitPrice: 44100 },
